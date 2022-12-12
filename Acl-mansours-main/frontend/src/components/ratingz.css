@@ -1,0 +1,95 @@
+
+    * {
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: Arial;
+        margin: 0 auto; /* Center website */
+        max-width: 800px; /* Max width */
+        padding: 20px;
+        font-style: italic;
+        font-size: 20px;
+        
+    }
+.hr{
+    height: 10px;
+    border:5px solid #f44336;
+
+}
+.row{
+    border: 10px solid transparent;
+            padding: 15px;
+            background-color: rgb(207 207 207);
+            border: 22px solid transparent;
+            border-radius: 24px;
+            border-style: inset;
+            border-style: groove;
+            border-color: #ffffff00;
+            width: 767px;
+            box-shadow: 10px 10px 11px -10px rgb(245 150 29);
+        }
+      .heading {
+        font-size: 25px;
+        margin-right: 25px;
+      }
+      
+
+      .checked {
+        color: orange;
+      }
+      
+      /* Three column layout */
+      .side {
+        float: left;
+        width: 15%;
+        margin-top: 10px;
+      }
+      
+      .middle {
+        float: left;
+        width: 70%;
+        margin-top: 10px;
+      }
+      
+      /* Place text to the right */
+      .right {
+        text-align: right;
+      }
+      
+      /* Clear floats after the columns */
+      .row:after {
+        background-color: rgb(135, 107, 84);
+        content: "";
+        display: table;
+        clear: both;
+      }
+      
+      /* The bar container */
+      .bar-container {
+        width: 100%;
+        background-color: #f1f1f1;
+        text-align: center;
+        color: white;
+        border-radius: 34px;
+ }
+
+      /* Individual bars */
+    .bar-5 {width: 60%; height: 18px; background-color: #f5961d; border-radius: 34px;}
+    .bar-4 {width: 30%; height: 18px; background-color: #f5961d;border-radius: 34px;}
+    .bar-3 {width: 10%; height: 18px; background-color: #f5961d;border-radius: 34px;}
+    .bar-2 {width: 4%; height: 18px; background-color: #f5961d;border-radius: 34px;}
+    .bar-1 {width: 15%; height: 18px; background-color: #f5961d;border-radius: 34px;}
+    
+      /* Responsive layout - make the columns stack on top of each other instead of next to each other */
+    @media (max-width: 400px) {
+        .side, .middle {
+        width: 100%;
+            
+        }
+        /* Hide the right column on small screens */
+        .right {
+        display: none;
+        }
+    }
+
