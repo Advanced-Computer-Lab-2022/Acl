@@ -86,7 +86,9 @@ const viewall=async(req,res)=>{
         return res.status(402).json({error : error})
 }}
 
-var isoCountryCurrency = require("iso-country-currency")
+var isoCountryCurrency = require("iso-country-currency");
+const Instructor = require("../models/instructor.model");
+const { title } = require("process");
 
 
 
@@ -105,6 +107,33 @@ const selectcountry =  async (req, res)=> {
     { res.status(400).json({error: error.message}
         )}
     };
+//req 11
+    const findCoursesBasedOn=async (req, res)=> {
+      try{
+        const co="";
+      const{q}= req.query; 
+      const coursesGiv=await Instructor.findOne({name:q},'coursesGiven')
+      if(coursesGiv){
+       co = await courses.findOne({id:coursesGiv});
+      }
+      const Courses = await courses.find({$or:[{'title': {'$regex': q, '$options' : 'i'}},{'Subject': {'$regex': q, '$options' : 'i'}}]}).select('title -_id');
+          console.log(co)
+          console.log(Courses)
+          console.log(coursesGiv)
+          return res.status(200).json(Courses+co)
+  
+      
+      
+          
+              // return res.status(200).json(ayhaga)
+  
+      }
+      catch(error)
+      { res.status(400).json({error: error.message} )
+      }
+    }
+  
+    //req 11
     const finddCourses =  async (req, res)=> {
         const{title,Subject,insName}= req.body 
         const ayhaga= []
@@ -316,4 +345,4 @@ const selectcountry =  async (req, res)=> {
         res.status(200).json(reqExam);
       };
 
-module.exports={ChangePass,filterAllCoursesBySubject,finddCourses,findmyCourses,viewall,selectcountry,reset,resetPost,forgetPassPost,forgetPass,answerMcq,showAnswers};
+module.exports={findCoursesBasedOn,ChangePass,filterAllCoursesBySubject,finddCourses,findmyCourses,viewall,selectcountry,reset,resetPost,forgetPassPost,forgetPass,answerMcq,showAnswers};

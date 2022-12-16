@@ -30,9 +30,28 @@ const IndividualTraineeSchema = new mongoose.Schema(
     },
     courses: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "courses",
-        required: false,
+        courseId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "courses",
+          required: false,
+        },
+        progress: {
+          type: Number,
+          required: false,
+        },
+        examGrades: [
+          {
+            examId: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: "exam",
+              required: false,
+            },
+            grade: {
+              type: Number,
+              required: false,
+            },
+          },
+        ],
       },
     ],
     email: {

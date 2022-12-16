@@ -34,14 +34,14 @@ require('dotenv').config();
 const saveData= async(req,res)=>{
   const {data}=req.body;
   try{
-  fs.writeFileSync("Notes2.pdf", data,{encoding:"binary"})}
+  fs.writeFileSync("Notes.txt", data,{encoding:"binary"})}
     catch(err){
     return res.status(400).json({error: "something Went wrong"})}
     
 
       console.log("File written successfully\n");
       console.log("The written has the following contents:");
-      console.log(fs.readFileSync("Notes2.pdf", "utf8"));
+      console.log(fs.readFileSync("Notes.txt", "utf8"));
       res.status(200).json(data);
     }
   
@@ -57,8 +57,20 @@ const pay= async(req,res)=>{
   const Paycourses=req.params.id;
   const course = await courses.findById(Paycourses);
   //console.log(course)
-  const trainee=await IndividualTrainee.findOneAndUpdate({email},{$addToSet:{courses:course}});
+  user=await IndividualTrainee.findOne({courses:course})
+  if(user)
+    res.status(200).json("you already registered before for this course")
   
+  const trainee=await IndividualTrainee.findOneAndUpdate({email},{$addToSet:{courses:course}});
+  console.log(trainee.wallet)
+  var x=(parseFloat(course.price) * 100)-((trainee.wallet)*100)
+  if(x<0){
+  var y=((trainee.wallet)*100)-(parseFloat(course.price) * 100)}
+  else {
+  y=0;}
+  await IndividualTrainee.findOneAndUpdate({email},{wallet:(y/ 100)});
+  if (y>0){
+  return res.status(200).json("the course is payed from yur wallet succesfully")}
   stripe.customers
   .create({
     email: email,
@@ -69,7 +81,7 @@ const pay= async(req,res)=>{
     return stripe.charges.create({
    //const token1 = req.body.stripeToken;
     // const charge=await stripe.charges.create({
-        amount: parseFloat(course.price) * 100,
+        amount: (parseFloat(course.price) * 100)-((trainee.wallet)*100),
         description: `Payment for USD ${parseFloat(course.price) * 100}`,
         currency: "USD",
         customer: customer.id,
@@ -425,4 +437,76 @@ let transport= nodemailer.createTransport({
         const {traineeC} = trainee.courses.find();
         res.status(200).json(trainee.courses.find());
       };
-      module.exports={viewMyCourses,saveData,pay,answerMcq,showAnswers,reset,resetPost,forgetPassPost,ChangePass,filterAllCoursesBySubject,viewall,findmyCourses,finddCourses,filterCoursebyPrice,viewprice,selectcountry};
+
+      
+      const ReceiveCertificate = async(req, res, next) => {
+        indTrainee.findOne({_id: req.params.id }).populate('courses','name'). // i want from here the course name that the process of it is 100% 
+        exec(function (err, courseNeeded) {
+          if (err) return handleError(err);
+        //courseNeeded
+      });
+        async.waterfall([
+          function(done) {
+            crypto.randomBytes(20, function(err, buf) {
+              var token = buf.toString('hex');
+              done(err, token);
+            });
+          },
+          function(token, done) {
+            indTrainee.findById({_id: req.params.id }, function(err, user) {
+              if (!user) {
+                req.flash('error', 'No account with this id exists');
+                //return res.redirect('/forgot');
+              }
+      
+              user.save(function(err) {
+                done(err, token, user);
+              });
+            });
+          },
+          function(token, user, done) {
+             //let testAccount =nodemailer.createTestAccount();
+    //clientID     459689521337-pkpimajok78e5f00jhlubvtr28smvm0p.apps.googleusercontent.com
+    // create reusable transporter object using the default SMTP transport
+    let transport= nodemailer.createTransport({
+     service: 'gmail',
+       auth: {
+         type: 'OAuth2',
+         user: process.env.user,
+         pass: process.env.pass,
+         clientId: process.env.clientId,
+         clientSecret: process.env.clientSecret,
+         refreshToken:process.env.refreshToken
+         //accessToken:"ya29.a0AeTM1ieMVZBpenPBICXA6zFObVV3zENDTYEAiEMRxQutN09Fmw1aiKnsYXqWH8z1VZHkOP-X6D4bwwivH91txfzPC730fkVQYNZYlimvuvhHNGxN7LDcavYBWEfDCxB7YGo-vkH44C6yjXqLlYb8t3wa17uFaCgYKAa0SARESFQHWtWOmDzsiOVBe6Tm3hh0v15kMsQ0163"
+       },
+    });
+            var mailOptions = {
+              to: user.email,
+              from: 'kikomarco12345@gmail.com',
+              subject: 'Congratulations your Certificate is finally here',
+              text: 'Your finally completing your course successfully and here it is your certificate\n\n',
+              attachments: [
+                {
+                    filename: 'Alison_Certificate-1447-15764499.pdf', // <= Here: made sure file name match
+                    path:'C:/Users/kiko/Downloads/Alison_Certificate-1447-15764499.pdf', // <= Here
+                    contentType: 'application/pdf'
+                }
+            ]
+            };
+            transport.sendMail(mailOptions, function(error, response){
+             if(error){
+                 console.log(error);
+             }else{
+                 console.log("Message sent: " + response.message);
+             }
+            });
+          }
+        ], function(err) {
+          if (err) return next(err);
+          //res.redirect('/forgot');
+          return res.status(200).json(email)
+        });
+      };
+
+
+      module.exports={ReceiveCertificate,viewMyCourses,saveData,pay,answerMcq,showAnswers,reset,resetPost,forgetPassPost,ChangePass,filterAllCoursesBySubject,viewall,findmyCourses,finddCourses,filterCoursebyPrice,viewprice,selectcountry};

@@ -13,6 +13,7 @@ router.get('/forgetPass', corporateTraineeCtrl.forgetPass);
 router.post('/forgetPassPost', corporateTraineeCtrl.forgetPassPost);
 router.get('/reset/:token',corporateTraineeCtrl.reset);
 router.post('/reset/:token',corporateTraineeCtrl.resetPost);
+router.get('/findCoursesBasedOn',corporateTraineeCtrl.findCoursesBasedOn);
 router.get("/showAnswers/:examId", corporateTraineeCtrl.showAnswers);
 
 module.exports=router
