@@ -48,6 +48,7 @@ const IndividualTraineeSchema = new mongoose.Schema(
             },
             grade: {
               type: Number,
+              default: 0,
               required: false,
             },
           },

@@ -31,4 +31,6 @@ router.get('/users', instructorCtrl.getUsers);
 router.post("/signup", instructorCtrl.signUp);
 router.post('/login', instructorCtrl.login)
 router.get('/logout', instructorCtrl.logout);
+router.get('/SearchHisCourse/:id', instructorCtrl.findMyCoursesBasedOn);
+router.get('/findCoursesBasedOn',instructorCtrl.findCoursesBasedOn1);
 module.exports = router;

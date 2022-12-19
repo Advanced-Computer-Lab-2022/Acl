@@ -56,6 +56,10 @@ const InstructorSchema = new mongoose.Schema(
         Type:Array,
          Required:false
         },
+        avgRating:{
+          type:Number,
+          required:false,
+        },
         resetPasswordToken:{type: String,
           required: false,},
     

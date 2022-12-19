@@ -62,6 +62,7 @@ const pay= async(req,res)=>{
     res.status(200).json("you already registered before for this course")
   
   const trainee=await IndividualTrainee.findOneAndUpdate({email},{$addToSet:{courses:course}});
+  console.log(trainee)
   console.log(trainee.wallet)
   var x=(parseFloat(course.price) * 100)-((trainee.wallet)*100)
   if(x<0){
@@ -121,7 +122,12 @@ catch(error){
 }
 //done
 const filterAllCoursesBySubject = async(req,res)=> {
-    console.log("sahbas");
+  const q = req.query.q;
+  const q2=req.query.q2;
+  
+  
+    //console.log(q);
+    //console.log(q2);
      try{
         /*const Courses = await courses.find({Instructor:instructord,$or:[{price:pp},{Subject:sub}]})
     res.status(200).json(Courses.map((courses)=>{
@@ -129,9 +135,9 @@ const filterAllCoursesBySubject = async(req,res)=> {
     }))
     console.log(Courses.toString())
         */
-        const Courses = await courses.find({$or:[{Subject:req.body.Subject},{rating:req.body.rating}]})
+        const Courses = await courses.find({$or:[{Subject:q},{rating:q2}]})
        // console.log(req.body.rating)
-       //console.log(Courses)
+       console.log(Courses)
         res.status(200).json(Courses)
     }
     catch(error){ 

@@ -106,7 +106,7 @@ const login = async (req, res) => {
           if (m==1)
           res.json(`/indiviualtrainee/${id}`);
           else if(m==0)
-          res.json(`/instructor/${id}`);
+          res.json(`/instructorHome/${id}`);
           else if(m==2)
           res.json(`/corporatetrainee/${id}`);
           else if(m==3)

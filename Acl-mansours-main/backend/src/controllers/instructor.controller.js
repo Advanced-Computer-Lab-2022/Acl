@@ -135,6 +135,34 @@ const filterCoursebyPrice = async (req, res) => {
     res.status(400).json({ error: error.me });
   }
 };
+
+const findCoursesBasedOn1=async (req, res)=> {
+  try{
+    const co="";
+  const{q}= req.query; 
+  const coursesGiv=await Instructor.findOne({name:q},'coursesGiven')
+  if(coursesGiv){
+   co = await courses.findOne({id:coursesGiv});
+  }
+  const Courses = await courses.find({$or:[{'title': {'$regex': q, '$options' : 'i'}},{'Subject': {'$regex': q, '$options' : 'i'}}]});
+      console.log(co)
+      console.log(Courses)
+      //console.log(coursesGiv)
+      return res.status(200).json(Courses.concat(co))
+
+  
+  
+      
+          // return res.status(200).json(ayhaga)
+
+  }
+  catch(error)
+  { res.status(400).json({error: error.message} )
+  }
+}
+
+
+
 //all can search
 const findCourses = async (req, res) => {
   const { title, Subtitle, instructor } = req.body;
@@ -230,6 +258,37 @@ const viewTitleCourses = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+//req 20
+const findMyCoursesBasedOn=async (req, res)=> {
+  try{
+    const co="";
+  const{q}= req.query; 
+  const{id}=req.params;
+  const coursesGiv=await Instructor.findOne({name:q},'coursesGiven')
+  console.log(id)
+  if(coursesGiv){
+   co = await courses.findOne({id:coursesGiv});
+  }
+  const Courses = await courses.find({Instructor:{id},$or:[{'title': {'$regex': q, '$options' : 'i'}},{'Subject': {'$regex': q, '$options' : 'i'}}]});
+      //console.log(co)
+      console.log(Courses.concat(co))
+      //console.log(coursesGiv)
+      return res.status(200).json(Courses.concat(co))
+      
+  
+  
+      
+          // return res.status(200).json(ayhaga)
+
+  }
+  catch(error)
+  { res.status(400).json({error: error.message} )
+  }
+}
+
+
+
+
 //req 20
 const searchMyCourses = async (req, res) => {
   try {
@@ -687,9 +746,15 @@ catch(error){
   res.status(400).json({error:error.me})
 }
 
+
+
+
 }
 
 module.exports = {
+  
+  findMyCoursesBasedOn,
+  findCoursesBasedOn1,
   viewTitleCourses,
   findmyCourses,
   finddCourses,

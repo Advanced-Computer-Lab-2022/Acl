@@ -32,6 +32,7 @@ import UploadYouSubi from './components/UploadYouSubi'
 import Selectcountry from './components/SelectCountryi'
 import Viewreviews from "./components/ViewReviews";
 import CreditCard from "./components/CreditCard";
+import CoursePage from "./pages/CoursePage";
 function App() {
   return (
     <div className="App">
@@ -48,14 +49,16 @@ function App() {
             <Route path="/indiviualtrainee/:id" element={<IndividualTrainee />} />
             <Route path="/guest" element={<Guest />} />
             <Route path="/corporatetrainee" element={<CorporateTrainee />} />
+            <Route path="/coursePage/:id" element={<CoursePage />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/instructor/addquestion" element={<AddQuestion />} />
-            <Route path="/InstructorHome/:id" element={<CoursesList/>} />
+            <Route path="/CoursesList/:id" element={<CoursesList/>} />
+            <Route path="/InstructorHome/:id" element={<InstructorHome/>} />
             <Route path="/ContractForm" element={<InstructorContract />} />
             <Route path="/instructor/createExam" element={<CreateMCQ />} />
             <Route path="/corporatetrainee/showAnswers" element={<McqSol />} />
             <Route path="/corporatetrainee/solveMcq" element={<ExamForm />} />
-            <Route path="/CreateCourses" element={<CreateC/>} />
+            <Route path="/CreateCourses/:id" element={<CreateC/>} />
             <Route path="/ViewCourses" element={<Viewallco/>} />
             <Route path="/rateCourse" element={<StarRating/>} />
             <Route path="/ViewMyRatings/:id" element={<Viewrate/>} />

@@ -3,29 +3,35 @@ import "./Search.css";
 import axios from "axios";
 import Table from "./Table";
 
-function SearchForCourse() {
+function SearchForCourseSubject() {
     const [query, setQuery] = useState("");
+    const [query2, setQuery2] = useState("");
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await axios.get(`/corporatetrainee/findCoursesBasedOn?q=${query}`);
+      const data = await axios.get(`/indiviualtrainee/filtercoursesbysubjects?q=${query}&q2=${query2}`);
       setData(data.data);
     };
-    if ( query.length > 1) fetchData();
-  }, [query]);
+     fetchData();
+  }, [query,query2]);
   
 
   return (
     <div className="app">
         <input
           className="search"
-          placeholder="Search..."
+          placeholder="Subject..."
           onChange={(e) => setQuery(e.target.value.toLowerCase())}
+          />
+          <input
+          className="search"
+          placeholder="rating"
+          onChange={(e) => setQuery2(e.target.value.toLowerCase())}
           />
     {<Table data={data} />}
         </div>
       );
     }
   
-  export default SearchForCourse;
+  export default SearchForCourseSubject;

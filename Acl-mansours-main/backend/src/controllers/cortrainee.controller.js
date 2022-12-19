@@ -116,11 +116,11 @@ const selectcountry =  async (req, res)=> {
       if(coursesGiv){
        co = await courses.findOne({id:coursesGiv});
       }
-      const Courses = await courses.find({$or:[{'title': {'$regex': q, '$options' : 'i'}},{'Subject': {'$regex': q, '$options' : 'i'}}]}).select('title -_id');
+      const Courses = await courses.find({$or:[{'title': {'$regex': q, '$options' : 'i'}},{'Subject': {'$regex': q, '$options' : 'i'}}]});
           console.log(co)
           console.log(Courses)
-          console.log(coursesGiv)
-          return res.status(200).json(Courses+co)
+          //console.log(coursesGiv)
+          return res.status(200).json(Courses.concat(co))
   
       
       

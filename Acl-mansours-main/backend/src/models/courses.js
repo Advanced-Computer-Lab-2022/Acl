@@ -69,6 +69,10 @@ const coursesSchema = new mongoose.Schema(
         type: Array,
         required: false,
       },
+      avgRating:{
+        type:Number,
+        required:false,
+      },
       Subject: {
         type: String,
         required: false,
