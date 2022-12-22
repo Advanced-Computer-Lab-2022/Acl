@@ -85,7 +85,13 @@ const login = async (req, res) => {
   try {
     var m=0;
       user =await Instructor.findOne({username})
-      if(!user){
+      if (user){
+       x=await Instructor.findOne({username},'FirstTime')
+       if(x){
+        m=5;
+       res.json(`/instructor/${id}`);
+       await Instructor.findOneAndUpdate({username},{FirstTime:false})
+      }}if(!user){
       user =await indTrainee.findOne({username})
       m=1}
       if(!user){

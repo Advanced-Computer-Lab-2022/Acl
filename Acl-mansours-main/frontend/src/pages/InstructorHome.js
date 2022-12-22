@@ -27,7 +27,7 @@ const InstructorHome = () => {
         <SearchForHisCourse/>
         <Reset3/>
         <ChangePass/>
-        <ContractForm/>
+        
         <CoursesList/>
         {/* <CreateMCQ /> */}
         <button style={{width:180,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}} 
