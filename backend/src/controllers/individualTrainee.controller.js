@@ -158,6 +158,8 @@ const viewprice = async (req, res) => {
   }
 };
 var isoCountryCurrency = require("iso-country-currency");
+const { findOneAndUpdate } = require("../models/individualTrainee.model");
+const IndividualTrainee = require("../models/individualTrainee.model");
 
 const selectcountry = async (req, res) => {
   const country = req.body.country;
@@ -493,6 +495,46 @@ const viewProgress = async (req, res) => {
   res.status(200).json(neededCourse.progress);
 };
 
+const watchVideo = async (req, res) => {
+  const traineeId = req.params.traineeId;
+  const CourseId = req.params.courseId;
+  const videoId = req.params.video;
+  const Course = await courses.findOne({ _id: CourseId });
+  const totalVideos = Courses.subtitle.length;
+  const Trainee = await indTrainee.findOne({ _id: traineeId });
+  flagV = 0;
+  let watchedVideos;
+  for (i = 0; i < Trainee.courses.length; i++) {
+    if (courses[i]._id == CourseId) {
+      watchedVideos = courses[i].watchedVideos;
+      oldProgress = courses[i].progress;
+    }
+  }
+  for (i = 0; i < watchedVideos.length; i++) {
+    if (watchedVideos[i] == videoId) {
+      flagV = 1;
+    }
+  }
+  if (flagV == 1) res.status(200).send("You have watched this video before");
+  if (flagV == 0) {
+    const updatedWatchedVideos = await trainee.updateOne(
+      { _id: traineeId, "courses.courseId": CourseId },
+      { $push: { "courses.$.watchedVideos": videoId } }
+    );
+    const newProgress = ((watchedVideos.length + 1) / totalVideos) * 100;
+
+    const x = await indTrainee.findOneAndUpdate(
+      { _id: traineeId, "courses.courseId": "CourseId" },
+      {
+        $set: {
+          "courses.$.progress": newProgress,
+        },
+      }
+    );
+    res.status(200).json(x);
+  }
+};
+
 module.exports = {
   answerMcq,
   showAnswers,
@@ -513,4 +555,5 @@ module.exports = {
   requestRefund,
   viewWallet,
   viewProgress,
+  watchVideo,
 };

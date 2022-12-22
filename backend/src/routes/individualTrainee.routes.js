@@ -30,5 +30,9 @@ router.post(
 );
 router.get("/wallet/:id", individualTraineeCtrl.viewWallet);
 router.get("/progress/:id/:courseId", individualTraineeCtrl.viewProgress);
+router.patch(
+  "/watchVideo/:traineeId/:courseId/:videoId",
+  individualTraineeCtrl.watchVideo
+);
 
 module.exports = router;

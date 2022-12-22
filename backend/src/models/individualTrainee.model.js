@@ -35,6 +35,14 @@ const IndividualTraineeSchema = new mongoose.Schema(
           ref: "courses",
           required: false,
         },
+        watchedVideos: [
+          {
+            videoId: {
+              type: mongoose.Schema.Types.ObjectId,
+              required: false,
+            },
+          },
+        ],
         progress: {
           type: Number,
           required: false,
