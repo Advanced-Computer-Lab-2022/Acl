@@ -24,6 +24,7 @@ const corporateTraineeSchema = new mongoose.Schema(
         },
         progress: {
           type: Number,
+          default: 0,
           required: false,
         },
         examGrades: [

@@ -12,37 +12,34 @@ const ReportsSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: "Pending",
+      enum: ["unseen", "pending", "resolved"],
+      default: "unseen",
     },
-    course: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "courses",
-        required: true,
-      },
-    ],
-    instructor: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Instructor",
-        required: false,
-      },
-    ],
-    individualtrainee: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "IndividualTrainee",
-        required: false,
-      },
-    ],
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "courses",
+      required: true,
+    },
 
-    corporatetrainee: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "corporateTrainee",
-        required: false,
-      },
-    ],
+    instructor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Instructor",
+
+      required: false,
+    },
+
+    individualtrainee: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "IndividualTrainee",
+      required: false,
+    },
+
+    corporatetrainee: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "corporateTrainee",
+      required: false,
+    },
+
     followups: {
       type: [
         {

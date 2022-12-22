@@ -4,6 +4,7 @@ const CorTrainee = require("../models/cortrainee.model");
 const trainee = require("../models/individualTrainee.model");
 const refund = require("../models/refundRequest");
 const course = require("../models/courses");
+const access = require("../models/access.model");
 
 const createAdmin = async (req, res) => {
   try {
@@ -96,6 +97,46 @@ const viewRefundRequests = async (req, res) => {
   res.status(200).json(requests);
 };
 
+const viewAccessRequests = async (req, res) => {
+  const requests = await access.find();
+  res.status(200).json(requests);
+};
+
+const declineAccess = async (req, res) => {
+  const id = req.params.id;
+  const result = await access.findOneAndUpdate(
+    { _id: id },
+    { statud: "declined" }
+  );
+  res.status(200).json(result);
+};
+
+const approveAccess = async (req, res) => {
+  const id = req.params.id;
+  const request = await access.findOne({ _id: id });
+  const courseId = request.courseId;
+  const traineeId = request.corporatetrainee;
+
+  if (request.status == "pending") {
+    const updatedTrainee = await trainee.updateOne(
+      { _id: traineeId },
+      { $push: { courses: { _id: courseId } } }
+    );
+    if (!updatedTrainee) {
+      console.log("error");
+      return res.status(400).json({ error: "Cannot refund" });
+    }
+
+    const result = await access.updateOne(
+      { _id: id },
+      { $set: { status: "approved" } }
+    );
+    res.status(200).json(result);
+  } else {
+    res.status(200).send("already approved before");
+  }
+};
+
 module.exports = {
   createInstructor,
   createCorTrainee,
@@ -103,4 +144,7 @@ module.exports = {
   approveRefund,
   declineRefund,
   viewRefundRequests,
+  viewAccessRequests,
+  declineAccess,
+  approveAccess,
 };

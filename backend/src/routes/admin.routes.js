@@ -8,5 +8,8 @@ router.post("/createcorporatetrainee", adminCtrl.createCorTrainee);
 router.patch("/approverefund/:id", adminCtrl.approveRefund);
 router.patch("/declinerefund/:id", adminCtrl.declineRefund);
 router.get("/refundrequests", adminCtrl.viewRefundRequests);
+router.get("/accessrequests", adminCtrl.viewAccessRequests);
+router.patch("/declineaccess/:id", adminCtrl.declineAccess);
+router.patch("/approveaccess/:id", adminCtrl.approveAccess);
 
 module.exports = router;
