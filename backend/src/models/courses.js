@@ -7,7 +7,7 @@ const coursesSchema = new mongoose.Schema(
       title: {
         type: String,
         required: true,
-        unique:true
+        unique:true,
       },
       preview:{
         type:[{Video:[{youtube_video_link: {
@@ -95,10 +95,10 @@ const coursesSchema = new mongoose.Schema(
         required: false,
       }],
       Currency:{ type: String, default: 'EGP' },
+
       Instructor: {
         type: mongoose.Schema.Types.ObjectId,
         ref:'Instructor',
-
         required: false,
       },
     },

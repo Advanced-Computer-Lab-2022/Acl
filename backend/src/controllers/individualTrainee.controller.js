@@ -441,12 +441,11 @@ let transport= nodemailer.createTransport({
       const report=async(req,res)=>{
         const {id}=req.params
         const {coursename,reportname,type,description}=req.body
-        const c=await courses.find({title:coursename})
+        const c=await courses.findOne({title:coursename})
         try{
-          reports.create({name: reportname, type: type, course: c,individualtrainee:id,Description:description})
+          reports.create({name: reportname, type: type, course:c,individualtrainee:id,Description:description})
            res.status(200).json(id)
           console.log(id)
-      
         }
         catch(error){
           res.status(400).json({error:error.me})
@@ -479,7 +478,7 @@ let transport= nodemailer.createTransport({
        const {title}=req.body
         try{
           const r=await reports.findOne({$and: [{name:title},{individualtrainee:id}]})
-          if(r.status=="Pending"){
+          if(r.status=="pending"||r.status=="unseen"){
             const{followup,number}=req.body
             await reports.updateOne({$and: [{name:title},{individualtrainee:id}]}, {
               $push: {
