@@ -12,6 +12,7 @@ var bcrypt = require('bcrypt-nodejs');
 var async = require('async');
 var reports=require('../models/reports.model')
 var crypto = require('crypto');
+var access=require('../models/access.model')
 require('dotenv').config();
 
 
@@ -384,9 +385,12 @@ const selectcountry =  async (req, res)=> {
       const requestaccess=async(req,res)=>{
 try{
         const {id,id1}=req.params
-      
-       const c= await corporateTraineeC.updateOne({_id:id},{$push:{access:{courseId:id1}}})
-       res.status(200).json(c)
+        const data = new access ({
+          courseId: id1,
+          corporatetrainee: id
+        });
+        data.save().then((result)=> res.status(200).send(result));
+       
 
 }
 catch(error){

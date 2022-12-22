@@ -15,14 +15,6 @@ const corporateTraineeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    access:[{
-      courseId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "courses",
-        required: false,
-      },
-    }],
-   
     courses: [
       {
          courseId: {
@@ -32,6 +24,7 @@ const corporateTraineeSchema = new mongoose.Schema(
         },
         progress: {
           type: Number,
+          default:0,
           required: false,
         },
         examGrades: [
@@ -68,7 +61,7 @@ const corporateTraineeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 const corporateTrainee = mongoose.model(
-  "corporateTrainee",
-  corporateTraineeSchema
+    "corporateTrainee",
+    corporateTraineeSchema
 );
 module.exports = corporateTrainee;
