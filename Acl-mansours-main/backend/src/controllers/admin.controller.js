@@ -1,7 +1,7 @@
 const Admin = require('../models/adminstrator.model');
 const instructor = require('../models/instructor.model');
 const CorTrainee = require('../models/cortrainee.model');
-
+const Report = require('../models/report')
 
 
 
@@ -19,11 +19,11 @@ const createToken = (name) => {
     });
 };
 const createAdmin = async (req, res) => {
-    const {username,password ,admin} = req.body;
+    const {username,password,em,ail ,admin} = req.body;
     try {
         const salt = await bcrypt1.genSalt();
         const hashedPassword = await bcrypt1.hash(password, salt);
-        const user = await instructor.create({username: username, password: hashedPassword,admin:admin });
+        const user = await instructor.create({username: username, password: hashedPassword,email: email,admin:admin });
         const token = createToken(user.username);
   
         res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
@@ -62,4 +62,51 @@ const createInstructor =  async (req, res)=> {
     }
     
   }
-module.exports = {createInstructor,createCorTrainee,createAdmin}
+//53
+const getAllCorporateReports = async (req,res) =>{
+    try{
+   const reports=await Report.find({corporatetrainee:{ $ne: null }},{"name": true,"type":true, "course":true,"corporatetrainee":true,"Description":true,"followups":true,"status":true })
+   res.status(200).json(reports)
+} catch (error) {
+    res.status(400).json({ error: error.message })
+
+  
+  
+}
+}
+const getAllIndividualeReports = async (req,res) =>{
+    try{
+   const reports=await Report.find({individualtrainee:{ $ne: null }},{"name": true,"type":true, "course":true,"individualtrainee":true,"Description":true,"followups":true,"status":true })
+   res.status(200).json(reports)
+} catch (error) {
+    res.status(400).json({ error: error.message })
+
+  
+  
+}
+}
+const getAllInstructorReports = async (req,res) =>{
+    try{
+   const reports=await Report.find({instructor:{ $ne: null }},{"name": true,"type":true, "course":true,"instructor":true,"Description":true,"followups":true,"status":true })
+   res.status(200).json(reports)
+} catch (error) {
+    res.status(400).json({ error: error.message })
+
+  
+  
+}
+}
+const markProblems1= async (req,res)=>{
+    const statusss=req.body.status;
+    Report1=req.query.id;
+
+    try{
+        console.log(Report1);
+const problem=await Report.findByIdAndUpdate(Report1,{status:statusss})
+
+res.status(200).json(problem)
+    }catch(error){
+        res.status(400).json({ error: error.message })
+    }
+}
+module.exports = {createInstructor,createCorTrainee,createAdmin,getAllCorporateReports,getAllIndividualeReports,getAllInstructorReports,markProblems1}

@@ -688,8 +688,24 @@ catch(error){
 }
 
 }
+const report=async(req,res)=>{
+  const {id}=req.params
+  const {coursename,reportname,type,description}=req.body
+  const c=await courses.find({title:coursename})
+  try{
+    reports.create({name: reportname, type: type, course: c,instructor:id,Description:description})
+     res.status(200).json(id)
+    console.log(id)
+
+  }
+  catch(error){
+    res.status(400).json({error:error.me})
+  }
+
+}
 
 module.exports = {
+  report,
   viewTitleCourses,
   findmyCourses,
   finddCourses,

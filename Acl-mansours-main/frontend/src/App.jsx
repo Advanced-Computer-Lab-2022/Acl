@@ -32,13 +32,20 @@ import UploadYouSubi from './components/UploadYouSubi'
 import Selectcountry from './components/SelectCountryi'
 import Viewreviews from "./components/ViewReviews";
 import CreditCard from "./components/CreditCard";
+import NHome from "./components/NHome"
+import Footer from "./components/Footer"
+import Cards from "./components/Cards"
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar />
+        <Navbar/>
+      
+
+       {/* <NHome/> */}
         <div className="pages">
           <Routes>
+            <Route path="/" element={<NHome/> }/>
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signUp" element={<SignUp/>} />
@@ -77,6 +84,7 @@ function App() {
             <Route path="/selectcountry" element={<Selectcountry/>} />
           </Routes>
         </div>
+        <Footer/>
       </BrowserRouter>
     </div>
   );

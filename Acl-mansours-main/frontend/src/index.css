@@ -7,37 +7,37 @@
   --error: #e7195a;
 }
 body {
-  background: #f1f1f1;
+  background: #ffffff;
   margin: 0;
   font-family: "Poppins";
 }
-header {
+header1 {
   background: #fff;
 }
-header .container {
+header .container1 {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 10px 20px;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-header a {
+header a1 {
   color: #333;
   text-decoration: none;
 }
-.pages{
+.pages1{
   max-width: 1400px;
-  padding: 20px;
+  padding: 0;
   margin: 0 auto;
 }
 /* homepage */
-.ins {
+.ins1 {
   display: grid;
   grid-template-columns: 3fr 1fr;
   gap: 100px;
 }
-.Courses {
+.Courses1 {
   background: #fff;
   border-radius: 4px;
   margin: 20px auto;
@@ -45,17 +45,17 @@ header a {
   position: relative;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
 }
-.Courses p {
+.Courses p1 {
   margin: 0 0 10px 0;
   font-size: 1.2em;
   color: var(--primary);
 }
-.Courses li {
+.Courses li1 {
   margin: 0;
   font-size: 0.9em;
   color: #555;
 }
-.Prices {
+.Prices1 {
   background: #fff;
   border-radius: 4px;
   margin: 20px auto;
@@ -63,7 +63,7 @@ header a {
   position: relative;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
 }
-.Prices p {
+.Prices p1 {
   margin: 0 0 10px 0;
   font-size: 1.2em;
   color: var(--primary);
@@ -74,7 +74,7 @@ header a {
   color: #555;
 }
 /* new workout form */
-label, input {
+label, input1 {
   display: block;
 }
 input {
@@ -82,6 +82,7 @@ input {
   margin-top: 10px;
   margin-bottom: 20px;
   width: 100%;
+  position: relative;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
@@ -114,31 +115,31 @@ div.error {
 }
 
 
-.score-section {
+.score-section1 {
   display: flex;
   font-size: 24px;
   align-items: center;
 }
 
 /* QUESTION/TIMER/LEFT SECTION */
-.question-section {
+.question-section1 {
   width: 100%;
   position: relative;
 }
 
-.question-count {
+.question-count1 {
   margin-bottom: 20px;
 }
 
-.question-count span {
+.question-count span1 {
   font-size: 28px;
 }
 
-.question-text {
+.question-text1 {
   margin-bottom: 12px;
 }
 
-.timer-text {
+.timer-text1 {
   background: rgb(230, 153, 12);
   padding: 15px;
   margin-top: 20px;
@@ -149,7 +150,7 @@ div.error {
 }
 
 /* ANSWERS/RIGHT SECTION */
-.answer-section {
+.answer-section1 {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -157,24 +158,24 @@ div.error {
 }
 
 button {
-  width: 100%;
+  width: 70%;
   font-size: 16px;
   color: #ffffff;
   background-color: #252d4a;
   border-radius: 15px;
   display: flex;
   padding: 5px;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   border: 5px solid #234668;
   cursor: pointer;
 }
 
-.correct {
+.correct1 {
   background-color: #2f922f;
 }
 
-.incorrect {
+.incorrect1 {
   background-color: #ff3333;
 }
 
@@ -182,10 +183,10 @@ button:hover {
   background-color: #555e7d;
 }
 
-button:focus {
+button1:focus {
   outline: none;
 }
 
-button svg {
+button1 svg {
   margin-right: 5px;
 }

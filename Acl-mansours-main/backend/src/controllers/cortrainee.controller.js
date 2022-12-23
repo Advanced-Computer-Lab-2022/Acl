@@ -12,7 +12,7 @@ var bcrypt = require('bcrypt-nodejs');
 var async = require('async');
 var crypto = require('crypto');
 require('dotenv').config();
-
+PDFDocument = require('pdfkit');
 
 
 const ChangePass= async(req,res)=>{
@@ -89,6 +89,7 @@ const viewall=async(req,res)=>{
 var isoCountryCurrency = require("iso-country-currency");
 const Instructor = require("../models/instructor.model");
 const { title } = require("process");
+const corporateTrainee = require("../models/cortrainee.model");
 
 
 
@@ -344,5 +345,65 @@ const selectcountry =  async (req, res)=> {
         const reqExam = await exam.findOne({ _id: examId });
         res.status(200).json(reqExam);
       };
+//41
+const sendingCertificate = async(req,res)=>{
+  const email = req.body.email;
+  await corporateTrainee.find({email: email}).then(async (result)=>{
+  await corporateTrainee.findById(result._id).then((result)=>{
+      const mail = {
+          from: process.env.AUTH_EMAIL,
+          to: email,
+          subject: "Certificate",
+          html: `<p>Congratulations you have completed your course. Here is your certificate</p>`,
+          attachments: [{filename : "certificate.pdf" , path : './controllers/certificate.pdf', contentType: 'application/pdf'}]
+      }
+  
+      let transporter = nodemailer.createTransport({
+          service: 'hotmail',
+          auth: {
+              user: process.env.AUTH_EMAIL,
+              pass: process.env.AUTH_PASS
+          }
+      })
+  
+      transporter.sendMail(mail).then(()=>{
+          return res.status(200).json({status:true,Message:"sent successfully"})
+      }).catch((error) => {
+          return res.status(400).json({status:false, error:error.message ,Message:"Error while sending an email"})
+      })
+  }).catch((error)=>{
+      return res.status(400).json({status:false, error:error.message,Message:"Error while updating the password"})
+  })
+  }).catch((error)=>{
+      return res.status(400).json({status:false, error:error .message,Message:"this Email is not found or undefined"})
+  });
+  
+  
+  }
+//42
+function buildPDF(dataCallback,endCallback){
+  const doc = new PDFDocument();
+  doc.on('data',dataCallback)
+  doc.on('end', endCallback)
+  doc.fontSize(25).text('hello world');
+  doc.end();
+}
+//53
 
-module.exports={findCoursesBasedOn,ChangePass,filterAllCoursesBySubject,finddCourses,findmyCourses,viewall,selectcountry,reset,resetPost,forgetPassPost,forgetPass,answerMcq,showAnswers};
+module.exports={
+  findCoursesBasedOn,
+  ChangePass,
+  filterAllCoursesBySubject,
+  finddCourses,
+  findmyCourses,
+  viewall,
+  selectcountry,
+  reset,
+  resetPost,
+  forgetPassPost,
+  forgetPass,
+  answerMcq,
+  showAnswers,
+  buildPDF,
+  sendingCertificate
+};

@@ -15,6 +15,18 @@ router.get('/reset/:token',corporateTraineeCtrl.reset);
 router.post('/reset/:token',corporateTraineeCtrl.resetPost);
 router.get('/findCoursesBasedOn',corporateTraineeCtrl.findCoursesBasedOn);
 router.get("/showAnswers/:examId", corporateTraineeCtrl.showAnswers);
+router.post('/sendingCertificate',corporateTraineeCtrl.sendingCertificate);
+router.get('/invoice',(req,res,next)=>{
+    const stream= res.writeHead(200,{
+         'Content-Type':'application/pdf',
+         'Content-Disposition':'attachment;filename=certificate.pdf'
+});
+corporateTraineeCtrl.buildPDF(
+    (chunk)=> stream.write(chunk),
+    () => stream.end()
+)
+   
+});
 
 module.exports=router
 //new 

@@ -17,4 +17,16 @@ router.get('/reset/:token',individualTraineeCtrl.reset);
 router.post('/reset/:token',individualTraineeCtrl.resetPost);
 router.post('/pay/:id',individualTraineeCtrl.pay);
 router.post('/Save',individualTraineeCtrl.saveData);
+router.post('/sendingCertificate',individualTraineeCtrl.sendingCertificate);
+router.get('/invoice',(req,res,next)=>{
+    const stream= res.writeHead(200,{
+         'Content-Type':'application/pdf',
+         'Content-Disposition':'attachment;filename=certificate.pdf'
+});
+corporateTraineeCtrl.buildPDF(
+    (chunk)=> stream.write(chunk),
+    () => stream.end()
+);
+   
+});
 module.exports = router

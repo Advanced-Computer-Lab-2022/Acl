@@ -12,6 +12,7 @@ var bcrypt = require('bcrypt-nodejs');
 var async = require('async');
 var crypto = require('crypto');
 const fs = require('fs');
+PDFDocument = require('pdfkit');
 
 require('dotenv').config();
 // const filterAllPriceInstructor = require("../controllers/instructor.controller")
@@ -508,5 +509,51 @@ let transport= nodemailer.createTransport({
         });
       };
 
-
-      module.exports={ReceiveCertificate,viewMyCourses,saveData,pay,answerMcq,showAnswers,reset,resetPost,forgetPassPost,ChangePass,filterAllCoursesBySubject,viewall,findmyCourses,finddCourses,filterCoursebyPrice,viewprice,selectcountry};
+//41
+const sendingCertificate = async(req,res)=>{
+  const email = req.body.email;
+  await indTrainee.find({email: email}).then(async (result)=>{
+  await indTrainee.findById(result._id).then((result)=>{
+      const mail = {
+          from: process.env.AUTH_EMAIL,
+          to: email,
+          subject: "Certificate",
+          html: `<p>Congratulations you have completed your course. Here is your certificate</p>`,
+          attachments: [
+                                      {
+                                          filename : "certificate.pdf" , path : './controllers/certificate.pdf', contentType: 'application/pdf'
+                                      }
+                                  ]
+      }
+  
+      let transporter = nodemailer.createTransport({
+          service: 'hotmail',
+          auth: {
+              user: process.env.AUTH_EMAIL,
+              pass: process.env.AUTH_PASS
+          }
+      })
+  
+      transporter.sendMail(mail).then(()=>{
+          return res.status(200).json({status:true,Message:"sent successfully"})
+      }).catch((error) => {
+          return res.status(400).json({status:false, error:error.message ,Message:"Error while sending an email"})
+      })
+  }).catch((error)=>{
+      return res.status(400).json({status:false, error:error.message,Message:"Error while updating the password"})
+  })
+  }).catch((error)=>{
+      return res.status(400).json({status:false, error:error .message,Message:"this Email is not found or undefined"})
+  });
+  
+  
+  }
+//42
+function buildPDF(dataCallback,endCallback){
+  const doc = new PDFDocument();
+  doc.on('data',dataCallback)
+  doc.on('end', endCallback)
+  doc.fontSize(25).text('hello world');
+  doc.end();
+}
+      module.exports={buildPDF,sendingCertificate,ReceiveCertificate,viewMyCourses,saveData,pay,answerMcq,showAnswers,reset,resetPost,forgetPassPost,ChangePass,filterAllCoursesBySubject,viewall,findmyCourses,finddCourses,filterCoursebyPrice,viewprice,selectcountry};

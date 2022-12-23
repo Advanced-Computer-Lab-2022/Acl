@@ -4,6 +4,7 @@ import { useState } from "react";
 const AdminForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   // const [admin, setAdmin] = useState(false);
   const [error, setError] = useState(null);
 
@@ -26,6 +27,7 @@ const AdminForm = () => {
     if (response.ok) {
       setUsername("");
       setPassword("");
+      setEmail("");
       setError(null);
       console.log("new admin added!");
     }
@@ -41,6 +43,12 @@ const AdminForm = () => {
         onChange={(e) => setUsername(e.target.value)}
         value={username}
       />
+      <label>Email </label>
+      <input
+        type="text"
+        onChange={(e) => setEmail(e.target.value)}
+        value={email}
+      />
 
       <label>Password </label>
       <input
@@ -48,6 +56,7 @@ const AdminForm = () => {
         onChange={(e) => setPassword(e.target.value)}
         value={password}
       />
+      
 
       <button>Add Admin</button>
       {error && <div className="error">{error}</div>}

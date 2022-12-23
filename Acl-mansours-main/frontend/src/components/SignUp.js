@@ -3,6 +3,7 @@ import { useState } from "react";
 import{useParams} from 'react-router-dom';
 import {useNavigate } from 'react-router-dom';
 import "./styles.css";
+
 const SignUp = () => {
   const navigate=useNavigate();
   const [password, setPassword] = useState("");
@@ -49,7 +50,7 @@ const SignUp = () => {
     <div className="form">
     <form className="create" onSubmit={handleSubmit}>
       <h3>signUp</h3>
-      <label>username </label>
+      <label>Username </label>
       <div className="input-container">
 
       <input
@@ -58,7 +59,7 @@ const SignUp = () => {
         value={username}
       />
       </div>
-      <label>email </label>
+      <label>Email </label>
       <div className="input-container">
 
       <input
@@ -68,7 +69,7 @@ const SignUp = () => {
       />
 
 </div>
-      <label>first_name </label>
+      <label>First Name </label>
       <div className="input-container">
 
       <input
@@ -78,7 +79,7 @@ const SignUp = () => {
       />
 
 </div>
-      <label>last_name </label>
+      <label>Last Name </label>
       <div className="input-container">
 
       <input
