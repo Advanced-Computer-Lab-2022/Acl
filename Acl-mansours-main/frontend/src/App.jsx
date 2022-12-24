@@ -34,7 +34,7 @@ import Viewreviews from "./components/ViewReviews";
 import CreditCard from "./components/CreditCard";
 import NHome from "./components/NHome"
 import Footer from "./components/Footer"
-import Cards from "./components/Cards"
+import ViewReports from "./components/admin-view-reports"
 function App() {
   return (
     <div className="App">
@@ -45,6 +45,7 @@ function App() {
        {/* <NHome/> */}
         <div className="pages">
           <Routes>
+            <Route path="/reports" element={<ViewReports/>}/>
             <Route path="/" element={<NHome/> }/>
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />

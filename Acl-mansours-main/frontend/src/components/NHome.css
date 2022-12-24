@@ -70,7 +70,7 @@ video {
     width: 100%;
   }
 }
-/* button {
+button {
   width: 100%;
   font-size: 16px;
   color: #ffffff;
@@ -82,4 +82,4 @@ video {
   align-items: center;
   border: 5px solid #234668;
   cursor: pointer;
-} */
+}

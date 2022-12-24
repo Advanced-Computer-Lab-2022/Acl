@@ -2,6 +2,7 @@ const { useState } = require("react");
 
 const CorTraineeForm = () => {
   const [username, setUsername] = useState("");
+  const [email,setEmail]=useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
@@ -23,6 +24,7 @@ const CorTraineeForm = () => {
     }
     if (response.ok) {
       setUsername("");
+      setEmail("");
       setPassword("");
       setError(null);
       console.log("new instructor added!");
@@ -38,6 +40,12 @@ const CorTraineeForm = () => {
         type="text"
         onChange={(e) => setUsername(e.target.value)}
         value={username}
+      />
+      <label>Email </label>
+      <input
+        type="text"
+        onChange={(e) => setEmail(e.target.value)}
+        value={email}
       />
 
       <label>Password </label>

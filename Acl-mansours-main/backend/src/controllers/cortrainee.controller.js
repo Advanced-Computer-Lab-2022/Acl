@@ -346,6 +346,40 @@ const selectcountry =  async (req, res)=> {
         res.status(200).json(reqExam);
       };
 //41
+// const sendingCertificate = async(req,res)=>{
+//   const email = req.body.email;
+//   await corporateTrainee.find({email: email}).then(async (result)=>{
+//   await corporateTrainee.findById(result._id).then((result)=>{
+//       const mail = {
+//           from: process.env.AUTH_EMAIL,
+//           to: email,
+//           subject: "Certificate",
+//           html: `<p>Congratulations you have completed your course. Here is your certificate</p>`,
+//           attachments: [{filename : "certificate.pdf" , path : './controllers/certificate.pdf', contentType: 'application/pdf'}]
+//       }
+  
+//       let transporter = nodemailer.createTransport({
+//           service: 'hotmail',
+//           auth: {
+//               user: process.env.AUTH_EMAIL,
+//               pass: process.env.AUTH_PASS
+//           }
+//       })
+  
+//       transporter.sendMail(mail).then(()=>{
+//           return res.status(200).json({status:true,Message:"sent successfully"})
+//       }).catch((error) => {
+//           return res.status(400).json({status:false, error:error.message ,Message:"Error while sending an email"})
+//       })
+//   }).catch((error)=>{
+//       return res.status(400).json({status:false, error:error.message,Message:"Error while updating the password"})
+//   })
+//   }).catch((error)=>{
+//       return res.status(400).json({status:false, error:error .message,Message:"this Email is not found or undefined"})
+//   });
+  
+  
+//   }
 const sendingCertificate = async(req,res)=>{
   const email = req.body.email;
   await corporateTrainee.find({email: email}).then(async (result)=>{

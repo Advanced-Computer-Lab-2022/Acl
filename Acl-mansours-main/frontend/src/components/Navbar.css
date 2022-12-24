@@ -4,10 +4,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 1;
+  width: 100%;
 }
 
 .navbar-container {
@@ -35,7 +36,7 @@
 }
 
 .nav-menu {
-  display: grid;
+  display:flex;
   grid-template-columns: repeat(4, auto);
   grid-gap: 10px;
   list-style: none;
@@ -45,9 +46,10 @@
   margin-right: 2rem;
 }
 
-.nav-item {
-  height: 80px;
-}
+/* .nav-item {
+  /* height: 80px; */
+
+*/
 
 .nav-links {
   color: #fff;
@@ -55,7 +57,6 @@
   align-items: center;
   text-decoration: none;
   padding: 0.5rem 1rem;
-  height: 100%;
 }
 
 .nav-links:hover {

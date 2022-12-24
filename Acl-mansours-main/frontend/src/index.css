@@ -3,15 +3,16 @@
 
 /* layout */
 :root {
-  --primary: #1aac83;
+  --primary: #ffffff;
   --error: #e7195a;
 }
 body {
   background: #ffffff;
   margin: 0;
   font-family: "Poppins";
+  font-size: 16px;
 }
-header1 {
+header {
   background: #fff;
 }
 header .container1 {
@@ -22,11 +23,11 @@ header .container1 {
   align-items: center;
   justify-content: space-between;
 }
-header a1 {
+header a {
   color: #333;
   text-decoration: none;
 }
-.pages1{
+.pages{
   max-width: 1400px;
   padding: 0;
   margin: 0 auto;
@@ -37,7 +38,7 @@ header a1 {
   grid-template-columns: 3fr 1fr;
   gap: 100px;
 }
-.Courses1 {
+.Courses {
   background: #fff;
   border-radius: 4px;
   margin: 20px auto;
@@ -45,15 +46,15 @@ header a1 {
   position: relative;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
 }
-.Courses p1 {
+.Courses p {
   margin: 0 0 10px 0;
   font-size: 1.2em;
   color: var(--primary);
 }
-.Courses li1 {
+.Courses li{
   margin: 0;
   font-size: 0.9em;
-  color: #555;
+  color: rgb(255, 255, 255);
 }
 .Prices1 {
   background: #fff;
@@ -63,7 +64,7 @@ header a1 {
   position: relative;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
 }
-.Prices p1 {
+.Prices p {
   margin: 0 0 10px 0;
   font-size: 1.2em;
   color: var(--primary);
@@ -74,7 +75,7 @@ header a1 {
   color: #555;
 }
 /* new workout form */
-label, input1 {
+label, input{
   display: block;
 }
 input {
@@ -90,7 +91,7 @@ input {
 form button {
   background: var(--primary);
   border: 0;
-  color: #fff;
+  color: rgb(18, 17, 17);
   padding: 10px;
   font-family: "Poppins";
   border-radius: 4px;
@@ -115,31 +116,31 @@ div.error {
 }
 
 
-.score-section1 {
+.score-section {
   display: flex;
   font-size: 24px;
   align-items: center;
 }
 
 /* QUESTION/TIMER/LEFT SECTION */
-.question-section1 {
+.question-section{
   width: 100%;
   position: relative;
 }
 
-.question-count1 {
+.question-count {
   margin-bottom: 20px;
 }
 
-.question-count span1 {
+.question-count span {
   font-size: 28px;
 }
 
-.question-text1 {
+.question-text {
   margin-bottom: 12px;
 }
 
-.timer-text1 {
+.timer-text {
   background: rgb(230, 153, 12);
   padding: 15px;
   margin-top: 20px;
@@ -150,7 +151,7 @@ div.error {
 }
 
 /* ANSWERS/RIGHT SECTION */
-.answer-section1 {
+.answer-section {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -171,11 +172,11 @@ button {
   cursor: pointer;
 }
 
-.correct1 {
+.correct {
   background-color: #2f922f;
 }
 
-.incorrect1 {
+.incorrect{
   background-color: #ff3333;
 }
 
@@ -183,10 +184,10 @@ button:hover {
   background-color: #555e7d;
 }
 
-button1:focus {
+button:focus {
   outline: none;
 }
 
-button1 svg {
+button svg {
   margin-right: 5px;
 }
