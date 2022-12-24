@@ -26,8 +26,12 @@ const createCourses =  async (req, res)=> {
         const Subtitle=[{
             SubName:SubName
         }]
-        console.log(Instructor)
-        const Courses = await courses.create({title,Subtitle,Subject,price,summary,duration,levelOfCourse,rating,Instructor})
+        //console.log(Instructor)
+        const Courses = await courses.create({title:title,Subtitle,Subject:Subject,price:price,summary:summary,duration:duration,levelOfCourse:levelOfCourse,Instructor:Instructor.id})
+        const specificCourse=await courses.findById(Courses.id)
+        console.log(specificCourse)
+       
+        const inst=await instructor.findByIdAndUpdate({_id:Instructor.id},{$addToSet:{coursesGiven:Courses._id}})
         res.status(200).json(Courses)
 
     }

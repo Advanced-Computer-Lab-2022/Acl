@@ -137,6 +137,52 @@ const filterCoursebyPrice = async (req, res) => {
     res.status(400).json({ error: error.me });
   }
 };
+
+const findCoursesBasedOn1=async (req, res)=> {
+  try{
+    const co="";
+  const{q}= req.query; 
+  const coursesGiv=await Instructor.findOne({name:q},'coursesGiven')
+  if(coursesGiv){
+   co = await courses.findOne({id:coursesGiv});
+  }
+  const Courses = await courses.find({$or:[{'title': {'$regex': q, '$options' : 'i'}},{'Subject': {'$regex': q, '$options' : 'i'}}]});
+      console.log(co)
+      console.log(Courses)
+      //console.log(coursesGiv)
+      return res.status(200).json(Courses.concat(co))
+
+  
+  
+      
+          // return res.status(200).json(ayhaga)
+
+  }
+  catch(error)
+  { res.status(400).json({error: error.message} )
+  }
+}
+
+
+const FindMyStudents = async (req, res) => {
+  const { instructor } = req.params.id;
+  const{specificCourse}=req.body.Course;
+  try {
+    /*
+     */
+    const Course = await courses.findOne({Instructor:instructor,title:specificCourse});
+    const total=0;
+   const trainee=await IndividualTrainee.find({"courses.courseId":Course.id})
+   const traineeCorp=await corporateTrainee.find({"courses.courseId":Course.id})
+   total=trainee.length+traineeCorp.length
+    res.status(200).json(total);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
+
 //all can search
 const findCourses = async (req, res) => {
   const { title, Subtitle, instructor } = req.body;
@@ -233,6 +279,37 @@ const viewTitleCourses = async (req, res) => {
   }
 };
 //req 20
+const findMyCoursesBasedOn=async (req, res)=> {
+  try{
+    const co="";
+  const{q}= req.query; 
+  const{id}=req.params;
+  const coursesGiv=await Instructor.findOne({name:q},'coursesGiven')
+  console.log(id)
+  if(coursesGiv){
+   co = await courses.findOne({id:coursesGiv});
+  }
+  const Courses = await courses.find({Instructor:{id},$or:[{'title': {'$regex': q, '$options' : 'i'}},{'Subject': {'$regex': q, '$options' : 'i'}}]});
+      //console.log(co)
+      console.log(Courses.concat(co))
+      //console.log(coursesGiv)
+      return res.status(200).json(Courses.concat(co))
+      
+  
+  
+      
+          // return res.status(200).json(ayhaga)
+
+  }
+  catch(error)
+  { res.status(400).json({error: error.message} )
+  }
+}
+
+
+
+
+//req 20
 const searchMyCourses = async (req, res) => {
   try {
     const Courses = await courses.find({
@@ -327,6 +404,8 @@ const searchForCourse = async (req, res) => {
 };
 var isoCountryCurrency = require("iso-country-currency");
 const { response } = require("express");
+const IndividualTrainee = require("../models/individualTrainee.model");
+const corporateTrainee = require("../models/cortrainee.model");
 
 const selectcountry = async (req, res) => {
   const country = req.body.country;
@@ -857,7 +936,10 @@ const followups=async(req,res)=>{
 
 }
 module.exports = {
-  viewTitleCourses,
+FindMyStudents,
+  findMyCoursesBasedOn,
+  findCoursesBasedOn1,  
+viewTitleCourses,
   findmyCourses,
   finddCourses,
   filterCoursesBySubject,

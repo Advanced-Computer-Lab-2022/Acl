@@ -8,9 +8,9 @@ const CorTraineeForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const instructor = { username, password };
+    const instructor = { username,country,email, password };
 
-    const response = await fetch("/admin/createcortrainee", {
+    const response = await fetch("/admin/createcorporatetrainee", {
       method: "POST",
       body: JSON.stringify(instructor),
       headers: {
@@ -23,9 +23,11 @@ const CorTraineeForm = () => {
     }
     if (response.ok) {
       setUsername("");
+      setEmail("");
+      setCountry("");
       setPassword("");
       setError(null);
-      console.log("new instructor added!");
+      console.log("new Cortrainee added!");
     }
   };
 
@@ -39,7 +41,19 @@ const CorTraineeForm = () => {
         onChange={(e) => setUsername(e.target.value)}
         value={username}
       />
-
+       <label>email</label>
+      <input
+        type="text"
+        onChange={(e) => setEmail(e.target.value)}
+        value={email}
+      />
+  <label>Country </label>
+      <input
+        type="text"
+        onChange={(e) => setCountry(e.target.value)}
+        value={country}
+      />
+       
       <label>Password </label>
       <input
         type="text"

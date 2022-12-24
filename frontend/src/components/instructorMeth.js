@@ -1,7 +1,7 @@
 // import { set } from "mongoose";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import{useParams} from 'react-router-dom';
 // const { useState } = require("react");
 
 const CreateC = () => {
@@ -14,10 +14,11 @@ const CreateC = () => {
   const [levelOfCourse, setLevelOfCourse] = useState("");
   const [discount, setDiscount] = useState("");
   const [error, setError] = useState(null);
-  const params = new URLSearchParams(window.location.search);
-  const Instructor = params.get("Instructor");
-  console.log(params);
-  console.log(Instructor);
+  //const params = new URLSearchParams(window.location.search);
+  //const Instructor = params.get("Instructor");
+  const {id} = useParams();
+  //console.log(params);
+  //console.log(Instructor);
 //   const [rating, setRating] = useState("");
   
 //   const [admin, setAdmin] = useState(false);
@@ -30,9 +31,9 @@ const onClick = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const course = {title,Subtitle,Subject,price,summary,duration,levelOfCourse,discount };
+    const course = {title,Subtitle,Subject,price,summary,duration,levelOfCourse};
 
-    const response = await fetch(`'courses/createcourses/:id'/${Instructor}`, {
+    const response = await fetch(`/courses/createcourses/${id}`, {
       method: "POST",
       body: JSON.stringify(course),
       headers: {
@@ -55,7 +56,7 @@ const onClick = () => {
     //   setRating("");
       setError(null);
       console.log("New course is added!");
-      navigate(`/instructor/createcourses?Instructor=${Instructor}`);
+      //navigate(`/instructor/createcourses?Instructor=${id}`);
     }
   };
 

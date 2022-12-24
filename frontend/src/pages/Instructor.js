@@ -4,6 +4,7 @@ import AddMCQ from "../components/SolveMCQindv";
 import CreateMCQ from "../components/CreateMcqi";
 import AddQuestion from "../components/AddQuestioni";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ContractForm from "../components/ContractForm"
 import { useNavigate } from "react-router-dom";
 import ChangePass from "../components/ChangePassInst";
 import Reset3 from "../components/Reset3"
@@ -23,6 +24,7 @@ const Instructor = () => {
       <h2>Instructor</h2>
       <Reset3/>
       <ChangePass/>
+      <ContractForm/>
       <List/>
       {/* <ContractForm/> */}
       

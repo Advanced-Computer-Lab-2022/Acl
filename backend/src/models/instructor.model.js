@@ -62,6 +62,10 @@ const InstructorSchema = new mongoose.Schema(
         },
         resetPasswordToken:{type: String,
           required: false,},
+        
+        FirstTime:{type: Boolean,
+          required: false,
+          default:true},
     
           resetPasswordExpires:{type: Date,
           required: false,},

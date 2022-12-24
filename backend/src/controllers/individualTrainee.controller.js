@@ -30,49 +30,62 @@ let myCourses = [];
 //          console.log(min+" "+max)
 //          res.status(200).json(ranges)
 //         }
-//     catch(error){
+//     catch(error){ 
 //         res.status(400).json({error:error.me})
 //     }
 // }
-const saveData = async (req, res) => {
-  const { data } = req.body;
-  try {
-    fs.writeFileSync("Notes2.pdf", data, { encoding: "binary" });
-  } catch (err) {
-    return res.status(400).json({ error: "something Went wrong" });
-  }
+const saveData= async(req,res)=>{
+  const {data}=req.body;
+  try{
+  fs.writeFileSync("Notes.txt", data,{encoding:"binary"})}
+    catch(err){
+    return res.status(400).json({error: "something Went wrong"})}
+    
 
-  console.log("File written successfully\n");
-  console.log("The written has the following contents:");
-  console.log(fs.readFileSync("Notes2.pdf", "utf8"));
-  res.status(200).json(data);
-};
+      console.log("File written successfully\n");
+      console.log("The written has the following contents:");
+      console.log(fs.readFileSync("Notes.txt", "utf8"));
+      res.status(200).json(data);
+    }
+  
 
-const pay = async (req, res) => {
-  const stripe = require("stripe")(
+
+const pay= async(req,res)=>{
+  const stripe = require("stripe")
+  (
     "sk_test_51MDoVyEO7urBPxcBTHaNsSOE9q5G6SIdF34EPxknIARtTehHD8ziUiGEUVdeZbodkkbL31Jv5GNrMTS2JspAgvyx00tqgovzdX"
   );
 
-  const { email, token } = req.body;
-  const Paycourses = req.params.id;
+  const {email, token } = req.body;
+  const Paycourses=req.params.id;
   const course = await courses.findById(Paycourses);
   //console.log(course)
-  const trainee = await IndividualTrainee.findOneAndUpdate(
-    { email },
-    { $addToSet: { courses: course } }
-  );
-
+  user=await IndividualTrainee.findOne({email:email,"courses._id":course._id})
+  if(user)
+    res.status(200).json("you already registered before for this course")
+  else{
+  const trainee=await IndividualTrainee.findOneAndUpdate({email},{$addToSet:{courses:course}});
+  console.log(trainee)
+  console.log(trainee.wallet)
+  var x=(parseFloat(course.price) * 100)-((trainee.wallet)*100)
+  if(x<0){
+  var y=((trainee.wallet)*100)-(parseFloat(course.price) * 100)}
+  else {
+  y=0;}
+  await IndividualTrainee.findOneAndUpdate({email},{wallet:(y/ 100)});
+  if (y>0){
+  return res.status(200).json("the course is payed from yur wallet succesfully")}
   stripe.customers
-    .create({
-      email: email,
-      source: token.id,
-      name: token.card.name,
-    })
-    .then((customer) => {
-      return stripe.charges.create({
-        //const token1 = req.body.stripeToken;
-        // const charge=await stripe.charges.create({
-        amount: parseFloat(course.price) * 100,
+  .create({
+    email: email,
+    source: token.id,
+    name: token.card.name,
+  })
+  .then((customer) => {
+    return stripe.charges.create({
+   //const token1 = req.body.stripeToken;
+    // const charge=await stripe.charges.create({
+        amount: (parseFloat(course.price) * 100)-((trainee.wallet)*100),
         description: `Payment for USD ${parseFloat(course.price) * 100}`,
         currency: "USD",
         customer: customer.id,
@@ -80,7 +93,7 @@ const pay = async (req, res) => {
     })
     .then((charge) => res.status(200).send(charge))
     .catch((err) => console.log(err));
-};
+}};
 const ChangePass = async (req, res) => {
   const { id } = req.params;
   const password = req.body.password;
@@ -688,7 +701,77 @@ const watchVideo = async (req, res) => {
     res.status(200).json(x);
   }
 };
+const ReceiveCertificate = async(req, res, next) => {
+  indTrainee.findOne({_id: req.params.id }).populate('courses','name'). // i want from here the course name that the process of it is 100% 
+  exec(function (err, courseNeeded) {
+    if (err) return handleError(err);
+  //courseNeeded
+});
+  async.waterfall([
+    function(done) {
+      crypto.randomBytes(20, function(err, buf) {
+        var token = buf.toString('hex');
+        done(err, token);
+      });
+    },
+    function(token, done) {
+      indTrainee.findById({_id: req.params.id }, function(err, user) {
+        if (!user) {
+          req.flash('error', 'No account with this id exists');
+          //return res.redirect('/forgot');
+        }
+
+        user.save(function(err) {
+          done(err, token, user);
+        });
+      });
+    },
+    function(token, user, done) {
+       //let testAccount =nodemailer.createTestAccount();
+//clientID     459689521337-pkpimajok78e5f00jhlubvtr28smvm0p.apps.googleusercontent.com
+// create reusable transporter object using the default SMTP transport
+let transport= nodemailer.createTransport({
+service: 'gmail',
+ auth: {
+   type: 'OAuth2',
+   user: process.env.user,
+   pass: process.env.pass,
+   clientId: process.env.clientId,
+   clientSecret: process.env.clientSecret,
+   refreshToken:process.env.refreshToken
+   //accessToken:"ya29.a0AeTM1ieMVZBpenPBICXA6zFObVV3zENDTYEAiEMRxQutN09Fmw1aiKnsYXqWH8z1VZHkOP-X6D4bwwivH91txfzPC730fkVQYNZYlimvuvhHNGxN7LDcavYBWEfDCxB7YGo-vkH44C6yjXqLlYb8t3wa17uFaCgYKAa0SARESFQHWtWOmDzsiOVBe6Tm3hh0v15kMsQ0163"
+ },
+});
+      var mailOptions = {
+        to: user.email,
+        from: 'kikomarco12345@gmail.com',
+        subject: 'Congratulations your Certificate is finally here',
+        text: 'Your finally completing your course successfully and here it is your certificate\n\n',
+        attachments: [
+          {
+              filename: 'Alison_Certificate-1447-15764499.pdf', // <= Here: made sure file name match
+              path:'C:/Users/kiko/Downloads/Alison_Certificate-1447-15764499.pdf', // <= Here
+              contentType: 'application/pdf'
+          }
+      ]
+      };
+      transport.sendMail(mailOptions, function(error, response){
+       if(error){
+           console.log(error);
+       }else{
+           console.log("Message sent: " + response.message);
+       }
+      });
+    }
+  ], function(err) {
+    if (err) return next(err);
+    //res.redirect('/forgot');
+    return res.status(200).json(email)
+  });
+};
+
 module.exports = {
+  ReceiveCertificate,
   saveData,
   pay,
   answerMcq,

@@ -27,6 +27,8 @@ router.post(
   "/submit/:id/:courseId/:examId/:grade",
   corporateTraineeCtrl.answerMcq
 );
+router.get("/showAnswers/:examId", corporateTraineeCtrl.showAnswers);
+router.get('/findCoursesBasedOn',corporateTraineeCtrl.findCoursesBasedOn);
 
 module.exports = router;
 //new
@@ -36,4 +38,6 @@ const coursesCtrl = require('../controllers/courses.controller');
 const router = express.Router()
 
 router.get('/viewcourses/:id', coursesCtrl.viewCourses)
-router.post('/createcourses/:id', coursesCtrl.createCourses)*/
+router.post('/createcourses/:id', coursesCtrl.createCourses)
+
+module.exports = router*/

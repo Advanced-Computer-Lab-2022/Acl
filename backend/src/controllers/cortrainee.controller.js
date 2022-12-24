@@ -125,6 +125,43 @@ const selectcountry = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+const saveData= async(req,res)=>{
+  const {data}=req.body;
+  try{
+  fs.writeFileSync("Notes.txt", data,{encoding:"binary"})}
+    catch(err){
+    return res.status(400).json({error: "something Went wrong"})}
+    
+
+      console.log("File written successfully\n");
+      console.log("The written has the following contents:");
+      console.log(fs.readFileSync("Notes.txt", "utf8"));
+      res.status(200).json(data);
+    }
+    const findCoursesBasedOn=async (req, res)=> {
+      try{
+        const co="";
+      const{q}= req.query; 
+      const coursesGiv=await Instructor.findOne({name:q},'coursesGiven')
+      if(coursesGiv){
+       co = await courses.findOne({id:coursesGiv});
+      }
+      const Courses = await courses.find({$or:[{'title': {'$regex': q, '$options' : 'i'}},{'Subject': {'$regex': q, '$options' : 'i'}}]});
+          console.log(co)
+          console.log(Courses)
+          //console.log(coursesGiv)
+          return res.status(200).json(Courses.concat(co))
+  
+      
+      
+          
+              // return res.status(200).json(ayhaga)
+  
+      }
+      catch(error)
+      { res.status(400).json({error: error.message} )
+      }
+    }
 const finddCourses = async (req, res) => {
   const { title, Subject, insName } = req.body;
   const ayhaga = [];
@@ -545,7 +582,7 @@ const watchVideo = async (req, res) => {
   }
 };
 
-module.exports = {
+module.exports = {saveData,findCoursesBasedOn,
   ChangePass,
   filterAllCoursesBySubject,
   finddCourses,

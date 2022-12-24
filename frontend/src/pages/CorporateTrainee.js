@@ -2,6 +2,7 @@ import McqSol from "../components/McqSol";
 import Viewall from "../components/Viewallco";
 import {useNavigate } from 'react-router-dom';
 import ChangePass from "../components/ChangePass";
+import SearchForCourse from "../components/SearchForCourse";
 import{useParams} from 'react-router-dom';
 
 const CorporateTrainee = () => {
@@ -17,6 +18,7 @@ const onClick4 = () => {
   return (
     <div className="corporate trainee">
       <h2>Corporate Trainee</h2>
+      <SearchForCourse/>
       {/* <Viewall /> */}
       <button style={{width:180,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}}
       onClick={onClick3}>

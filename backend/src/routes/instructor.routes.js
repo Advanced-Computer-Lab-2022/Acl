@@ -34,4 +34,7 @@ router.get('/logout', instructorCtrl.logout);
 router.post('/reportcourse/:id',instructorCtrl.report);
 router.get('/viewreports/:id',instructorCtrl.viewreports);
 router.patch('/followup/:id',instructorCtrl.followups);
+router.get('/SearchHisCourse/:id', instructorCtrl.findMyCoursesBasedOn);
+router.get('/FindMyStudents/:id',instructorCtrl.FindMyStudents);
+router.get('/findCoursesBasedOn',instructorCtrl.findCoursesBasedOn1);
 module.exports = router;
