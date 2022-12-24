@@ -47,7 +47,7 @@ function App() {
             <Route path="/individualtrainee" element={<IndividualTrainee />} />
             <Route path="/indiviualtrainee/:id" element={<IndividualTrainee />} />
             <Route path="/guest" element={<Guest />} />
-            <Route path="/corporatetrainee" element={<CorporateTrainee />} />
+            <Route path="/corporatetrainee/:id" element={<CorporateTrainee />} />
             <Route path="/coursePage/:id" element={<CoursePage />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/instructor/addquestion" element={<AddQuestion />} />

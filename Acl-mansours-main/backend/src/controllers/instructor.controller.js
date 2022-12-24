@@ -162,6 +162,24 @@ const findCoursesBasedOn1=async (req, res)=> {
 }
 
 
+const FindMyStudents = async (req, res) => {
+  const { instructor } = req.params.id;
+  const{specificCourse}=req.body.Course;
+  try {
+    /*
+     */
+    const Course = await courses.findOne({Instructor:instructor,title:specificCourse});
+    const total=0;
+   const trainee=await IndividualTrainee.find({"courses.courseId":Course.id})
+   const traineeCorp=await corporateTrainee.find({"courses.courseId":Course.id})
+   total=trainee.length+traineeCorp.length
+    res.status(200).json(total);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
 
 //all can search
 const findCourses = async (req, res) => {
@@ -379,6 +397,8 @@ const searchForCourse = async (req, res) => {
 };
 var isoCountryCurrency = require("iso-country-currency");
 const { response } = require("express");
+const IndividualTrainee = require("../models/individualTrainee.model");
+const corporateTrainee = require("../models/cortrainee.model");
 
 const selectcountry = async (req, res) => {
   const country = req.body.country;
@@ -752,7 +772,7 @@ catch(error){
 }
 
 module.exports = {
-  
+  FindMyStudents,
   findMyCoursesBasedOn,
   findCoursesBasedOn1,
   viewTitleCourses,

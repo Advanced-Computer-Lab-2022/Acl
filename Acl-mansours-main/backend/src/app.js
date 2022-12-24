@@ -63,6 +63,15 @@ const createToken = (name) => {
 const signUp = async (req, res) => {
   const { username, email,last_name,first_name,gender, password } = req.body;
   try {
+
+    user =await Instructor.findOne({username})
+        user1 =await indTrainee.findOne({username})
+        user2=await Admin.findOne({username})
+        user3 =await corporateTraineeC.findOne({username})
+        if(user||user1||user2||user3)
+        res.status(400).json({ error:"Username Already In Use" })
+        
+         else{ 
       const salt = await bcrypt1.genSalt();
       const hashedPassword = await bcrypt1.hash(password, salt);
       const user = await indTrainee.create({ username: username, email: email,last_name:last_name,first_name:first_name,gender:gender, password: hashedPassword });
@@ -70,7 +79,7 @@ const signUp = async (req, res) => {
 
       res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
       res.status(200).json(`/indiviualtrainee/${user.id}`)
-  } catch (error) {
+  } }catch (error) {
       res.status(400).json({ error: error.message })
   }
 }
@@ -86,18 +95,15 @@ const login = async (req, res) => {
     var m=0;
       user =await Instructor.findOne({username})
       if (user){
+        y=await Instructor.findOne({username})
        x=await Instructor.findOne({username},'FirstTime')
-       if(x){
-        m=5;
-       res.json(`/instructor/${id}`);
-       await Instructor.findOneAndUpdate({username},{FirstTime:false})
-      }}if(!user){
+      }if(!user){
       user =await indTrainee.findOne({username})
       m=1}
-      if(!user){
+       if(!user){
         user =await corporateTraineeC.findOne({username})
         m=2}
-        if(!user){
+       if(!user){
           user =await Admin.findOne({username})
           m=3}
        //console.log("dakhal el if sah"+ user)}
@@ -109,6 +115,12 @@ const login = async (req, res) => {
           const token = createToken(user.username);
           //console.log(user)
           res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+          //console.log(x.FirstTime);
+          if(x.FirstTime==true){
+            m=5;
+           res.json(`/instructor/${y._id}`);
+           await Instructor.findOneAndUpdate({username},{FirstTime:false})
+          }
           if (m==1)
           res.json(`/indiviualtrainee/${id}`);
           else if(m==0)

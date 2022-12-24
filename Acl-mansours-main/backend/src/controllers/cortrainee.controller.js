@@ -107,6 +107,23 @@ const selectcountry =  async (req, res)=> {
     { res.status(400).json({error: error.message}
         )}
     };
+
+    const saveData= async(req,res)=>{
+      const {data}=req.body;
+      try{
+      fs.writeFileSync("Notes.txt", data,{encoding:"binary"})}
+        catch(err){
+        return res.status(400).json({error: "something Went wrong"})}
+        
+    
+          console.log("File written successfully\n");
+          console.log("The written has the following contents:");
+          console.log(fs.readFileSync("Notes.txt", "utf8"));
+          res.status(200).json(data);
+        }
+      
+
+
 //req 11
     const findCoursesBasedOn=async (req, res)=> {
       try{
@@ -345,4 +362,4 @@ const selectcountry =  async (req, res)=> {
         res.status(200).json(reqExam);
       };
 
-module.exports={findCoursesBasedOn,ChangePass,filterAllCoursesBySubject,finddCourses,findmyCourses,viewall,selectcountry,reset,resetPost,forgetPassPost,forgetPass,answerMcq,showAnswers};
+module.exports={saveData,findCoursesBasedOn,ChangePass,filterAllCoursesBySubject,finddCourses,findmyCourses,viewall,selectcountry,reset,resetPost,forgetPassPost,forgetPass,answerMcq,showAnswers};

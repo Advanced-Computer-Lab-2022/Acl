@@ -1,7 +1,7 @@
 const Admin = require('../models/adminstrator.model');
 const instructor = require('../models/instructor.model');
 const CorTrainee = require('../models/cortrainee.model');
-
+const indTrainee = require("../models/individualTrainee.model");
 
 
 
@@ -21,20 +21,39 @@ const createToken = (name) => {
 const createAdmin = async (req, res) => {
     const {username,password ,admin} = req.body;
     try {
+        user =await instructor.findOne({username})
+        user1 =await indTrainee.findOne({username})
+        user2=await Admin.findOne({username})
+        user3 =await CorTrainee.findOne({username})
+        if(user||user1||user2||user3)
+        res.status(400).json({ error:"USername Already In Use" })
+        
+         else{ 
+
+
+
         const salt = await bcrypt1.genSalt();
         const hashedPassword = await bcrypt1.hash(password, salt);
-        const user = await instructor.create({username: username, password: hashedPassword,admin:admin });
+        const user = await Admin.create({username: username, password: hashedPassword,admin:admin });
         const token = createToken(user.username);
   
         res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-        res.status(200).json(user)
+        res.status(200).json(user)}
     } catch (error) {
-        res.status(400).json({ error: error.message })
+       res.status(400).json({ error: "USername Already In Use" })
     }
 }
 const createInstructor =  async (req, res)=> {
     const { name,username,country, email, password ,coursesGiven} = req.body;
   try {
+    user =await instructor.findOne({username})
+    user1 =await indTrainee.findOne({username})
+    user2=await Admin.findOne({username})
+    user3 =await CorTrainee.findOne({username})
+    if(user||user1||user2||user3)
+    res.status(400).json({ error:"USername Already In Use" })
+    
+     else{ 
       const salt = await bcrypt1.genSalt();
       const hashedPassword = await bcrypt1.hash(password, salt);
       const user = await instructor.create({ name: name,username: username, email: email, password: hashedPassword,country:country,coursesGiven:coursesGiven });
@@ -42,13 +61,21 @@ const createInstructor =  async (req, res)=> {
 
       res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
       res.status(200).json(user)
-  } catch (error) {
-      res.status(400).json({ error: error.message })
+  }} catch (error) {
+      res.status(400).json({ error:"USername Already In Use" })
   }
 }
    const createCorTrainee = async (req, res)=> {
     const {username,country, email, password} = req.body;
     try {
+        user =await instructor.findOne({username})
+        user1 =await indTrainee.findOne({username})
+        user2=await Admin.findOne({username})
+        user3 =await CorTrainee.findOne({username})
+        if(user||user1||user2||user3)
+        res.status(400).json({ error:"USername Already In Use" })
+        
+         else{ 
         
         const salt = await bcrypt1.genSalt();
         const hashedPassword = await bcrypt1.hash(password, salt);
@@ -57,7 +84,7 @@ const createInstructor =  async (req, res)=> {
   
         res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
         res.status(200).json(user)
-    } catch (error) {
+    } }catch (error) {
         res.status(400).json({ error: error.message })
     }
     

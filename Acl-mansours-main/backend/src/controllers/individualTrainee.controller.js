@@ -57,10 +57,10 @@ const pay= async(req,res)=>{
   const Paycourses=req.params.id;
   const course = await courses.findById(Paycourses);
   //console.log(course)
-  user=await IndividualTrainee.findOne({courses:course})
+  user=await IndividualTrainee.findOne({email:email,"courses._id":course._id})
   if(user)
     res.status(200).json("you already registered before for this course")
-  
+  else{
   const trainee=await IndividualTrainee.findOneAndUpdate({email},{$addToSet:{courses:course}});
   console.log(trainee)
   console.log(trainee.wallet)
@@ -90,7 +90,7 @@ const pay= async(req,res)=>{
     })
     .then((charge) => res.status(200).send(charge))
     .catch((err) => console.log(err));
-};
+}};
 const ChangePass= async(req,res)=>{
     const {id}=req.params
 const password=req.body.password
