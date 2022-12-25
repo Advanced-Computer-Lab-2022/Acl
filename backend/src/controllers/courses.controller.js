@@ -83,5 +83,28 @@ const addCourseRating = async(req , res) => {
         }
     }
 }
+const calculateAverageRating= (req, res) =>{
+     
+    var oldRating =(req.query.rating);
+    var newRating=(req.query.newRating);
+    var calculatedRating= +oldRating+ +newRating;
+var average =
+calculatedRating /(req.query.ratingCounter);
+// const average: $divide : [ ((req.query.rating )+ (req.query.newRating)), (req.query.ratingCounter) ];
+
+res.json(average)
+}
+const rateCourse= (req, res) =>{
+ 
+  courses.findById(req.query.CourseID).then(course => {
+  courses.ratingCounter =req.query.ratingCounter;
+  courses.rating = req.query.rating;
+
+instructor.save()
+  .then(() => res.json(course))
+  .catch(err => res.status(400).json('Error: ' + err));
+})
+.catch(err => res.status(400).json('Error: ' + err));
+}
    
-module.exports={createCourses,viewCourses,addCourseRating}
+module.exports={createCourses,viewCourses,addCourseRating,rateCourse,calculateAverageRating}

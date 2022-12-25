@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const courses = require("./courses");
-
+const {Decimal128} = require('mongodb')
 
 const InstructorSchema = new mongoose.Schema(
     { 
@@ -52,20 +52,16 @@ const InstructorSchema = new mongoose.Schema(
         type: Number,
         required: false,
       },
-      Rating:{
-        Type:Array,
-         Required:false
-        },
-        avgRating:{
-          type:Number,
-          required:false,
-        },
+      rating: { 
+        type: Decimal128, 
+        min:0, 
+        max:5, 
+        required: false },
+    ratingCounter:{
+      type:Number,
+      required: false},
         resetPasswordToken:{type: String,
           required: false,},
-        
-        FirstTime:{type: Boolean,
-          required: false,
-          default:true},
     
           resetPasswordExpires:{type: Date,
           required: false,},

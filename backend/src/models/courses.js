@@ -2,12 +2,13 @@ const mongoose = require("mongoose");
 const Instructor = require("./instructor.model");
 const validate = require("validator");
 const{ObjectId}=mongoose.Schema
+const {Decimal128} = require('mongodb')
 const coursesSchema = new mongoose.Schema(
     { 
       title: {
         type: String,
         required: true,
-        unique:true,
+        unique:true
       },
       preview:{
         type:[{Video:[{youtube_video_link: {
@@ -65,14 +66,14 @@ const coursesSchema = new mongoose.Schema(
         type: String,
         required: false,
       },
-      rating: {
-        type: Array,
-        required: false,
-      },
-      avgRating:{
-        type:Number,
-        required:false,
-      },
+      rating: { 
+        type: Decimal128, 
+        min:0, 
+        max:5, 
+        required: false },
+    ratingCounter:{
+      type:Number,
+      required: false},
       Subject: {
         type: String,
         required: false,
@@ -95,10 +96,10 @@ const coursesSchema = new mongoose.Schema(
         required: false,
       }],
       Currency:{ type: String, default: 'EGP' },
-
       Instructor: {
         type: mongoose.Schema.Types.ObjectId,
         ref:'Instructor',
+
         required: false,
       },
     },

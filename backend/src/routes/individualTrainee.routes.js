@@ -51,5 +51,7 @@ corporateTraineeCtrl.buildPDF(
 );
    
 });
+router.post("/calculateavgrating",individualTraineeCtrl.calculateAverageRating);
+router.put("rateinstructor",individualTraineeCtrl.rateInstructor);
 
 module.exports = router;

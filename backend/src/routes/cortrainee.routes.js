@@ -2,6 +2,7 @@ const express = require("express");
 const instructorCtrl = require("../controllers/instructor.controller");
 const router = express.Router();
 const corporateTraineeCtrl = require("../controllers/cortrainee.controller");
+const coursesCtrl = require('../controllers/courses.controller');
 
 router.get(
   "/filterallcoursessubject",
@@ -41,7 +42,12 @@ corporateTraineeCtrl.buildPDF(
 )
    
 });
+router.post("/calculateavgrating",corporateTraineeCtrl.calculateAverageRating);
+router.put("rateinstructor",corporateTraineeCtrl.rateInstructor);
 
+
+router.post("/calculateavgrating",coursesCtrl.calculateAverageRating);
+router.put("ratecourse",coursesCtrl.rateCourse)
 module.exports = router;
 //new
 

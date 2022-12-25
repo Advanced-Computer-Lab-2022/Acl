@@ -633,8 +633,31 @@ function buildPDF(dataCallback,endCallback){
   doc.end();
 }
 //53
+const calculateAverageRating= (req, res) =>{
+     
+  var oldRating =(req.query.rating);
+  var newRating=(req.query.newRating);
+  var calculatedRating= +oldRating+ +newRating;
+var average =
+calculatedRating /(req.query.ratingCounter);
+// const average: $divide : [ ((req.query.rating )+ (req.query.newRating)), (req.query.ratingCounter) ];
 
-module.exports = {saveData,findCoursesBasedOn,
+res.json(average)
+}
+const rateInstructor= (req, res) =>{
+
+Instructor.findById(req.query.InstructorId).then(instructor => {
+instructor.ratingCounter =req.query.ratingCounter;
+instructor.rating = req.query.rating;
+
+instructor.save()
+.then(() => res.json(instructor))
+.catch(err => res.status(400).json('Error: ' + err));
+})
+.catch(err => res.status(400).json('Error: ' + err));
+}
+
+module.exports = {rateInstructor,calculateAverageRating,saveData,findCoursesBasedOn,
   ChangePass,
   filterAllCoursesBySubject,
   finddCourses,

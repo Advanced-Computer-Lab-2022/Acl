@@ -1,6 +1,7 @@
 const express = require("express");
 const instructorCtrl = require("../controllers/instructor.controller");
 const router = express.Router();
+const coursesCtrl = require('../controllers/courses.controller');
 
 router.get("/filtersubject", instructorCtrl.filterCoursesBySubject);
 // router.get('filter_all_courses_price/"',instructorCtrl.filterAllPriceInstructor)
@@ -37,4 +38,7 @@ router.patch('/followup/:id',instructorCtrl.followups);
 router.get('/SearchHisCourse/:id', instructorCtrl.findMyCoursesBasedOn);
 router.get('/FindMyStudents/:id',instructorCtrl.FindMyStudents);
 router.get('/findCoursesBasedOn',instructorCtrl.findCoursesBasedOn1);
+
+router.post("/calculateavgrating",coursesCtrl.calculateAverageRating);
+router.put("ratecourse",coursesCtrl.rateCourse)
 module.exports = router;

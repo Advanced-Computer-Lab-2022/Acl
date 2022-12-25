@@ -817,7 +817,30 @@ function buildPDF(dataCallback,endCallback){
   doc.fontSize(25).text('hello world');
   doc.end();
 }
-module.exports = {buildPDF,sendingCertificate,
+const calculateAverageRating= (req, res) =>{
+     
+  var oldRating =(req.query.rating);
+  var newRating=(req.query.newRating);
+  var calculatedRating= +oldRating+ +newRating;
+var average =
+calculatedRating /(req.query.ratingCounter);
+// const average: $divide : [ ((req.query.rating )+ (req.query.newRating)), (req.query.ratingCounter) ];
+
+res.json(average)
+}
+const rateInstructor= (req, res) =>{
+
+Instructor.findById(req.query.InstructorId).then(instructor => {
+instructor.ratingCounter =req.query.ratingCounter;
+instructor.rating = req.query.rating;
+
+instructor.save()
+.then(() => res.json(instructor))
+.catch(err => res.status(400).json('Error: ' + err));
+})
+.catch(err => res.status(400).json('Error: ' + err));
+}
+module.exports = {rateInstructor,calculateAverageRating,buildPDF,sendingCertificate,
   ReceiveCertificate,
   saveData,
   pay,
