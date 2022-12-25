@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "iso-country-currency": "^0.6.0",
+    "react-multiple-choice": "github:wcrozier12/react-multiple-choice"
+  }
+}

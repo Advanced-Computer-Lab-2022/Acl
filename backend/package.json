@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "isodate": "^0.1.4",
+    "nodemon": "^2.0.20",
+    "react-multiple-choice": "github:wcrozier12/react-multiple-choice"
+  }
+}
