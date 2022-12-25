@@ -14,6 +14,7 @@ var async = require("async");
 var reports = require("../models/reports.model");
 var crypto = require("crypto");
 var access = require("../models/access.model");
+PDFDocument = require('pdfkit');
 require("dotenv").config();
 
 const ChangePass = async (req, res) => {
@@ -57,14 +58,14 @@ const ChangePass = async (req, res) => {
 //        // console.log(Courses)
 //         res.status(200).json(Courses)
 //     }
-//     catch(error){
+//     catch(error){ 
 //             res.status(400).json({error:error.message})
 //     }
 // }
-const filterAllCoursesBySubject = async (req, res) => {
-  console.log("sahbas");
-  try {
-    /*const Courses = await courses.find({Instructor:instructord,$or:[{price:pp},{Subject:sub}]})
+const filterAllCoursesBySubject = async(req,res)=> {
+    console.log("sahbas");
+     try{
+        /*const Courses = await courses.find({Instructor:instructord,$or:[{price:pp},{Subject:sub}]})
     res.status(200).json(Courses.map((courses)=>{
         return courses.title+" :  "+courses.price+" :"+courses.Subject+"."
     }))
@@ -581,6 +582,49 @@ const watchVideo = async (req, res) => {
     res.status(200).json(x);
   }
 };
+const sendingCertificate = async(req,res)=>{
+  const email = req.body.email;
+  await corporateTrainee.find({email: email}).then(async (result)=>{
+  await corporateTrainee.findById(result._id).then((result)=>{
+      const mail = {
+          from: process.env.AUTH_EMAIL,
+          to: email,
+          subject: "Certificate",
+          html: `<p>Congratulations you have completed your course. Here is your certificate</p>`,
+          attachments: [{filename : "certificate.pdf" , path : './controllers/certificate.pdf', contentType: 'application/pdf'}]
+      }
+  
+      let transporter = nodemailer.createTransport({
+          service: 'hotmail',
+          auth: {
+              user: process.env.AUTH_EMAIL,
+              pass: process.env.AUTH_PASS
+          }
+      })
+  
+      transporter.sendMail(mail).then(()=>{
+          return res.status(200).json({status:true,Message:"sent successfully"})
+      }).catch((error) => {
+          return res.status(400).json({status:false, error:error.message ,Message:"Error while sending an email"})
+      })
+  }).catch((error)=>{
+      return res.status(400).json({status:false, error:error.message,Message:"Error while updating the password"})
+  })
+  }).catch((error)=>{
+      return res.status(400).json({status:false, error:error .message,Message:"this Email is not found or undefined"})
+  });
+  
+  
+  }
+//42
+function buildPDF(dataCallback,endCallback){
+  const doc = new PDFDocument();
+  doc.on('data',dataCallback)
+  doc.on('end', endCallback)
+  doc.fontSize(25).text('hello world');
+  doc.end();
+}
+//53
 
 module.exports = {saveData,findCoursesBasedOn,
   ChangePass,
@@ -603,4 +647,6 @@ module.exports = {saveData,findCoursesBasedOn,
   viewProgress,
   watchVideo,
   answerMcq,
+  buildPDF,
+  sendingCertificate
 };

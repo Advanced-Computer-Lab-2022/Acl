@@ -1,0 +1,15 @@
+</style>
+</head>
+<body>
+    <div style = 'width:85%; margin: 0 7.5%;'>
+    <h3>Certificate</h3>
+    hello
+    <!-- <center>
+            <% if(User.length>0) { %>
+                <% User.forEach(User = > { %>
+                    <tr><td><%= user.username %></td><td>user.Email %></td></tr>
+                    <% }); %>
+                    <%}%>
+    </center> -->
+</div>
+</body>

@@ -8,6 +8,7 @@ const course = require("../models/courses");
 const access = require("../models/access.model");
 const CorTrainee = require('../models/cortrainee.model');
 const indTrainee = require("../models/individualTrainee.model");
+const Report = require('../models/report')
 
 const PORT = process.env.PORT;
 
@@ -213,7 +214,52 @@ const approveAccess = async (req, res) => {
     res.status(200).send("already approved before");
   }
 };
+const getAllCorporateReports = async (req,res) =>{
+  try{
+ const reports=await Report.find({corporatetrainee:{ $ne: null }},{"name": true,"type":true, "course":true,"corporatetrainee":true,"Description":true,"followups":true,"status":true })
+ res.status(200).json(reports)
+} catch (error) {
+  res.status(400).json({ error: error.message })
 
+
+
+}
+}
+const getAllIndividualeReports = async (req,res) =>{
+  try{
+ const reports=await Report.find({individualtrainee:{ $ne: null }},{"name": true,"type":true, "course":true,"individualtrainee":true,"Description":true,"followups":true,"status":true })
+ res.status(200).json(reports)
+} catch (error) {
+  res.status(400).json({ error: error.message })
+
+
+
+}
+}
+const getAllInstructorReports = async (req,res) =>{
+  try{
+ const reports=await Report.find({instructor:{ $ne: null }},{"name": true,"type":true, "course":true,"instructor":true,"Description":true,"followups":true,"status":true })
+ res.status(200).json(reports)
+} catch (error) {
+  res.status(400).json({ error: error.message })
+
+
+
+}
+}
+const markProblems1= async (req,res)=>{
+  const statusss=req.body.status;
+  Report1=req.query.id;
+
+  try{
+      console.log(Report1);
+const problem=await Report.findByIdAndUpdate(Report1,{status:statusss})
+
+res.status(200).json(problem)
+  }catch(error){
+      res.status(400).json({ error: error.message })
+  }
+}
 module.exports = {
   createInstructor,
   createCorTrainee,
@@ -224,5 +270,5 @@ module.exports = {
   viewAccessRequests,
   declineAccess,
   approveAccess,
-  definepromotion,
+  definepromotion,getAllCorporateReports,getAllIndividualeReports,getAllInstructorReports,markProblems1
 };

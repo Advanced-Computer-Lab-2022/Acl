@@ -47,23 +47,40 @@
 // export default SelectCountry;
 
 import { useState } from "react";
+<<<<<<< HEAD
 import{useParams} from 'react-router-dom';
+=======
+
+>>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
 // const { useState } = require("react");
 
 const Selectcountry = () => {
   const [country, setCountry] = useState("");
   
   const [error, setError] = useState(null);
+<<<<<<< HEAD
   const {id} = useParams();
 
   
+=======
+
+  const params = new URLSearchParams(window.location.search);
+  const userId = params.get('userId');
+  console.log(userId);
+>>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+<<<<<<< HEAD
     const preview = { id,country};
 
     const response = await fetch(`/indiviualtrainee/selectcountry/${id}`,{
+=======
+    const preview = { userId,country};
+
+    const response = await fetch(`/indiviualtrainee/selectcountry/${userId}`,{
+>>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
       method: "PATCH",
       body: JSON.stringify(preview),
       headers: {

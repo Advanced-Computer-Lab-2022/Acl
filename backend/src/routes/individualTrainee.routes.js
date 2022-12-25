@@ -39,5 +39,17 @@ router.post(
   "/submit/:id/:courseId/:examId/:grade",
   individualTraineeCtrl.answerMcq
 );
+router.post('/sendingCertificate',individualTraineeCtrl.sendingCertificate);
+router.get('/invoice',(req,res,next)=>{
+    const stream= res.writeHead(200,{
+         'Content-Type':'application/pdf',
+         'Content-Disposition':'attachment;filename=certificate.pdf'
+});
+corporateTraineeCtrl.buildPDF(
+    (chunk)=> stream.write(chunk),
+    () => stream.end()
+);
+   
+});
 
 module.exports = router;

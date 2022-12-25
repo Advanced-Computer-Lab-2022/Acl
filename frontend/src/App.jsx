@@ -43,15 +43,22 @@ import Followupsindv from "./components/Followupsindv";
 import Followupscorp from "./components/Followupscorp";
 import ViewMyCourses from "./pages/ViewMyCourses";
 import CoursePage from "./pages/CoursePage";
-
+import NHome from "./components/NHome"
+import Footer from "./components/Footer"
+import ViewReports from "./components/admin-view-reports"
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar />
+        <Navbar/>
+      
+
+       {/* <NHome/> */}
         <div className="pages">
           <Routes>
+            <Route path="/reports" element={<ViewReports/>}/>
+            <Route path="/" element={<NHome/> }/>
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signUp" element={<SignUp/>} />

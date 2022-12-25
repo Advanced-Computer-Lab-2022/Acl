@@ -24,6 +24,7 @@
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
+    "pdfkit": "^0.13.0",
     "react": "^18.2.0",
     "stripe": "^11.3.0",
     "validate": "^5.2.0",
