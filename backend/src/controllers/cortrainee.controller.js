@@ -11,7 +11,7 @@ var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var bcrypt = require("bcrypt-nodejs");
 var async = require("async");
-var reports = require("../models/reports.model");
+var reports = require("../models/report");
 var crypto = require("crypto");
 var access = require("../models/access.model");
 PDFDocument = require('pdfkit');
@@ -448,14 +448,22 @@ const viewMyCourses = async (req, res) => {
 const viewProgress = async (req, res) => {
   const id = req.params.id;
   const courseId = req.params.courseId;
-  const trainee = await corporateTraineeC.findOne({ _id: id });
+  const trainee = await indTrainee.findOne({ _id: id });
   const courses = trainee.courses;
+  let neededCourse;
   for (i = 0; i < courses.length; i++) {
-    if (courses[i]._id === courseId) {
-      res.status(200).send(courses[i].progress);
+    //console.log(courses[i]);
+    if (courses[i]._id == courseId) {
+      neededCourse = courses[i];
+      //res.status(200).send(courses[i].progress);
+      //console.log(courses[i].progress);
     }
   }
-  res.status(200).send("course not found!");
+  if (neededCourse.progress == 100) {
+    res.redirect("/corporatetrainee/sendingCertificate");
+  }
+
+  res.status(200).json(neededCourse.progress);
 };
 const report = async (req, res) => {
   const { id } = req.params;

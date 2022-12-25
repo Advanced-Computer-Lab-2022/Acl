@@ -14,7 +14,7 @@ var bcrypt = require('bcrypt-nodejs');
 var async = require('async');
 var crypto = require('crypto');
 var math=require('mathjs')
-var reports=require('../models/reports.model')
+var reports=require('../models/report')
 require('dotenv').config();
 //const bcrypt = require('bcrypt')
 //const jwt = require('jsonwebtoken');

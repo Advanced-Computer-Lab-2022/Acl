@@ -12,7 +12,7 @@ var LocalStrategy = require("passport-local").Strategy;
 var bcrypt = require("bcrypt-nodejs");
 var async = require("async");
 var crypto = require("crypto");
-var reports = require("../models/reports.model");
+var reports = require("../models/report");
 const fs = require("fs");
 PDFDocument = require('pdfkit');
 require("dotenv").config();
@@ -584,10 +584,12 @@ const viewProgress = async (req, res) => {
       //console.log(courses[i].progress);
     }
   }
+  if (neededCourse.progress == 100) {
+    res.redirect("/individualtrainee/sendingCertificate");
+  }
 
   res.status(200).json(neededCourse.progress);
 };
-
 const report = async (req, res) => {
   const { id } = req.params;
   const { coursename, reportname, type, description } = req.body;

@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 
-=======
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
 import "./ExamForm.css";
 
 function ExamForm() {
@@ -12,7 +9,6 @@ function ExamForm() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [mcq, setMcq] = useState(null);
-<<<<<<< HEAD
   const navigate = useNavigate();
 
   const params = new URLSearchParams(window.location.search);
@@ -21,11 +17,6 @@ function ExamForm() {
   const onClick1 = () => {
     navigate(`/corporatetrainee/showAnswers?examId=${examId}`);
   };
-=======
-
-  const params = new URLSearchParams(window.location.search);
-  const examId = params.get("examId");
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
   //const questions = [];
   // console.log(examId);
 
@@ -95,10 +86,7 @@ function ExamForm() {
                 {(score / mcq.length) * 100}
                 %)
               </h2>
-<<<<<<< HEAD
               <button onClick={onClick1}>Show Solutions</button>
-=======
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
             </div>
           )
         : mcq && (
@@ -135,8 +123,4 @@ export default ExamForm;
 
 // /*
 // <h3 className="solution-text">{solutions[currentQuestion].toString()}</h3>
-<<<<<<< HEAD
 // */
-=======
-// */
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a

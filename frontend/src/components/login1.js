@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 // import React from 'react';
 // import {
 //   MDBBtn,
@@ -105,16 +103,12 @@
 // export default App;
 
 
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
 import { useState } from "react";
 // const { useState } = require("react");
 import{useParams} from 'react-router-dom';
 import {useNavigate } from 'react-router-dom';
-<<<<<<< HEAD
 import "./styles.css";
-=======
 import "./login1.css";
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
 const Login1 = () => {
   const navigate=useNavigate();
   const [password, setPassword] = useState("");
@@ -148,32 +142,6 @@ const Login1 = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <div className="form">
-    <form className="create" onSubmit={handleSubmit}>
-      <h3>Login</h3>
-      <label>username </label>
-      <div className="input-container">
-
-      <input
-        type="text"
-        onChange={(e) => setUsername(e.target.value)}
-        value={username}
-      />
-       <label>Password </label>
-      <input
-        type="text"
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-      />
-</div>
-<div className="button-container">
-      <button>login</button>
-      {error && <div className="error">{error}</div>}
-      </div>
-    </form>
-    </div>
-=======
 //     <div className="form">
 //     <form className="create" onSubmit={handleSubmit}>
 //       <h3>Login</h3>
@@ -249,7 +217,6 @@ const Login1 = () => {
  
  
 
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
   );
 };
 

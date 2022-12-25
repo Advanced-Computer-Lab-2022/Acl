@@ -77,18 +77,13 @@
 
 import { useState } from "react";
 // const { useState } = require("react");
-<<<<<<< HEAD
 import{useParams} from 'react-router-dom';
-=======
-
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
 const Discount = () => {
     const [title,setTitle]=useState("");
   const [discountamount, setDiscountAmount] = useState("");
   const [startdate,setStartDate ] = useState("");
   const [enddate,setEndDate ] = useState("");
   const [error, setError] = useState(null);
-<<<<<<< HEAD
   const {id} = useParams();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -96,19 +91,6 @@ const Discount = () => {
     const discount = { id,title,discountamount, startdate, enddate};
    
     const response = await fetch(`/instructor/definepromotion/${id}`,{
-=======
-
-  const params = new URLSearchParams(window.location.search);
-    const userId = params.get('userId');
-    console.log(userId);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const discount = { userId,title,discountamount, startdate, enddate};
-   
-    const response = await fetch(`/instructor/definepromotion/${userId}`,{
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
       method: "PATCH",
       body: JSON.stringify(discount),
       headers: {

@@ -6,7 +6,6 @@ const trainee = require("../models/individualTrainee.model");
 const refund = require("../models/refundRequest");
 const course = require("../models/courses");
 const access = require("../models/access.model");
-const CorTrainee = require('../models/cortrainee.model');
 const indTrainee = require("../models/individualTrainee.model");
 const Report = require('../models/report')
 

@@ -123,7 +123,6 @@ const CoursesList = () => {
       onClick={onClick6}>
       Contract Form</button>
       <button style={{width:230,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}} 
-<<<<<<< HEAD
       onClick={() => window.location.href=`/Discount/${id}`}> Add Course Discount
       </button>
       <button style={{width:230,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}} 
@@ -145,19 +144,6 @@ const CoursesList = () => {
       onClick={() => window.location.href=`/Followupsi/${id}`}>Followup
       </button>
           
-=======
-      onClick={() => window.location.href=`/Discount?userId=${"6389dbfca2af0e3510d117b4"}`}> Add Course Discount
-      </button>
-      <button style={{width:230,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}} 
-      onClick={() => window.location.href=`/UploadYouSubi?userId=${"638889618a90ff47ec228b55"}`}>Add Video Subtitle   
-      </button>
-      <button style={{width:230,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}} 
-      onClick={() => window.location.href=`/UploadYouPrevi?userId=${"6389dbfca2af0e3510d117b4"}`}>Add Video Preview 
-      </button>
-      <button style={{width:230,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}} 
-      onClick={() => window.location.href=`/selectcountry?userId=${"6389dbfca2af0e3510d117b4"}`}>Select Your Country
-      </button>
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
           
         </div>
                 

@@ -3,10 +3,6 @@ import { useState } from "react";
 import{useParams} from 'react-router-dom';
 import {useNavigate } from 'react-router-dom';
 import "./styles.css";
-<<<<<<< HEAD
-=======
-
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
 const SignUp = () => {
   const navigate=useNavigate();
   const [password, setPassword] = useState("");
@@ -50,15 +46,6 @@ const SignUp = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <div className="form">
-    <form className="create" onSubmit={handleSubmit}>
-      <h3>signUp</h3>
-      <label>username </label>
-      <div className="input-container">
-
-      <input
-=======
     
     <div>
 
@@ -72,38 +59,10 @@ const SignUp = () => {
       <i class="ri-user-line"></i>
       <input
       placeholder="Username"
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
         type="text"
         onChange={(e) => setUsername(e.target.value)}
         value={username}
       />
-<<<<<<< HEAD
-      </div>
-      <label>email </label>
-      <div className="input-container">
-
-      <input
-        type="text"
-        onChange={(e) => setEmail(e.target.value)}
-        value={email}
-      />
-
-</div>
-      <label>first_name </label>
-      <div className="input-container">
-
-      <input
-        type="text"
-        onChange={(e) => setFirst_name(e.target.value)}
-        value={first_name}
-      />
-
-</div>
-      <label>last_name </label>
-      <div className="input-container">
-
-      <input
-=======
        <span class="bar"></span>
       </div>
       <div class="form__input">
@@ -131,50 +90,10 @@ const SignUp = () => {
       <i class="ri-user-line"></i>
       <input
       placeholder="LastName"
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
         type="text"
         onChange={(e) => setLast_name(e.target.value)}
         value={last_name}
       />
-<<<<<<< HEAD
-
-</div>
-      <label>Gender </label>
-      <div className="radio">
-          <label>
-            <input
-              type="radio"
-              value="Male"
-onChange={(e) => setGender(e.target.value)}
-              
-            />
-            Male
-          </label>
-        </div>
-        <div className="radio">
-
-
-
-
-          <label>
-            <input
-              type="radio"
-              value="Female"
-              
-              onChange={(e) => setGender(e.target.value)}
-              
-            />
-            Female
-          </label>
-        
-       
-       
-      
-       <label>Password </label>
-
-
-      <input
-=======
  <span class="bar"></span>
  
      
@@ -187,20 +106,10 @@ onChange={(e) => setGender(e.target.value)}
       <i class="ri-user-line"></i>
       <input
       placeholder="Password"
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
         type="text"
         onChange={(e) => setPassword(e.target.value)}
         value={password}
       />
-<<<<<<< HEAD
-</div>
-<div className="button-container">
-      <button>SignUp</button>
-      {error && <div className="error">{error}</div>}
-      </div>
-    </form>
-    </div>
-=======
        <span class="bar"></span>
 </div>
 <label className="gender" for = "gender">Gender:
@@ -225,7 +134,6 @@ onChange={(e) => setGender(e.target.value)}
     </form>
     </div>
 </div>
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
   );
 };
 

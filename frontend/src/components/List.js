@@ -22,11 +22,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   }));
 const { useState, Component } = require("react");
 
-<<<<<<< HEAD
-
-const UsersList = () => { 
-    const [authors,setAuthors] = useState([]);
-=======
 const UsersList = () => { 
     const [authors,setAuthors] = useState([]);
 const [reports,setReports] = useState([]);
@@ -37,7 +32,6 @@ const [reports,setReports] = useState([]);
 
 
 
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
     
     const getAuthors =  async () => {
          await axios.get('http://localhost:7007/instructor/users').then(

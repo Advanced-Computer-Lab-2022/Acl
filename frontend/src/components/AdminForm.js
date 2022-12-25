@@ -4,10 +4,7 @@ import { useState } from "react";
 const AdminForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-<<<<<<< HEAD
-=======
   const [email, setEmail] = useState("");
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
   // const [admin, setAdmin] = useState(false);
   const [error, setError] = useState(null);
 
@@ -30,10 +27,7 @@ const AdminForm = () => {
     if (response.ok) {
       setUsername("");
       setPassword("");
-<<<<<<< HEAD
-=======
       setEmail("");
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
       setError(null);
       console.log("new admin added!");
     }
@@ -49,15 +43,12 @@ const AdminForm = () => {
         onChange={(e) => setUsername(e.target.value)}
         value={username}
       />
-<<<<<<< HEAD
-=======
       <label>Email </label>
       <input
         type="text"
         onChange={(e) => setEmail(e.target.value)}
         value={email}
       />
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
 
       <label>Password </label>
       <input
@@ -65,13 +56,9 @@ const AdminForm = () => {
         onChange={(e) => setPassword(e.target.value)}
         value={password}
       />
-<<<<<<< HEAD
-=======
-      
->>>>>>> d7203dc3795f0ae3064323543c53f2e1ef68fb5a
 
+      
       <button>Add Admin</button>
-      {error && <div className="error">{error}</div>}
     </form>
   );
 };
