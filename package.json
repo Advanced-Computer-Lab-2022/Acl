@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "express": "^4.18.2",
+    "iso-country-currency": "^0.6.0",
+    "react": "^16.14.0",
+    "react-multiple-choice": "^1.0.0"
+  }
+}
