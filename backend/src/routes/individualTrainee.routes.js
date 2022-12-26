@@ -1,5 +1,6 @@
 const express = require("express");
 const individualTraineeCtrl = require("../controllers/individualTrainee.controller");
+const coursesCtrl = require('../controllers/courses.controller');
 const router = express.Router();
 
 router.get(
@@ -53,5 +54,7 @@ corporateTraineeCtrl.buildPDF(
 });
 router.post("/calculateavgrating",individualTraineeCtrl.calculateAverageRating);
 router.put("rateinstructor",individualTraineeCtrl.rateInstructor);
+router.post("/calculateavgrating",coursesCtrl.calculateAverageRating);
+router.put("ratecourse",coursesCtrl.rateCourse)
 
 module.exports = router;
