@@ -1,5 +1,5 @@
 import CoursesTrainee from "../components/CoursesTrainee";
-
+import ViewInsCourses from "../components/ViewInsCourses";
 const ViewMyCourses = () => {
   return (
     // <div className="courses">
@@ -9,10 +9,12 @@ const ViewMyCourses = () => {
     <div className="courses">
       <h2>My courses</h2>
       <CoursesTrainee />
+      <ViewInsCourses/>
     </div>
   );
 };
-export default ViewMyCourses;
+
+export default ViewMyCourses
 
 // import axios from "axios";
 // import Button from "@mui/material/Button";
@@ -101,3 +103,4 @@ export default ViewMyCourses;
 //   );
 // };
 // export default CoursesList;
+

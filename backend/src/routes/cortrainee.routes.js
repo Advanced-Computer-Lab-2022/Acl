@@ -43,11 +43,12 @@ corporateTraineeCtrl.buildPDF(
    
 });
 router.post("/calculateavgrating",corporateTraineeCtrl.calculateAverageRating);
-router.put("rateinstructor",corporateTraineeCtrl.rateInstructor);
+router.put("/rateinstructor",corporateTraineeCtrl.rateInstructor);
 
 
 router.post("/calculateavgrating",coursesCtrl.calculateAverageRating);
-router.put("ratecourse",coursesCtrl.rateCourse)
+router.put("/ratecourse",coursesCtrl.rateCourse)
+router.get('/Courses/:id',corporateTraineeCtrl.showCourses)
 module.exports = router;
 //new
 

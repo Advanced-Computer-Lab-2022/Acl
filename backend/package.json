@@ -2,6 +2,27 @@
   "dependencies": {
     "isodate": "^0.1.4",
     "nodemon": "^2.0.20",
-    "react-multiple-choice": "github:wcrozier12/react-multiple-choice"
+    "react-multiple-choice": "github:wcrozier12/react-multiple-choice",
+    
+"async": "^3.2.4",
+    "axios": "^1.2.1",
+    "bcrypt-nodejs": "^0.0.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "currency-converter-lt": "^2.0.0-beta.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.3",
+    "isodate": "^0.1.4",
+    "jsonwebtoken": "^8.5.1",
+    "middleware": "^1.0.0",
+    "mongoose": "^6.8.0",
+    "nodemailer": "^6.8.0",
+    "nodemon": "^2.0.20",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "react-multiple-choice": "^1.0.0",
+    "validator": "^13.7.0"
   }
 }

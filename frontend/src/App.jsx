@@ -46,6 +46,14 @@ import CoursePage from "./pages/CoursePage";
 import NHome from "./components/NHome"
 import Footer from "./components/Footer"
 import ViewReports from "./components/admin-view-reports"
+import EditInsProfile from "./components/EditInsProfile";
+import InstructorProfile from "./pages/InstructorProfile";
+
+import Courses from "./pages/Courses";
+
+import ViewReg from "./pages/ViewReg";
+import ViewRegCourses from "./components/ViewRegCourses";
+import ViewInsCourses from "./components/ViewInsCourses";
 
 function App() {
   return (
@@ -87,6 +95,10 @@ function App() {
             <Route path="/ViewPrices" element={<Viewprice/>} />
             <Route path="/Exam" element={<AddMcq/>}/>
             <Route path="/Pay/:id" element={<CreditCard/>}/>
+            <Route path="/InstructorProfile" element={<InstructorProfile/>} />
+            <Route path="/ViewMyCourses" element={<ViewInsCourses/>} />
+            <Route path="/Courses" element={<Courses/>} />
+            <Route path="/ViewReg" element={<ViewRegCourses/>} />
             <Route
               path="individualtrainee/viewMyCourses"
               element={<ViewMyCourses />}

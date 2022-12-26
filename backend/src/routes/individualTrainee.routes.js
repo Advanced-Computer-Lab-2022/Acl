@@ -53,8 +53,9 @@ corporateTraineeCtrl.buildPDF(
    
 });
 router.post("/calculateavgrating",individualTraineeCtrl.calculateAverageRating);
-router.put("rateinstructor",individualTraineeCtrl.rateInstructor);
+router.put("/rateinstructor",individualTraineeCtrl.rateInstructor);
 router.post("/calculateavgrating",coursesCtrl.calculateAverageRating);
-router.put("ratecourse",coursesCtrl.rateCourse)
+router.put("/ratecourse",coursesCtrl.rateCourse)
+router.get('/Courses',individualTraineeCtrl.showCourses)
 
 module.exports = router;

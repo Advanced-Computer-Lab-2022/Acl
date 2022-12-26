@@ -656,6 +656,19 @@ instructor.save()
 })
 .catch(err => res.status(400).json('Error: ' + err));
 }
+const showCourses = async (req, res) => {
+  // const {bi} = req.body.data;
+  
+  try {
+        const t = await corporateTraineeC.findById(req.params.id);
+        const regC=t.courses
+        return res.status(200).json(regC);
+      
+  } catch (error) {
+      return res.status(402).json({
+          error : error
+      });
+  }}
 
 module.exports = {rateInstructor,calculateAverageRating,saveData,findCoursesBasedOn,
   ChangePass,
@@ -679,5 +692,6 @@ module.exports = {rateInstructor,calculateAverageRating,saveData,findCoursesBase
   watchVideo,
   answerMcq,
   buildPDF,
-  sendingCertificate
+  sendingCertificate,
+  showCourses
 };

@@ -2,7 +2,6 @@ const express = require("express");
 const instructorCtrl = require("../controllers/instructor.controller");
 const router = express.Router();
 
-
 router.get("/filtersubject", instructorCtrl.filterCoursesBySubject);
 // router.get('filter_all_courses_price/"',instructorCtrl.filterAllPriceInstructor)
 router.get("/filter_all_courses_price", instructorCtrl.filterCoursebyPrice);
@@ -13,7 +12,7 @@ router.get("/viewprice", instructorCtrl.viewprice);
 router.get("/viewallcourses", instructorCtrl.viewall);
 router.get("/searchmycourses/:id", instructorCtrl.searchMyCourses);
 router.get("/searchForCourse", instructorCtrl.searchForCourse);
-router.get("/viewtitlecourses/:id", instructorCtrl.viewTitleCourses);
+//router.get("/viewtitlecourses/:id", instructorCtrl.viewTitleCourses);
 router.get("/findMyCourses/:id", instructorCtrl.findmyCourses);
 router.get("/findcourses", instructorCtrl.finddCourses);
 router.post("/createExam", instructorCtrl.createExam);
@@ -38,6 +37,9 @@ router.patch('/followup/:id',instructorCtrl.followups);
 router.get('/SearchHisCourse/:id', instructorCtrl.findMyCoursesBasedOn);
 router.get('/FindMyStudents/:id',instructorCtrl.FindMyStudents);
 router.get('/findCoursesBasedOn',instructorCtrl.findCoursesBasedOn1);
+router.put("/EditInsProfileB", instructorCtrl.editBio);
+router.put("/EditInsProfileE", instructorCtrl.editEmail);
+router.get("/ViewMyC", instructorCtrl.viewCourseT);
 
 
 module.exports = router;

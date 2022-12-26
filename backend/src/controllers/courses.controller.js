@@ -106,5 +106,17 @@ instructor.save()
 })
 .catch(err => res.status(400).json('Error: ' + err));
 }
+const getCourses = async (req, res) => {
+    const cId=req.query.cId
+    
+    try{
+    const course= await courses.findById(cId)
+    res.status(200).json(course);
+}
+    catch(error){
+        res.status(400).json({error:error.message})
+    }
    
-module.exports={createCourses,viewCourses,addCourseRating,rateCourse,calculateAverageRating}
+}
+   
+module.exports={createCourses,viewCourses,addCourseRating,rateCourse,calculateAverageRating,getCourses}

@@ -840,6 +840,24 @@ instructor.save()
 })
 .catch(err => res.status(400).json('Error: ' + err));
 }
+const showCourses = async (req, res) => {
+  temp=[];
+  try {  
+        const t = await indTrainee.findById(req.query.userId);
+        const regC=t.courses
+        let c=[];
+        for (let index = 0; index < regC.length; index++) {
+         c = await courses.findById(regC[index])
+         temp[index]=c
+        }
+
+        return res.status(200).json(temp);
+      
+  } catch (error) {
+      return res.status(402).json({
+          error : error
+      });
+  }}
 module.exports = {rateInstructor,calculateAverageRating,buildPDF,sendingCertificate,
   ReceiveCertificate,
   saveData,
@@ -868,4 +886,5 @@ module.exports = {rateInstructor,calculateAverageRating,buildPDF,sendingCertific
   viewProgress,
   watchVideo,
   answerMcq,
+  showCourses
 };

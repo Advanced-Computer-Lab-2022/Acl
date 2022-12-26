@@ -78,6 +78,10 @@ const coursesSchema = new mongoose.Schema(
         type: String,
         required: false,
       },
+      InstructorName: {
+        type: String,
+        required: false,
+      },
       discount: {
         type:[{discountamount: Number,
        startdate:Date,

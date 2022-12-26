@@ -262,22 +262,22 @@ const filtermycoursesbyprice = async (req, res) => {
 
 // }}
 //req18
-const viewTitleCourses = async (req, res) => {
-  //const {instid} = req.params.id
-  const Courses = await courses.find(
-    { Instructor: req.params.id },
-    { title: 1 }
-  );
-  res.status(200).json(Courses);
-  console.log(Courses.toString());
-  if (Courses !== null) {
-    let x = Object.values(Courses);
-    let result = x.map((Courses) => Courses.title);
-    console.log(result);
-  } else {
-    res.status(400).json({ error: error.message });
-  }
-};
+// const viewTitleCourses = async (req, res) => {
+//   //const {instid} = req.params.id
+//   const Courses = await courses.find(
+//     { Instructor: req.params.id },
+//     { title: 1 }
+//   );
+//   res.status(200).json(Courses);
+//   console.log(Courses.toString());
+//   if (Courses !== null) {
+//     let x = Object.values(Courses);
+//     let result = x.map((Courses) => Courses.title);
+//     console.log(result);
+//   } else {
+//     res.status(400).json({ error: error.message });
+//   }
+// };
 //req 20
 const findMyCoursesBasedOn=async (req, res)=> {
   try{
@@ -444,74 +444,108 @@ const Courses=await courses.find({
 };
 
 const finddCourses = async (req, res) => {
-  const { title, Subject, insName } = req.body;
+  const searchWord  = req.query.searchWord;
   const ayhaga = [];
+  const c1=[];
+  
+  let z=0;
   try {
-    if (title) {
+    if (searchWord) {
       const Courses = await courses
-        .find({ title: { $regex: title, $options: "i" } })
-        .select("title");
-      return res.status(200).json(Courses);
-    }
-    if (Subject) {
-      const Courses = await courses
-        .find({ Subject: { $regex: Subject, $options: "i" } })
-        .select("title");
-      return res.status(200).json(Courses);
-    }
-    if (insName) {
+        .find({ title: { $regex: searchWord, $options: "i" } }).select('title');
+
+      const Courses1 = await courses
+        .find({ Subject: { $regex: searchWord, $options: "i" } }).select('Subject');
+       
+
       let i = 0;
       const c = await courses.find({});
       for (let index = 0; index < c.length; index++) {
         const x = c[index];
-        if (x) {
+        console.log(index)
+
+        if (x.Instructor) {
           const ins = await Instructor.findById(x.Instructor);
           const na = ins.name;
-          console.log(c[3].title);
-          if (insName == na) {
-            ayhaga[i] = c[index].title;
-            i++;
+          console.log('1')
+          if (na.toLowerCase().includes(searchWord.toLowerCase())) {
+            x.InstructorName=na
+            ayhaga[z] =x
+            z++;
+
           }
+
+      }
+    }
+      i=c1.length
+      
+      for (let index = 0; index < Courses.length  ; index++) {
+        console.log(index)
+        if (Courses){
+          c1[i]=Courses[index]
+          i++
         }
       }
-      return res.status(200).json(ayhaga);
+      i=c1.length
+      for (let index = 0; index < Courses1.length  ; index++) {
+        console.log(index)
+
+        if (Courses1){
+          c1[i]=Courses1[index]
+          i++
+        }}
+
+        i=c1.length
+        for (let index = c1.length; index < ayhaga.length   ; index++) {
+        if (ayhaga){
+          c1[i]=ayhaga[index]
+          i++
+        }
+        }
+
+      let uniqueArray = [...new Set(c1)];
+
+      return res.status(200).json(uniqueArray);
     }
-  } catch (error) {
+  } 
+
+  catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
 const findmyCourses = async (req, res) => {
-  const { title, Subject, insName } = req.body;
-  const instr = await Instructor.findById(req.params.id);
+  const searchWord  = req.query.searchWord;
+  const instr = await Instructor.findById(req.query.userId);
+
   const ayhaga = [];
   let i = 0;
   try {
-    if (title) {
+    if (searchWord) {
       const Courses = await courses.find({
         $and: [
           { Instructor: instr.id },
-          { title: { $regex: title, $options: "i" } },
+          { title: { $regex: searchWord, $options: "i" } },
         ],
       });
       return res.status(200).json(Courses);
     }
-    if (Subject) {
+    if (searchWord) {
       const Courses = await courses.find({
         $and: [
           { Instructor: instr.id },
-          { Subject: { $regex: Subject, $options: "i" } },
+          { Subject: { $regex: searchWord, $options: "i" } },
         ],
       });
       return res.status(200).json(Courses);
     }
-    if (insName) {
+    if (searchWord) {
       const c = await courses.find({});
       for (let index = 0; index < c.length; index++) {
         const x = c[index];
         const ins = await Instructor.findById(x.Instructor);
         const na = ins.name;
-        if (insName == na) {
+        if (searchWord == na) {
           ayhaga[i] = c[index];
           i++;
         }
@@ -935,12 +969,62 @@ const followups=async(req,res)=>{
   }
 
 }
+const viewCourseT = async (req, res) => {
+  const id = req.query.userId;
+  const temp=[];
+  try {
+        const ins = await Instructor.findById(id);
+        co=ins.coursesGiven
+
+        for (let index = 0; index < co.length; index++) {
+          const course= await courses.findById(co[index])
+          temp[index]=course
+        }
+        return res.status(200).json(temp);
+      
+  } catch (error) {
+      return res.status(402).json({
+          error : error
+      });
+  }
+}
+const editBio = async (req, res) => {
+  const bi= req.body.bi;
+  try {
+        const ins = await Instructor.findById(req.query.userId);
+        ins.biography=bi
+        const val = await ins.save();
+        return res.status(200).json(val);
+      
+  } catch (error) {
+      return res.status(402).json({
+          error : error
+      });
+  }
+}
+  const editEmail = async (req, res) => {
+    const em= req.body.em;
+    try {
+          const ins = await Instructor.findById(req.query.userId);
+          ins.email=em
+          const val = await ins.save();
+          return res.status(200).json(val);
+        
+    } catch (error) {
+        return res.status(402).json({
+            error : error
+        });
+    }
+}
+
 module.exports = {
 FindMyStudents,
   findMyCoursesBasedOn,
-  findCoursesBasedOn1,  
-viewTitleCourses,
-  findmyCourses,
+  findCoursesBasedOn1,
+viewCourseT,
+  editEmail,
+  editBio,  
+findmyCourses,
   finddCourses,
   filterCoursesBySubject,
   findCourses,
