@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ChangePass from "../components/ChangePassInst";
 import Reset3 from "../components/Reset3"
 import SearchBar from "../components/SearchBar";
+import PaymentPolicy from "../components/PaymentPolicy";
 
 const Instructor = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Instructor = () => {
     <div className="instructor">
       <h2>Instructor</h2>
       <SearchBar placeHolder="Search for Courses"/>
-
+      <PaymentPolicy/>
       <Reset3/>
       <ChangePass/>
       {/* <ContractForm/> */}

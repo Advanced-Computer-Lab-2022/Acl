@@ -88,7 +88,20 @@ const getCourses = async (req, res) => {
     catch(error){
         res.status(400).json({error:error.message})
     }
-   
+}
+    const getCourseViews = async (req, res) => {
+        const cId=req.query.cId
+        try{
+        const course= await courses.findById(cId)
+        let v=course.Views
+        v=v+1
+        course.Views=v
+        const val = await course.save();
+        res.status(200).json(val);
+    }
+        catch(error){
+            res.status(400).json({error:error.message})
+        }
 }
    
-module.exports={getCourses,createCourses,viewCourses,addCourseRating}
+module.exports={getCourseViews,getCourses,createCourses,viewCourses,addCourseRating}

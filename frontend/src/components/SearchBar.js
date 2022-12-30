@@ -33,6 +33,9 @@ function SearchBar({placeHolder}) {
                 console.log(courses)
                 setCourses(courses)
             })
+            .catch(function (error) {
+                console.log(error.toJSON());
+              });
     };
     const clear =()=>{
         setCourses([])
@@ -42,7 +45,7 @@ function SearchBar({placeHolder}) {
 
 
         getCourses() 
-       },[]);
+       },[word]);
   
   return (
     <div className="search">

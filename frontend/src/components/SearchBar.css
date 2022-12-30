@@ -1,6 +1,5 @@
 .searchInputs {
     margin-top: 105px;
-    display: flex;
   }
   
   .search input {
@@ -13,14 +12,18 @@
     padding: 15px;
     height: 30px;
     width: 300px;
+   display:inline; 
   }
   
   .searchIcon {
     height: 60px;
     width: 50px;
-    background-color: white;
     display: grid;
+    padding: 15px;
+
     place-items: center;
+    display:inline; 
+
   }
   
   input:focus {
