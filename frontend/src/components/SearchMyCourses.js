@@ -46,7 +46,7 @@ function SearchMyCourses({placeHolder}) {
 
 
         getCourses() 
-       });
+       },[word]);
   
   return (
     <div className="search">
@@ -58,7 +58,7 @@ function SearchMyCourses({placeHolder}) {
     <div className="dataResult">
     {courses.map((course)=> {
         return(
-         <a className="dataItem" >
+            <a className="dataItem" onClick={() => window.location.href=`/Courses?cId=${course._id}`} >
             <p key={course._id}> {course.title}</p>
             </a>)
     })}

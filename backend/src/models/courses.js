@@ -93,6 +93,10 @@ const coursesSchema = new mongoose.Schema(
         type: Number,
         required: false,
       },
+      Views: {
+        type: Number,
+        default: 0
+      },
   
       mcqExam: [{
         type: mongoose.Schema.Types.ObjectId,
