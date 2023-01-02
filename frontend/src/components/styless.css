@@ -1,0 +1,29 @@
+.refundBtn {
+    background-color: grey;
+    width: 150px;
+    border: none;
+    /* margin: 0 auto; */
+  }
+  
+  .refund {
+    margin-top: 20px;
+  }
+  
+  .shorter {
+    margin-left: 10px;
+    height: 20px;
+  }
+  
+  .space {
+    width: 900px;
+  }
+  
+  .filterBtnn {
+    width: 70px;
+    border: none;
+    background-color: grey;
+  }
+  
+  .lower {
+    margin-top: 20px;
+  }
