@@ -1,10 +1,13 @@
 import * as React from 'react';
+import ReactPlayer from 'react-player'
 import { styled } from '@mui/material/styles';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
+import WriteNotes from './WriteNotes';
+import { useParams } from 'react-router-dom';
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -42,7 +45,26 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));const ViewSubtitles=({subtitle})=> {
     const [expanded, setExpanded] = React.useState('panel1');
-
+    const { id, id1 } = useParams();
+    const videoClick = async (videoid) => {
+        try {
+          //console.log("hiiiiiiiiiiiiiiiii");
+          const response = await fetch(
+            `http://localhost:7007/corporatetrainee/watchvideo?traineeId=${id}&courseId=${id1}&videoId=${videoid}`,
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          );
+          const result = await response.json();
+          console.log(result);
+        } catch (error) {
+          console.error(error);
+        }
+      };
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -50,17 +72,26 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
       
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">{subtitle.SubName}</AccordionSummary>
+       
         <AccordionDetails>
-        {subtitle.SubName}
-        <iframe
-      width="560"
-      height="315"
-      src={subtitle.Video[0].youtube_video_link
+        <ReactPlayer
+          width="640px"
+          height="360px"
+          url={subtitle.Video[0].youtube_video_link}
+          title="Youtube Player"
+          controls="true"
+          frameborder="0"
+          allowFullScreen
+          onEnded={() => videoClick(subtitle.Video[0]._id)}
+        /> <WriteNotes/></AccordionDetails>
+    <AccordionDetails>
+    Video Description: {subtitle.Video[0].description
       }
-      title="Youtube Player"
-      frameborder="0"
-      allowFullScreen
-    /> {subtitle.totalHours}</AccordionDetails>
+    </AccordionDetails>
+    
+         <AccordionDetails>
+        Duration: {subtitle.durationSub} Hours
+    </AccordionDetails>
     
       
     </Accordion>

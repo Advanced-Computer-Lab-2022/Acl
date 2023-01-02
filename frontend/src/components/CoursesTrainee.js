@@ -11,7 +11,9 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import React from 'react';
-import { EditOutlined, EllipsisOutlined, SettingOutlined,DownloadOutlined  } from '@ant-design/icons';
+import StarsIcon from '@mui/icons-material/Stars';
+
+import { EditOutlined, EllipsisOutlined, SettingOutlined,DownloadOutlined,QuestionCircleOutlined  } from '@ant-design/icons';
 import { Avatar, Card,Row,Col } from 'antd';
 import { useEffect } from "react";
 const { Meta } = Card;
@@ -43,6 +45,7 @@ const CoursesTrainee = () => {
   //       });
   //   };
   // };
+  
   const onButtonClick = () => {
     // using Java Script method to get PDF file
     axios.get("/controllers/ACertificate.pdf",
@@ -113,8 +116,10 @@ const CoursesTrainee = () => {
               actions={[
                 <a href=""><SettingOutlined key="setting" href=""/></a>,
                 <a href=""><EditOutlined key="edit" href=""/></a>,
-                <EllipsisOutlined key="ellipsis" />,
+                <StarsIcon key="star" onClick={() =>navigate(`/individualtrainee/RateCourse/${course._id}`)}/>,
+                <a href={`/individualtrainee/ReportProbindiv/${id}?courseId=${course._id}`}><QuestionCircleOutlined  key="report" title='Report Course'/></a>,
                 <DownloadOutlined key="download" onClick={onButtonClick}/>
+                
               ]}
             >
              
@@ -123,8 +128,7 @@ const CoursesTrainee = () => {
                 title={course.title}
                 description={course.Subject}
               
-            
-                onClick={() =>
+            onClick={() =>
                   (window.location.href = `./${trainee._id}/${course._id}`)
                 }
                 key={course._id}

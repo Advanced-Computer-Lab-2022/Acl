@@ -73,7 +73,9 @@ const coursesSchema = new mongoose.Schema(
         required: false },
     ratingCounter:{
       type:Number,
+      default:0,
       required: false},
+       Review:[String],
       Subject: {
         type: String,
         required: false,
@@ -87,8 +89,13 @@ const coursesSchema = new mongoose.Schema(
       numOfVisitors: {
         type: Number,
         required: false,
+        
       },
-  
+      numOfEnrolledStudents: {
+        type: Number,
+        required: false,
+        
+      },
       mcqExam: [{
         type: mongoose.Schema.Types.ObjectId,
         ref:'mcqexams',

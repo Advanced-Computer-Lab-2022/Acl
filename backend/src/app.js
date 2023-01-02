@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+var async = require('async');
 const mongoose = require("mongoose");
 const Instructor = require("./models/instructor.model");
 const corporateTraineeC= require("./models/cortrainee.model");
@@ -19,6 +20,8 @@ const individualTraineeRoutes = require("./routes/individualTrainee.routes");
 const sessions = require('express-session');
 const bcrypt1 = require('bcrypt')//hash for password
 const jwt = require('jsonwebtoken');
+var nodemailer = require('nodemailer');
+var crypto = require('crypto');
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
@@ -78,12 +81,259 @@ const signUp = async (req, res) => {
       const token = createToken(user.username);
 
       res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-      res.status(200).json(`/indiviualtrainee/${user.id}`)
+      res.status(200).json(`/individualtrainee/${user.id}`)
   } }catch (error) {
       res.status(400).json({ error: error.message })
   }
 }
+const forgetPassPost=async(req,res) =>{
+  const {email}=req.body
+  try {
+    var m=0;
+      user =await Instructor.findOne({email})
+      user1=await Instructor.findOne({email})
+      if (user){
+        user=await Instructor.findOne({email})
+        m=0
+      // x=await Instructor.findOne({email},'FirstTime')
+      }if(!user){
+      user =await indTrainee.findOne({email})
+      m=1}
+       if(!user){
+        user =await corporateTraineeC.findOne({email})
+        m=2}
+        if(!user){
+          m=6
+        }
 
+if (m==1)
+{
+    {
+  console.log(m+"jaskjk")
+  async.waterfall(
+    [
+      function (done) {
+        crypto.randomBytes(20, function (err, buf) {
+          var token = buf.toString("hex");
+          done(err, token);
+          
+        });
+      },
+      function (token, done) {
+        
+        indTrainee.findOne({ email: email }, function (err, user) {
+          if (!user) {
+            req.flash("error", "No account with that email address exists.");
+            return res.redirect("/forgot");
+          }
+
+          user.resetPasswordToken = token;
+          user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+          user.save(function (err) {
+            done(err, token, user);
+          });
+        });
+      },
+      function (token, user, done) {
+        //let testAccount =nodemailer.createTestAccount();
+        //clientID     459689521337-pkpimajok78e5f00jhlubvtr28smvm0p.apps.googleusercontent.com
+        // create reusable transporter object using the default SMTP transport
+        console.log(user)
+        let transport = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            type: "OAuth2",
+            user: process.env.user,
+            pass: process.env.pass,
+            clientId: process.env.clientId,
+            clientSecret: process.env.clientSecret,
+            refreshToken: process.env.refreshToken,
+            //accessToken:"ya29.a0AeTM1ieMVZBpenPBICXA6zFObVV3zENDTYEAiEMRxQutN09Fmw1aiKnsYXqWH8z1VZHkOP-X6D4bwwivH91txfzPC730fkVQYNZYlimvuvhHNGxN7LDcavYBWEfDCxB7YGo-vkH44C6yjXqLlYb8t3wa17uFaCgYKAa0SARESFQHWtWOmDzsiOVBe6Tm3hh0v15kMsQ0163"
+          },
+        });
+        var mailOptions = {
+          to: user.email,
+          from: "kikomarco12345@gmail.com",
+          subject: "Node.js Password Reset",
+          text:
+            "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
+            "Please click on the following link, or paste this into your browser to complete the process:\n\n" +
+            "" +
+            "l" +
+            "ocalhost" +
+            ":3000/indiviual/reset/" +
+            token +
+            "\n\n" +
+            "If you did not request this, please ignore this email and your password will remain unchanged.\n",
+        };
+        transport.sendMail(mailOptions, function (error, response) {
+          if (error) {
+            console.log(error);
+          } else {
+            
+            return res.status(200).json("we have send an email to you to reset your Password")
+          console.log("Message sent: " + response.message);
+          }
+        });
+      },
+    ],
+    function (err) {
+      if (err) return  res.status(400).json(err);
+      //res.redirect('/forgot');
+      return res.status(200).json(email);
+    }
+  );
+};}
+else if(m==0)
+{ {
+  async.waterfall([
+    function(done) {
+      crypto.randomBytes(20, function(err, buf) {
+        var token = buf.toString('hex');
+        done(err, token);
+      });
+    },
+    function(token, done) {
+      Instructor.findOne({ email: email }, function(err, user) {
+        if (!user) {
+          req.flash('error', 'No account with that email address exists.');
+          return res.redirect('/forgot');
+        }
+
+        user.resetPasswordToken = token;
+        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+        user.save(function(err) {
+          done(err, token, user);
+        });
+      });
+    },
+    function(token, user, done) {
+       //let testAccount =nodemailer.createTestAccount();
+//clientID     459689521337-pkpimajok78e5f00jhlubvtr28smvm0p.apps.googleusercontent.com
+// create reusable transporter object using the default SMTP transport
+
+let transport= nodemailer.createTransport({
+service: 'gmail',
+ auth: {
+   type: 'OAuth2',
+   user: process.env.user,
+   pass: process.env.pass,
+   clientId: process.env.clientId,
+   clientSecret: process.env.clientSecret,
+   refreshToken:process.env.refreshToken
+   //accessToken:"ya29.a0AeTM1ieMVZBpenPBICXA6zFObVV3zENDTYEAiEMRxQutN09Fmw1aiKnsYXqWH8z1VZHkOP-X6D4bwwivH91txfzPC730fkVQYNZYlimvuvhHNGxN7LDcavYBWEfDCxB7YGo-vkH44C6yjXqLlYb8t3wa17uFaCgYKAa0SARESFQHWtWOmDzsiOVBe6Tm3hh0v15kMsQ0163"
+ },
+});
+      var mailOptions = {
+        to: user.email,
+        from: 'kikomarco12345@gmail.com',
+        subject: 'Node.js Password Reset',
+        text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+          '' +'l'+'ocalhost' + ':3000/instructor/reset/' + token + '\n\n' +
+          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+      };
+      transport.sendMail(mailOptions, function(error, response){
+       if(error){
+           console.log(error);
+       }else{
+           console.log("Message sent: " + response);
+           return res.status(200).json("we have send an email to you to reset your Password")
+          }
+      });
+    }
+  ], function(err) {
+    if (err) return res.status(400).json(err);
+    //res.redirect('/forgot');
+    return res.status(200).json(email)
+  });
+};}
+else if(m==2)
+{ {
+  async.waterfall(
+    [
+      function (done) {
+        crypto.randomBytes(20, function (err, buf) {
+          var token = buf.toString("hex");
+          done(err, token);
+        });
+      },
+      function (token, done) {
+        corporateTraineeC.findOne(
+          { email: email },
+          function (err, user) {
+            if (!user) {
+              //  req.flash('error', 'No account with that email address exists.');
+              return res.redirect("/forgot");
+            }
+
+            user.resetPasswordToken = token;
+            user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+            user.save(function (err) {
+              done(err, token, user);
+            });
+          }
+        );
+      },
+      function (token, user, done) {
+        let testAccount = nodemailer.createTestAccount();
+        //clientID     459689521337-pkpimajok78e5f00jhlubvtr28smvm0p.apps.googleusercontent.com
+        // create reusable transporter object using the default SMTP transport
+        let transport = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            type: "OAuth2",
+            user: process.env.user,
+            pass: process.env.pass,
+            clientId: process.env.clientId,
+            clientSecret: process.env.clientSecret,
+            refreshToken: process.env.refreshToken,
+            //accessToken:"ya29.a0AeTM1ieMVZBpenPBICXA6zFObVV3zENDTYEAiEMRxQutN09Fmw1aiKnsYXqWH8z1VZHkOP-X6D4bwwivH91txfzPC730fkVQYNZYlimvuvhHNGxN7LDcavYBWEfDCxB7YGo-vkH44C6yjXqLlYb8t3wa17uFaCgYKAa0SARESFQHWtWOmDzsiOVBe6Tm3hh0v15kMsQ0163"
+          },
+        });
+        var mailOptions = {
+          to: user.email,
+          from: "kikomarco12345@gmail.com",
+          subject: "Node.js Password Reset",
+          text:
+            "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
+            "Please click on the following link, or paste this into your browser to complete the process:\n\n" +
+            "" +
+            "l" +
+            "ocalhost" +
+            ":3000/corporatetrainee/reset/" +
+            token +
+            "\n\n" +
+            "If you did not request this, please ignore this email and your password will remain unchanged.\n",
+        };
+        transport.sendMail(mailOptions, function (error, response) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log("Message sent: " + response.message);
+          return res.status(200).json("we have send an email to you to reset your Password")
+          }
+        });
+      },
+    ],
+    function (err) {
+      if (err) return res.status(400).json(err);
+      res.redirect("/forgot");
+    }
+  );
+};}
+else if(m==6){
+  res.status(400).json('No account with that email address exists.');
+          
+}
+
+} catch (error) {
+return res.status(400).json({ error: error.message })
+}
+}
 const login = async (req, res) => {
   // TODO: Login the user
   const {username, password} = req.body;
@@ -189,4 +439,5 @@ app.use("/corporatetrainee", corporateTraineeRoutes);
 app.post('/login', login)
 app.post('/signUp', signUp)
 app.get('/logout', logout)
+app.post('/forgetPassPost',forgetPassPost)
 

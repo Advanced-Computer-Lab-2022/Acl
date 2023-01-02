@@ -16,5 +16,25 @@ router.get('/getcortraineereports',adminCtrl.getAllCorporateReports)
 router.get('/getindividualreports',adminCtrl.getAllIndividualeReports)
 router.get('/getinstructorreports',adminCtrl.getAllInstructorReports)
 router.post('/markProblem',adminCtrl.markProblems1)
+router.patch('/:id', async (req, res) => {
+    try {
+      const id = req.params.id;
+      const status = req.body.status;
+      const updatedReport = await Report.findOneAndUpdate(
+        { _id: id },
+        { status: status },
+        { new: true }
+      );
+      console.log(status)
+      if (!updatedReport) {
+        return res.status(400).json({ error: 'Report not found' });
+      }
+      res.status(200).json(updatedReport);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Server error');
+    }
+  });
+router.get("/viewalladmin/:id",adminCtrl.viewAllCourses)
 module.exports = router
 

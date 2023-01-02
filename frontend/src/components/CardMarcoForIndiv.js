@@ -4,9 +4,11 @@ import React from 'react';
 import { Button } from 'react-bootstrap'
 import Col from 'react-bootstrap/Col';
 import { useNavigate } from "react-router-dom";
-
+import { useParams } from 'react-router-dom';
 const CardMarcoForIndiv = ({course}) => {
     const navigate = useNavigate();
+    const { id } = useParams();
+    console.log(course.discount)
     return (
     <CardGroup>
         
@@ -32,6 +34,10 @@ const CardMarcoForIndiv = ({course}) => {
         </Card.Footer>
         <Card.Footer>
           <small className="text-muted">{(course.discount.discountamount)}
+          </small>
+        </Card.Footer>
+        <Card.Footer>
+          <small className="text-muted">{course.rating.$numberDecimal}
           </small>
         </Card.Footer>
       </Card>

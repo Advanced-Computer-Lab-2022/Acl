@@ -197,6 +197,8 @@ const Login1 = () => {
             </div>
             <button type="submit" class="form__button">Login</button>
             {error && <div className="error">{error}</div>}
+            <a href="/reset"><span class="form__switch">
+              Forget Password </span></a>
             <span class="form__switch">
               don't have an account? <a href="/signUp">Sign Up</a>
             </span>

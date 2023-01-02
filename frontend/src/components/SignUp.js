@@ -2,6 +2,7 @@ import { useState } from "react";
 // const { useState } = require("react");
 import{useParams} from 'react-router-dom';
 import {useNavigate } from 'react-router-dom';
+import ContractForm from "./ContractForm";
 import "./styles.css";
 const SignUp = () => {
   const navigate=useNavigate();
@@ -128,7 +129,7 @@ onChange={(e) => setGender(e.target.value)}
 <button type="submit" class="form__button">Sign Up</button>
             {error && <div className="error">{error}</div>}
             <span class="form__switch">
-              Alreadey have an account?<a href="/login">Login</a>
+              Already have an account?<a href="/login">Login</a>
             </span>
     
     </form>

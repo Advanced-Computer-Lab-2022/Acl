@@ -13,7 +13,7 @@ const ResetPass = () => {
 
     const admin = {password};
      console.log({token})
-    const response = await fetch(`/indivualtrainee/reset/${token}`, {
+    const response = await fetch(`/indiviualtrainee/reset/${token}`, {
       method: "POST",
       body:JSON.stringify(admin),
       headers: {

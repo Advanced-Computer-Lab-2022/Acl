@@ -1,0 +1,104 @@
+/* Remove browser defaults */
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+   
+  /* Style App.js wrapper */
+ 
+  /* Tab Container */
+  .Tabs {
+    width: 100%;
+    height: auto;
+    align-content: center;
+    min-height: 400px;
+    background: #ffffff;
+    margin: 3.5rem auto 1.5rem;
+    padding: 2rem 1rem;
+    color: #000000;
+    border-radius: 2rem;
+  }
+   
+  .react-tabs {
+    -webkit-tap-highlight-color: transparent;
+  }
+   
+  .react-tabs__tab-list {
+    width: 60%;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #000000;
+    border-radius: 0rem;
+    padding-left: 0px;
+
+  }
+   
+  .react-tabs__tab {
+    width: 50%;
+    padding: 1rem;
+    list-style: none;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.4s;
+  }
+   
+  .react-tabs__tab--selected {
+    background: #000000;
+    color: #ffffff;
+  }
+   
+  .react-tabs__tab--disabled {
+    color: GrayText;
+    cursor: default;
+  }
+   
+  .react-tabs__tab:hover {
+    background: rgba(0, 0, 0, 0.15);
+    
+  }
+   
+  .react-tabs__tab:first-child {
+    border-bottom-left-radius: 0rem;
+    border-top-left-radius: 0rem;
+  }
+   
+  .react-tabs__tab:last-child {
+    border-bottom-right-radius: 0rem;
+    border-top-right-radius: 0rem;
+  }
+   
+  .react-tabs__tab-panel {
+    display: none;
+  }
+   
+  .react-tabs__tab-panel--selected {
+    display: block;
+    font-size: 2rem;
+    text-align: center;
+  }
+  .form__input .bars {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .1);
+    width: 100%;
+    height: 1px;
+  }
+  
+  .form__input .bars::before {
+    content: "";
+    position: absolute;
+    background-color: #1a73e8;
+    width: 100%;
+    height: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .5s;
+  }
+  
+  .form__input>input:focus+.bars::before {
+    transform: scaleX(1);
+  } 

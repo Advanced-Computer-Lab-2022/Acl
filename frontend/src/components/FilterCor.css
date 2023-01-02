@@ -1,0 +1,19 @@
+.filterOut {
+    justify-content: center;
+    margin-top: -150px;
+  }
+  
+  .filter {
+    margin-right: 20px;
+    /* position: absolute; */
+    width: 800px;
+    justify-content: center;
+  }
+  
+  .filterBtn {
+    width: 200px;
+  }
+  
+  .filterPrice {
+    width: 10px;
+  }

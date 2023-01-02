@@ -46,11 +46,13 @@ corporateTraineeCtrl.buildPDF(
    
 });
 router.post("/calculateavgrating",corporateTraineeCtrl.calculateAverageRating);
-router.put("rateinstructor",corporateTraineeCtrl.rateInstructor);
-
+router.patch("/rateinstructor/:id",corporateTraineeCtrl.rateInstructor);
+router.get("/getInst/:id",corporateTraineeCtrl.GetInst)
+router.patch("/rateCourse/:id",corporateTraineeCtrl.rateCourse);
+router.get("/getCourse/:id",corporateTraineeCtrl.getCourse)
 
 router.post("/calculateavgrating",coursesCtrl.calculateAverageRating);
-router.put("ratecourse",coursesCtrl.rateCourse)
+
 module.exports = router;
 //new
 

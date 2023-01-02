@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import "./Search.css";
 import axios from "axios";
 import Table from "./Table";
-
+import "bootstrap";
+import CardMarco from "./CardMarco";
+import SearchCard from "./SearchCard";
 function SearchForCourse() {
     const [query, setQuery] = useState("");
   const [data, setData] = useState([]);
@@ -13,6 +15,9 @@ function SearchForCourse() {
       setData(data.data);
     };
     if ( query.length > 1) fetchData();
+    else{
+      setData([]);
+    }
   }, [query]);
   
 
@@ -23,7 +28,14 @@ function SearchForCourse() {
           placeholder="Search..."
           onChange={(e) => setQuery(e.target.value.toLowerCase())}
           />
-    {<Table data={data} />}
+    <div>
+        {data &&
+          data.map((course) => {
+            if (course != "") {
+              return <SearchCard key={course._id} course={course} />;
+            }
+          })}
+      </div>
         </div>
       );
     }

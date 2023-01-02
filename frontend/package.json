@@ -33,9 +33,11 @@
     "react-final-form": "^6.5.9",
     "react-icon": "^1.0.0",
     "react-icons": "^4.7.1",
+    "react-player": "^2.11.0",
     "react-rating-stars-component": "^2.2.0",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
+    "react-tabs": "^6.0.0",
     "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4"
   },

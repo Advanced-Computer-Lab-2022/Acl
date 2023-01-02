@@ -12,14 +12,15 @@ var LocalStrategy = require("passport-local").Strategy;
 var bcrypt = require("bcrypt-nodejs");
 const bcrypt1 = require('bcrypt')//hash for password
 const jwt = require('jsonwebtoken');
-
+var Instructor=require("../models/instructor.model")
 var async = require("async");
 var reports = require("../models/report");
 var crypto = require("crypto");
 var access = require("../models/access.model");
 PDFDocument = require('pdfkit');
 require("dotenv").config();
-
+var rateValue=0;
+var rateValueCourse=0;
 const ChangePass = async (req, res) => {
   const { id } = req.params;
   const password = req.body.password;
@@ -56,6 +57,27 @@ const ChangePass = async (req, res) => {
     res.status(400).json({ error: error.me });
   }
 };
+const getCourse = async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+   const resu=await courses.findById(id)
+    return res.status(200).json(resu)}
+  catch (error) {
+      return res.status(400).json({ error: error.me });
+    }
+  }
+
+const GetInst = async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+   const resu=await Instructor.findById(id)
+    return res.status(200).json(resu)}
+  catch (error) {
+      return res.status(400).json({ error: error.me });
+    }
+  }
 // const filterAllCoursesSubject = async(req,res)=> {
 //     console.log("hi");
 //      try{
@@ -125,6 +147,8 @@ const viewCourse = async (req, res) => {
 };
 
 var isoCountryCurrency = require("iso-country-currency");
+const { number } = require("mathjs");
+const IndividualTrainee = require("../models/individualTrainee.model");
 
 const selectcountry = async (req, res) => {
   const country = req.body.country;
@@ -342,6 +366,7 @@ const forgetPassPost = async (req, res, next) => {
   );
 };
 const resetPost = async (req, res) => {
+  try{
   async.waterfall(
     [
       function (done) {
@@ -350,13 +375,14 @@ const resetPost = async (req, res) => {
             resetPasswordToken: req.params.token,
             resetPasswordExpires: { $gt: Date.now() },
           },
-          function (err, user) {
+          async function (err, user) {
             if (!user) {
               //req.flash('error', 'Password reset token is invalid or has expired.');
               //return res.redirect('back');
             }
-
-            user.password = req.body.password;
+            const salt = await bcrypt1.genSalt();
+            const hashedPassword = await bcrypt1.hash(req.body.password, salt);
+           user.password = hashedPassword;
             user.resetPasswordToken = undefined;
             user.resetPasswordExpires = undefined;
 
@@ -392,7 +418,7 @@ const resetPost = async (req, res) => {
             " has just been changed.\n",
         };
         smtpTransport.sendMail(mailOptions, function (err) {
-          req.flash("success", "Success! Your password has been changed.");
+          return res.status(200).json( "Success! Your password has been changed.");
           done(err);
         });
       },
@@ -401,6 +427,13 @@ const resetPost = async (req, res) => {
       res.redirect("/");
     }
   );
+  return res.status(200).json( "Success! Your password has been changed.");
+} catch (error) {
+  return res.staus(400).json(
+               
+    "Password reset token is invalid or has expired."
+  );
+  }
 };
 const reset = async (req, res) => {
   corporateTraineeC.findOne(
@@ -429,21 +462,60 @@ const answerMcq = async (req, res) => {
     examId: examId,
     grade: grade,
   };
-  const Trainee = corporateTraineeC.findOne({ _id: traineeId });
-  for (i = 0; i < Trainee.courses.length; i++) {
-    if (Trainee.courses[i]._id == courseId) {
-      Trainee.courses[i].examGrades.push(data);
-      break;
-    }
-  }
+  const Trainee = await corporateTraineeC.updateOne(
+    { _id: traineeId, "courses._id": courseId },
+    { $push: { "courses.$.examGrades": data } }
+  );
+
+  // const Trainee = corporateTraineeC.findOne({ _id: traineeId });
+  // for (i = 0; i < Trainee.courses.length; i++) {
+  //   if (Trainee.courses[i]._id == courseId) {
+  //     Trainee.courses[i].examGrades.push(data);
+  //     break;
+  //   }
+  // }
   res.status(200).json(Trainee);
 };
-
 const showAnswers = async (req, res) => {
   const examId = req.params.examId;
   // const Exam = await exam.findOne({ _id: examId });
   const reqExam = await exam.findOne({ _id: examId });
   res.status(200).json(reqExam);
+};
+const viewMyInst = async (req, res) => {
+  const { id } = req.params;
+  const myCoursess = [];
+  const myInst = [];
+  // const Exam = await exam.findOne({ _id: examId });
+  const trainee = await corporateTraineeC.findById(id);
+  //console.log(trainee.courses)
+  await Promise.all(
+    trainee.courses.map(async (course) => {
+      const Coursess = await courses.findOne({ _id: course._id }, "Instructor");
+
+      if (!myCoursess.includes(Coursess)) {
+        myCoursess.push(Coursess);
+      }
+    })
+  );
+  await Promise.all(
+    myCoursess.map(async (instr) => {
+      const Instruct = await Instructor.findById(instr.Instructor);
+      //console.log(Instruct)
+      if (!myInst.includes(Instruct)) {
+        myInst.push(Instruct);
+        //console.log(myInst)
+      }
+    })
+  );
+  let uniqueChars = [...new Set(myInst)];
+  let x = [];
+  for (let i = 0; i < uniqueChars.length / 2; i = i + 1) {
+    x[i] = uniqueChars[i];
+  }
+
+  console.log("");
+  res.status(200).json(x);
 };
 const viewMyCourses = async (req, res) => {
   const id = req.params.id;
@@ -466,26 +538,7 @@ const viewMyCourses = async (req, res) => {
   res.status(200).send(myCourses);
 };
 
-const viewProgress = async (req, res) => {
-  const id = req.params.id;
-  const courseId = req.params.courseId;
-  const trainee = await indTrainee.findOne({ _id: id });
-  const courses = trainee.courses;
-  let neededCourse;
-  for (i = 0; i < courses.length; i++) {
-    //console.log(courses[i]);
-    if (courses[i]._id == courseId) {
-      neededCourse = courses[i];
-      //res.status(200).send(courses[i].progress);
-      //console.log(courses[i].progress);
-    }
-  }
-  if (neededCourse.progress == 100) {
-    res.redirect("/corporatetrainee/sendingCertificate");
-  }
 
-  res.status(200).json(neededCourse.progress);
-};
 const report = async (req, res) => {
   const { id } = req.params;
   const { coursename, reportname, type, description } = req.body;
@@ -561,42 +614,61 @@ const requestaccess = async (req, res) => {
     res.status(400).json({ error: error.me });
   }
 };
-
-const watchVideo = async (req, res) => {
-  const traineeId = req.params.traineeId;
-  const CourseId = req.params.courseId;
-  const videoId = req.params.video;
-  const Course = await courses.findOne({ _id: CourseId });
-  const totalVideos = Courses.subtitle.length;
-  const Trainee = await indTrainee.findOne({ _id: traineeId });
-  flagV = 0;
-  let watchedVideos;
-  for (i = 0; i < Trainee.courses.length; i++) {
-    if (courses[i]._id == CourseId) {
-      watchedVideos = courses[i].watchedVideos;
-      oldProgress = courses[i].progress;
+const viewProgress = async (req, res) => {
+  const id = req.params.id;
+  const courseId = req.params.courseId;
+  const trainee = await corporateTraineeC.findOne({ _id: id });
+  const courses = trainee.courses;
+  let neededCourse;
+  for (i = 0; i < courses.length; i++) {
+    //console.log(courses[i]);
+    if (courses[i]._id == courseId) {
+      neededCourse = courses[i];
+      //res.status(200).send(courses[i].progress);
+      //console.log(courses[i].progress);
     }
   }
+
+  res.status(200).json(neededCourse.progress);
+};
+
+const watchVideo = async (req, res) => {
+  const traineeId = req.query.traineeId;
+  const CourseId = req.query.courseId;
+  const videoId = req.query.videoId;
+  const Course = await courses.findOne({ _id: CourseId });
+  //console.log(CourseId);
+  const totalVideos = Course.Subtitle.length;
+  //console.log(Course.Subtitle.length);
+
+  const Trainee = await corporateTraineeC.findOne({ _id: traineeId });
+  //console.log(Trainee.courses);
+
+  flagV = 0;
+  let watchedVideos;
+  Trainee.courses.map((course) => {
+    if (course._id == CourseId) {
+      watchedVideos = course.watchedVideos;
+      oldProgress = course.progress;
+    }
+  });
   for (i = 0; i < watchedVideos.length; i++) {
-    if (watchedVideos[i] == videoId) {
+    if (watchedVideos[i].videoId == videoId) {
       flagV = 1;
     }
   }
   if (flagV == 1) res.status(200).send("You have watched this video before");
-  if (flagV == 0) {
-    const updatedWatchedVideos = await trainee.updateOne(
-      { _id: traineeId, "courses.courseId": CourseId },
-      { $push: { "courses.$.watchedVideos": videoId } }
+  else if (flagV == 0) {
+    const updatedWatchedVideos = await corporateTraineeC.updateOne(
+      { _id: traineeId, "courses._id": CourseId },
+      { $push: { "courses.$.watchedVideos": { videoId } } }
     );
-    const newProgress = ((watchedVideos.length + 1) / totalVideos) * 100;
 
-    const x = await indTrainee.findOneAndUpdate(
-      { _id: traineeId, "courses.courseId": "CourseId" },
-      {
-        $set: {
-          "courses.$.progress": newProgress,
-        },
-      }
+    const newProgress = (watchedVideos.length + 1 / totalVideos) * 100;
+
+    const x = await corporateTraineeC.updateOne(
+      { _id: traineeId, "courses._id": CourseId },
+      { $set: { "courses.$.progress": newProgress } }
     );
     let neededCourse;
     for (i = 0; i < x.courses.length; i++) {
@@ -606,45 +678,76 @@ const watchVideo = async (req, res) => {
     }
 
     if (neededCourse.progress == 100) {
-      res.redirect("/individualtrainee/sendingCertificate");
+      const corporateTraineeId = req.params;
+      //console.log(corporateTraineeId)
+      const corporateTrainee = await corporateTraineeC.findById(
+        corporateTraineeId.id
+      );
+      //console.log(corporateTrainee)
+      const email = corporateTrainee.email;
+
+      await corporateTraineeC
+        .find({ email: email })
+        .then(async (result) => {
+          await corporateTraineeC
+            .findById(result._id)
+            .then((result) => {
+              const mail = {
+                from: process.env.AUTH_EMAIL,
+                to: email,
+                subject: "Certificate",
+                html: `<p>Congratulations you have completed your course. Here is your certificate</p>`,
+                attachments: [
+                  {
+                    filename: "certificate.pdf",
+                    path: "./controllers/certificate.pdf",
+                    contentType: "application/pdf",
+                  },
+                ],
+              };
+
+              let transporter = nodemailer.createTransport({
+                service: "hotmail",
+                auth: {
+                  user: process.env.AUTH_EMAIL,
+                  pass: process.env.AUTH_PASS,
+                },
+              });
+
+              transporter
+                .sendMail(mail)
+                .then(() => {
+                  return res
+                    .status(200)
+                    .json({ status: true, Message: "sent successfully" });
+                })
+                .catch((error) => {
+                  return res.status(400).json({
+                    status: false,
+                    error: error.message,
+                    Message: "Error while sending an email",
+                  });
+                });
+            })
+            .catch((error) => {
+              return res.status(400).json({
+                status: false,
+                error: error.message,
+                Message: "Error while updating the password",
+              });
+            });
+        })
+        .catch((error) => {
+          return res.status(400).json({
+            status: false,
+            error: error.message,
+            Message: "this Email is not found or undefined",
+          });
+        });
     }
     res.status(200).json(x);
   }
 };
-const sendingCertificate = async(req,res)=>{
-  const email = req.body.email;
-  await corporateTrainee.find({email: email}).then(async (result)=>{
-  await corporateTrainee.findById(result._id).then((result)=>{
-      const mail = {
-          from: process.env.AUTH_EMAIL,
-          to: email,
-          subject: "Certificate",
-          html: `<p>Congratulations you have completed your course. Here is your certificate</p>`,
-          attachments: [{filename : "certificate.pdf" , path : './controllers/certificate.pdf', contentType: 'application/pdf'}]
-      }
-  
-      let transporter = nodemailer.createTransport({
-          service: 'hotmail',
-          auth: {
-              user: process.env.AUTH_EMAIL,
-              pass: process.env.AUTH_PASS
-          }
-      })
-  
-      transporter.sendMail(mail).then(()=>{
-          return res.status(200).json({status:true,Message:"sent successfully"})
-      }).catch((error) => {
-          return res.status(400).json({status:false, error:error.message ,Message:"Error while sending an email"})
-      })
-  }).catch((error)=>{
-      return res.status(400).json({status:false, error:error.message,Message:"Error while updating the password"})
-  })
-  }).catch((error)=>{
-      return res.status(400).json({status:false, error:error .message,Message:"this Email is not found or undefined"})
-  });
-  
-  
-  }
 //42
 function buildPDF(dataCallback,endCallback){
   const doc = new PDFDocument();
@@ -660,29 +763,137 @@ const calculateAverageRating= (req, res) =>{
   var newRating=(req.query.newRating);
   var calculatedRating= +oldRating+ +newRating;
 var average =
-calculatedRating /(req.query.ratingCounter);
+calculatedRating /rateValue;
 // const average: $divide : [ ((req.query.rating )+ (req.query.newRating)), (req.query.ratingCounter) ];
 
 res.json(average)
 }
-const rateInstructor= (req, res) =>{
+const rateInstructor=async (req, res) =>{
+const{id}=req.params
+const rating =req.body.rating;
+const review =req.body.review;
+console.log(review)
+rateValue=rateValue+1;
+try{
+const oldRating =await Instructor.findById(id,'rating');
+  console.log(oldRating.rating)
+  var calculatedRating= parseFloat(oldRating.rating.toString()) +parseFloat(rating.toString());
+var average =
+calculatedRating /rateValue;
+console.log(average)
 
-Instructor.findById(req.query.InstructorId).then(instructor => {
-instructor.ratingCounter =req.query.ratingCounter;
-instructor.rating = req.query.rating;
+const x=await Instructor.findByIdAndUpdate(id,
 
-instructor.save()
-.then(() => res.json(instructor))
-.catch(err => res.status(400).json('Error: ' + err));
-})
-.catch(err => res.status(400).json('Error: ' + err));
+{'ratingCounter':rateValue,
+'rating' :average,
+});
+
+const x1=await Instructor.findByIdAndUpdate(id,{ $set: { Review: review }})
+  return res.status(200).json("tamam");
+  //console.log(x);
+} catch (error) {
+  return res.status(400).json({ error: error.message });
 }
 
+
+};
+const rateCourse=async (req, res) =>{
+  const{id}=req.params
+  const rating =req.body.rating;
+  const review =req.body.review;
+ 
+  console.log(review)
+  rateValueCourse=rateValueCourse+1;
+  try{
+    var kiko=0;
+  const oldRating =await courses.findById(id,'rating');
+  if(!oldRating.rating)
+   kiko=0;
+   else 
+   kiko=oldRating.rating
+    console.log(kiko)
+    var calculatedRating= parseFloat(kiko.toString()) +parseFloat(rating.toString());
+  var average =
+  calculatedRating /rateValueCourse;
+  console.log(average)
+  
+  const x=await courses.findByIdAndUpdate(id,
+  
+  {'ratingCounter':rateValueCourse,
+  'rating' :average,
+  });
+  
+  const x1=await courses.findByIdAndUpdate(id , { $set: { Review: review }})
+    return res.status(200).json("tamam");
+    //console.log(x);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+  
+  
+  };
+  const getExam = async (req, res) => {
+    const examId = req.params.examId;
+    const Exam = await exam.findOne({ _id: examId });
+    res.status(200).json(Exam);
+  };
+  
+  const getExams = async (req, res) => {
+    const courseId = req.params.courseId;
+    const course = await courses.findOne({ _id: courseId });
+    const Exams = [];
+    await Promise.all(
+      course.mcqExam.map(async (examid) => {
+        const Exam = await exam.findOne({ _id: examid });
+        Exams.push(Exam);
+      })
+    );
+    res.status(200).send(Exams);
+  };
+  const findCoursesBasedOn1 = async (req, res) => {
+    try {
+      const co = "";
+      const { q } = req.query;
+      let result = [];
+      const coursesGiv = await Instructor.findOne({ name: q }, "coursesGiven");
+      if (coursesGiv) {
+        co = await courses.findOne({ id: coursesGiv });
+      }
+      const Courses = await courses.find({
+        $or: [
+          { title: { $regex: q, $options: "i" } },
+          { Subject: { $regex: q, $options: "i" } },
+        ],
+      });
+      courses.map((course) => {
+        if (course != "") result.push(course);
+      });
+  
+      console.log(co);
+      console.log(Courses);
+      //console.log(coursesGiv)
+      return res.status(200).json(Courses.concat(co));
+      // return res.status(200).json(result);
+  
+      // return res.status(200).json(ayhaga)
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  };
+  const getTrainee = async (req, res) => {
+    const id = req.params.id;
+    const trainee = await corporateTraineeC.findOne({ _id: id });
+    res.status(200).json(trainee);
+  };
 module.exports = {rateInstructor,calculateAverageRating,saveData,findCoursesBasedOn,
   ChangePass,
+  GetInst,
   filterAllCoursesBySubject,
   finddCourses,
   findmyCourses,
+  viewMyInst,
+  getTrainee,
+  rateCourse,
   viewall,
   viewCourse,
   selectcountry,
@@ -698,9 +909,13 @@ module.exports = {rateInstructor,calculateAverageRating,saveData,findCoursesBase
   followups,
   requestaccess,
   viewMyCourses,
+  getCourse,
   viewProgress,
   watchVideo,
   answerMcq,
   buildPDF,
-  sendingCertificate
+  sendingCertificate,
+  getExam,
+  getExams,
+  findCoursesBasedOn1
 };

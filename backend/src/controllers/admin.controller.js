@@ -246,6 +246,18 @@ const getAllInstructorReports = async (req,res) =>{
 
 }
 }
+const updateReportStatus = async (reportId, newStatus) => {
+  try {
+    const result = await Reports.findByIdAndUpdate(reportId, { status: newStatus });
+    if (!result) {
+      return res.status(400).json("could not update status for report with id ${reportId}");
+    }
+    return res.status(200).json(result) ;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 const markProblems1= async (req,res)=>{
   const statusss=req.body.status;
   Report1=req.query.id;
@@ -259,10 +271,13 @@ res.status(200).json(problem)
       res.status(400).json({ error: error.message })
   }
 }
+
 module.exports = {
   createInstructor,
   createCorTrainee,
   createAdmin,
+  updateReportStatus,
+  viewAccessRequests,
   approveRefund,
   declineRefund,
   viewRefundRequests,

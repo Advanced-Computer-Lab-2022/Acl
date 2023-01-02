@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
-//import "./ExamForm.css";
+import "./ExamForm.css";
 
 function ExamForm() {
   // Properties
@@ -12,10 +14,16 @@ function ExamForm() {
   const navigate = useNavigate();
 
   const params = new URLSearchParams(window.location.search);
-  const examId = params.get("examId");
+  const { examId } = useParams();
+  console.log(examId);
+  const { id } = useParams();
+  const { courseId } = useParams();
 
-  const onClick1 = () => {
-    navigate(`/corporatetrainee/showAnswers?examId=${examId}`);
+  const onClick1 = async () => {
+    await axios.post(
+      `http://localhost:7007/corporatetrainee/submit/${id}/${courseId}/${examId}/${score}`
+    );
+    navigate(`/corporatetrainee/showAnswers/${id}/${courseId}/${examId}`);
   };
   //const questions = [];
   // console.log(examId);
@@ -86,7 +94,9 @@ function ExamForm() {
                 {(score / mcq.length) * 100}
                 %)
               </h2>
-              <button onClick={onClick1}>Show Solutions</button>
+              <button class="examBtn" onClick={onClick1}>
+                Show Solutions
+              </button>
             </div>
           )
         : mcq && (
@@ -99,17 +109,29 @@ function ExamForm() {
               <h3 className="question-text">{mcq[currentQuestion].question}</h3>
 
               {/* List of possible answers  */}
-              <ul>
-                <li onClick={() => optionClicked(mcq[currentQuestion].choice1)}>
+              <ul class="examUl">
+                <li
+                  class="examLi"
+                  onClick={() => optionClicked(mcq[currentQuestion].choice1)}
+                >
                   {mcq[currentQuestion].choice1}
                 </li>
-                <li onClick={() => optionClicked(mcq[currentQuestion].choice2)}>
+                <li
+                  class="examLi"
+                  onClick={() => optionClicked(mcq[currentQuestion].choice2)}
+                >
                   {mcq[currentQuestion].choice2}
                 </li>
-                <li onClick={() => optionClicked(mcq[currentQuestion].choice3)}>
+                <li
+                  class="examLi"
+                  onClick={() => optionClicked(mcq[currentQuestion].choice3)}
+                >
                   {mcq[currentQuestion].choice3}
                 </li>
-                <li onClick={() => optionClicked(mcq[currentQuestion].choice4)}>
+                <li
+                  class="examLi"
+                  onClick={() => optionClicked(mcq[currentQuestion].choice4)}
+                >
                   {mcq[currentQuestion].choice4}
                 </li>
               </ul>
@@ -120,7 +142,3 @@ function ExamForm() {
 }
 
 export default ExamForm;
-
-// /*
-// <h3 className="solution-text">{solutions[currentQuestion].toString()}</h3>
-// */

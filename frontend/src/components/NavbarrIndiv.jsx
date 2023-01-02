@@ -23,6 +23,7 @@ export default function Navbar() {
 
   const showSidebar = () => setSidebar(!sidebar);
   const{id}=useParams();
+  console.log(id)
   const [isExpanded, setExpendState] = useState(false);
   const menuItems = [
     {

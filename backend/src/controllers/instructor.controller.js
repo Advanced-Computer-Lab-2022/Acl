@@ -171,7 +171,7 @@ const FindMyStudents = async (req, res) => {
     /*
      */
     const Course = await courses.findOne({Instructor:instructor,title:specificCourse});
-    const total=0;
+    var total=0;
    const trainee=await IndividualTrainee.find({"courses.courseId":Course.id})
    const traineeCorp=await corporateTrainee.find({"courses.courseId":Course.id})
    total=trainee.length+traineeCorp.length
@@ -774,22 +774,23 @@ service: 'gmail',
       });
     }
   ], function(err) {
-    if (err) return next(err);
-    //res.redirect('/forgot');
-    return res.status(200).json(email)
+    
   });
 };
 const resetPost= async(req, res)=> {
+  try{
   async.waterfall([
     function(done) {
-      Instructor.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+      Instructor.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } },async function(err, user) {
         if (!user) {
           console.log("ghalat")
           //req.flash('error', 'Password reset token is invalid or has expired.');
           //return res.redirect('back');
         }
-      
-        user.password = req.body.password;
+        const salt = await bcrypt1.genSalt();
+        const hashedPassword = await bcrypt1.hash(req.body.password, salt);
+        
+              user.password = hashedPassword;
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
 
@@ -821,13 +822,22 @@ const resetPost= async(req, res)=> {
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
       };
       smtpTransport.sendMail(mailOptions, function(err) {
-        req.flash('success', 'Success! Your password has been changed.');
         done(err);
+        
       });
     }
   ], function(err) {
-    res.redirect('/');
+   console.log("error")
   });
+  return res.status(200).json( "Success! Your password has been changed.");
+          
+} catch (error) {
+  return res.staus(400).json(
+               
+    "Password reset token is invalid or has expired."
+  );
+  }
+  
 };
 const reset= async(req, res)=> {
   Instructor.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {

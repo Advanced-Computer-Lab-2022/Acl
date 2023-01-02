@@ -21,7 +21,14 @@ const corporateTraineeSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "courses",
           required: false,
-        },
+        },watchedVideos: [
+          {
+            videoId: {
+              type: mongoose.Schema.Types.ObjectId,
+              required: false,
+            },
+          },
+        ],
         progress: {
           type: Number,
           default:0,

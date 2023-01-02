@@ -1,7 +1,54 @@
 const courses = require('../models/courses');
 const instructor =require('../models/instructor.model')
-
-
+//mst viewed
+const SortMostPopular= async (req, res) => {
+    
+    try {
+    const Courses = await courses.find().sort({numOfVisitors:-1});
+    
+        console.log(Courses)
+        return res.status(200).json(Courses);
+      
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
+    
+  };
+  const SortMostEnrolled= async (req, res) => {
+    
+    try {
+    const Courses = await courses.find().sort({numOfEnrolledStudents:-1});
+    
+        console.log(Courses)
+        return res.status(200).json(Courses);
+      
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
+    
+  };
+const viewCourse = async (req, res) => {
+    const { id } = req.params;
+    try {
+    const Courses = await courses.findById(id);
+    var visitors = Courses.numOfVisitors;
+    if(!visitors){
+        visitors=0;
+    }
+    
+   
+        const courseupdated = await courses.findOneAndUpdate(
+          { _id: id },
+          { numOfVisitors: visitors + 1 }
+        );
+        console.log(courseupdated)
+        return res.status(200).json(courseupdated.numOfVisitors);
+      
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
+    
+  };
 const viewCourses = async (req,res) => {
     try{
         const Courses = await courses.find({"Instructor": req.params.id})
@@ -107,4 +154,4 @@ instructor.save()
 .catch(err => res.status(400).json('Error: ' + err));
 }
    
-module.exports={createCourses,viewCourses,addCourseRating,rateCourse,calculateAverageRating}
+module.exports={SortMostEnrolled,SortMostPopular,createCourses,viewCourses,viewCourse,addCourseRating,rateCourse,calculateAverageRating}

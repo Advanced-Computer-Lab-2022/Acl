@@ -21,7 +21,8 @@ const fs = require("fs");
 PDFDocument = require('pdfkit');
 require("dotenv").config();
 let myCourses = [];
-
+var rateValue=0;
+var rateValueCourse=0;
 var session = require('express-session')
 
 
@@ -50,15 +51,25 @@ const setInstructorId= async (req, res) =>{
 const saveData= async(req,res)=>{
   const {data}=req.body;
   try{
-  fs.writeFileSync("Notes.txt", data,{encoding:"binary"})}
+    fs.writeFileSync(`C:/Users/kiko/Desktop/Notes.txt`, data,{encoding:"binary"})
+    const filePath = `${__dirname}/files`;
+    const fileURL = `${__dirname}/Notes.txt`;
+            // Setting various property values
+            
+            
+            
+  }
     catch(err){
     return res.status(400).json({error: "something Went wrong"})}
     
-
+   return res.status(200).json("you have download your Notes succesfully")
+ 
       console.log("File written successfully\n");
       console.log("The written has the following contents:");
-      console.log(fs.readFileSync("Notes.txt", "utf8"));
-      res.status(200).json(data);
+      console.log(fs.readFileSync(`C:\Users\kiko\Notes.txt`, "utf8"));
+      console.log(`${__dirname}/Notes.txt`);
+      
+      
     }
   
 
@@ -72,17 +83,24 @@ const pay= async(req,res)=>{
   const {email, token } = req.body;
   const Paycourses=req.params.id;
   const course = await courses.findById(Paycourses);
-  //console.log(course)
+  var d=course.numOfEnrolledStudents;
+  if(!d){
+  d=0;}
+  const z = await courses.findByIdAndUpdate(Paycourses,{numOfEnrolledStudents:d+1})
   user=await IndividualTrainee.findOne({email:email,"courses._id":course._id})
   if(user)
     res.status(200).json("you already registered before for this course")
   else{
   const trainee=await IndividualTrainee.findOneAndUpdate({email},{$addToSet:{courses:course}});
   console.log(trainee)
-  console.log(trainee.wallet)
-  var x=(parseFloat(course.price) * 100)-((trainee.wallet)*100)
+  var x1=trainee.wallet
+  if(!x1){
+    x1=0;
+  }
+  console.log(x1)
+  var x=(parseFloat(course.price) * 100)-((x1)*100)
   if(x<0){
-  var y=((trainee.wallet)*100)-(parseFloat(course.price) * 100)}
+  var y=((x1)*100)-(parseFloat(course.price) * 100)}
   else {
   y=0;}
   await IndividualTrainee.findOneAndUpdate({email},{wallet:(y/ 100)});
@@ -98,7 +116,7 @@ const pay= async(req,res)=>{
     return stripe.charges.create({
    //const token1 = req.body.stripeToken;
     // const charge=await stripe.charges.create({
-        amount: (parseFloat(course.price) * 100)-((trainee.wallet)*100),
+        amount: (Math.round(parseFloat(course.price)) * 100)-((x1)*100),
         description: `Payment for USD ${parseFloat(course.price) * 100}`,
         currency: "USD",
         customer: customer.id,
@@ -379,6 +397,7 @@ const forgetPassPost = async (req, res, next) => {
   );
 };
 const resetPost = async (req, res) => {
+  try{
   async.waterfall(
     [
       function (done) {
@@ -387,17 +406,14 @@ const resetPost = async (req, res) => {
             resetPasswordToken: req.params.token,
             resetPasswordExpires: { $gt: Date.now() },
           },
-          function (err, user) {
+          async function (err, user) {
             if (!user) {
               console.log("ghalat");
-              req.flash(
-                "error",
-                "Password reset token is invalid or has expired."
-              );
-              return res.redirect("back");
             }
-
-            user.password = req.body.password;
+            const salt = await bcrypt1.genSalt();
+      const hashedPassword = await bcrypt1.hash(req.body.password, salt);
+      
+            user.password = hashedPassword;
             user.resetPasswordToken = undefined;
             user.resetPasswordExpires = undefined;
 
@@ -433,15 +449,24 @@ const resetPost = async (req, res) => {
             " has just been changed.\n",
         };
         smtpTransport.sendMail(mailOptions, function (err) {
-          req.flash("success", "Success! Your password has been changed.");
           done(err);
+          
         });
       },
     ],
     function (err) {
-      res.redirect("/");
+      console.log("error")
     }
   );
+  return res.status(200).json( "Success! Your password has been changed.");
+          
+} catch (error) {
+  return res.staus(400).json(
+               
+    "Password reset token is invalid or has expired."
+  );
+  }
+  
 };
 const reset = async (req, res) => {
   indTrainee.findOne(
@@ -609,6 +634,35 @@ const viewWallet = async (req, res) => {
   const trainee = await indTrainee.findOne({ _id: id });
   res.status(200).json(trainee.wallet);
 };
+const report = async(req, res)=> {
+  const {id}=req.params
+  let courseId=req.query.courseId
+        const {reportname,type,description}=req.body
+        const c=await courses.findById(courseId)
+        let empty=[];
+        if(!reportname){ 
+          empty.push("reportname")
+      }
+      if(!type){
+          empty.push("type")
+      }
+      if(!description){
+          empty.push("description")
+      }
+      if(empty.length>0){
+        return res.status(400).json({error:'Please fill in the required fields',empty})
+      }
+        try{
+          reports.create({name: reportname, type: type, course:c,individualtrainee:id,Description:description})
+           res.status(200).json(id)
+          console.log(id)
+        }
+  catch(error){
+    res.status(400).json({error:error.me})
+  }
+
+}
+
 
 const viewProgress = async (req, res) => {
   const id = req.params.id;
@@ -630,24 +684,7 @@ const viewProgress = async (req, res) => {
 
   res.status(200).json(neededCourse.progress);
 };
-const report = async (req, res) => {
-  const { id } = req.params;
-  const { coursename, reportname, type, description } = req.body;
-  const c = await courses.findOne({ title: coursename });
-  try {
-    reports.create({
-      name: reportname,
-      type: type,
-      course: c,
-      individualtrainee: id,
-      Description: description,
-    });
-    res.status(200).json(id);
-    console.log(id);
-  } catch (error) {
-    res.status(400).json({ error: error.me });
-  }
-};
+
 const viewreports = async (req, res) => {
   const { id } = req.params;
 
@@ -699,36 +736,34 @@ const watchVideo = async (req, res) => {
   const CourseId = req.params.courseId;
   const videoId = req.params.video;
   const Course = await courses.findOne({ _id: CourseId });
-  const totalVideos = Courses.subtitle.length;
+  const totalVideos = Course.Subtitle.length;
   const Trainee = await indTrainee.findOne({ _id: traineeId });
   flagV = 0;
   let watchedVideos;
-  for (i = 0; i < Trainee.courses.length; i++) {
-    if (courses[i]._id == CourseId) {
-      watchedVideos = courses[i].watchedVideos;
-      oldProgress = courses[i].progress;
+  Trainee.courses.map((course) => {
+    if (course._id == CourseId) {
+      //watchedVideos = course.watchedVideos;
+      oldProgress = course.progress;
     }
-  }
+  });
   for (i = 0; i < watchedVideos.length; i++) {
-    if (watchedVideos[i] == videoId) {
+    if (watchedVideos[i].videoId == videoId) {
       flagV = 1;
     }
   }
   if (flagV == 1) res.status(200).send("You have watched this video before");
   if (flagV == 0) {
-    const updatedWatchedVideos = await trainee.updateOne(
-      { _id: traineeId, "courses.courseId": CourseId },
-      { $push: { "courses.$.watchedVideos": videoId } }
+    const updatedWatchedVideos = await indTrainee.updateOne(
+      { _id: traineeId, "courses._id": CourseId },
+        { $push: { "courses.$.watchedVideos": { videoId } } }
+      // );
     );
     const newProgress = ((watchedVideos.length + 1) / totalVideos) * 100;
 
-    const x = await indTrainee.findOneAndUpdate(
-      { _id: traineeId, "courses.courseId": "CourseId" },
-      {
-        $set: {
-          "courses.$.progress": newProgress,
-        },
-      }
+    const x = await indTrainee.updateOne(
+      { _id: traineeId, "courses._id": CourseId },
+      { $set: { "courses.$.progress": newProgress } }
+
     );
     let neededCourse;
     for (i = 0; i < x.courses.length; i++) {
@@ -738,9 +773,49 @@ const watchVideo = async (req, res) => {
     }
 
     if (neededCourse.progress == 100) {
-      res.redirect("/individualtrainee/sendingCertificate");
-    }
-    res.status(200).json(x);
+      const corporateTraineeId = req.params;
+      //console.log(corporateTraineeId)
+      const corporateTrainee = await IndividualTrainee.findById(corporateTraineeId.id);
+      //console.log(corporateTrainee)
+      const email = corporateTrainee.email;  
+    
+      await IndividualTrainee.find({email: email}).then(async (result)=>
+      {
+      await IndividualTrainee.findById(result._id).then((result)=>
+      {
+          const mail = {
+              from: process.env.AUTH_EMAIL,
+              to: email,
+              subject: "Certificate",
+              html: `<p>Congratulations you have completed your course. Here is your certificate</p>`,
+              attachments: [
+                {
+                  filename : "certificate.pdf" ,
+                 path : './controllers/certificate.pdf', 
+                 contentType: 'application/pdf'
+                }]
+          }
+      
+          let transporter = nodemailer.createTransport({
+              service: 'hotmail',
+              auth: {
+                  user: process.env.AUTH_EMAIL,
+                  pass: process.env.AUTH_PASS
+              }
+          })
+      
+          transporter.sendMail(mail).then(()=>{
+              return res.status(200).json({status:true,Message:"sent successfully"})
+          }).catch((error) => {
+              return res.status(400).json({status:false, error:error.message ,Message:"Error while sending an email"})
+          })
+      }).catch((error)=>{
+          return res.status(400).json({status:false, error:error.message,Message:"Error while updating the password"})
+      })
+      }).catch((error)=>{
+          return res.status(400).json({status:false, error:error .message,Message:"this Email is not found or undefined"})
+      });
+      }
   }
 };
 const ReceiveCertificate = async(req, res, next) => {

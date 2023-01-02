@@ -6,6 +6,8 @@ import ChangePass from "../components/ChangePassIndiv";
 import{useParams} from 'react-router-dom';
 import ViewCoursesIndiv from "../components/ViewCoursesIndiv";
 import AdminSidebar from "../components/NavbarrIndiv";
+import SearchForCourse from "../components/SearchForCourse";
+import ViewCourses from "../components/ViewCourses";
 
 const IndividualTrainee = () => {
   
@@ -17,6 +19,7 @@ const IndividualTrainee = () => {
     <div className="individual trainee">
       <AdminSidebar/>
       <div className="indv">
+        <SearchForCourse/>
       <h2>Individual Trainee</h2>
       
       <ViewCoursesIndiv/>

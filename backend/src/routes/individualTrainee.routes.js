@@ -13,7 +13,7 @@ router.get("/viewprice", individualTraineeCtrl.viewprice);
 router.get("/viewallcourses", individualTraineeCtrl.viewall);
 router.get("/viewMycourses/:id", individualTraineeCtrl.viewMyCourses);
 router.get("/viewMyInst/:id", individualTraineeCtrl.viewMyInst);
-
+router.post('/reportcourse/:id',individualTraineeCtrl.report);
 router.get(
   "/filter_all_courses_price",
   individualTraineeCtrl.filterCoursebyPrice

@@ -20,7 +20,7 @@ async function calculateAverage(
   ratingCounter,
   
 
-) {const {id}= useParams();
+) {
   try {
       await axios.post('http://localhost:7007/corporatetrainee/calculateAverageRating',null,{params:{ 
           newRating,    

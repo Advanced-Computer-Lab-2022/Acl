@@ -93,7 +93,7 @@ const CoursesTrainee = () => {
               actions={[
                 <a href=""><SettingOutlined key="setting" href=""/></a>,
                 <a href=""><EditOutlined key="edit" href=""/></a>,
-                <StarsIcon key="star" onClick={() =>navigate(`/individualtrainee/rateInstructor/${course._id}`)}/>,
+                <StarsIcon key="star" onClick={() =>navigate(`/individualtrainee/MyInstructorProfile/${course._id}`)}/>,
                 ]}
             >
              
