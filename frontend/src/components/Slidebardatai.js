@@ -30,7 +30,7 @@ export const SidebarData = [
   },
   {
     title: "My Ratings & Reviews",
-    path: "/instructor/viewmyratings/",
+    path: "/instructor/ViewMyRatings/",
     icon: <IoIcons.IoMdPeople />,
     cName: "nav-text"
   },

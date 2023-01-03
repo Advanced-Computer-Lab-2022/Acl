@@ -8,6 +8,7 @@ import ViewCoursesIndiv from "../components/ViewCoursesIndiv";
 import AdminSidebar from "../components/NavbarrIndiv";
 import SearchForCourse from "../components/SearchForCourse";
 import ViewCourses from "../components/ViewCourses";
+import SearchForCourseInd from "../components/SearchForCourseInd";
 
 const IndividualTrainee = () => {
   
@@ -19,7 +20,7 @@ const IndividualTrainee = () => {
     <div className="individual trainee">
       <AdminSidebar/>
       <div className="indv">
-        <SearchForCourse/>
+        <SearchForCourseInd/>
       <h2>Individual Trainee</h2>
       
       <ViewCoursesIndiv/>

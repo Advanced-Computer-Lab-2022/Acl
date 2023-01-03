@@ -11,6 +11,7 @@ import Reset3 from "../components/Reset3"
 import Navbarr from "../components/Navbarri";
 import Cards from "../components/Cardsi";
 import Courses from "../components/ViewCoursesi"
+import ViewCoursesIndiv from "../components/ViewCoursesIndiv";
 
 const Instructor = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Instructor = () => {
     <div className="instructor">
       <Navbarr/>
       <div className="inss1">
-      <Courses/>
+      <ViewCoursesIndiv/>
 {/*       
       <SearchBar placeHolder="Search for Courses"/>
  

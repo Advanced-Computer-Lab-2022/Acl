@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import{useParams} from 'react-router-dom';  
+import{useParams} from 'react-router-dom';
+import Navbar from "./Navbarri";
+
 const AddQuestion = () => {
   const navigate = useNavigate();
   const [question, setQuestion] = useState("");
@@ -11,11 +13,11 @@ const AddQuestion = () => {
   const [correct, setCorrect] = useState("");
   const [error, setError] = useState(null);
   const onClick1 = () => {
-    navigate("/instructor/:id");
+    navigate(`/instructor/${id}`);
   };
 const {id}=useParams()
 const params = new URLSearchParams(window.location.search);
-  const courseId = params.get('courseId');
+  
  
   const examId = params.get('examId');
   // const onClick = () => {
@@ -24,9 +26,8 @@ const params = new URLSearchParams(window.location.search);
   const handleSubmit = async (e) => {
     
     e.preventDefault();
-    const questionn = { question, choice1, choice2, choice3, choice4, correct };
-    const response = await fetch(`/instructor/addquestion/${id}?examId${examId}?courseId${courseId}`, {
-      method: "POST",
+    const questionn = { id,question, choice1, choice2, choice3, choice4, correct };
+    const response = await fetch(`/instructor/addquestion/${id}?examId=${examId}`,{      method: "PATCH",
       body: JSON.stringify(questionn),
       headers: {
         "Content-Type": "application/json",
@@ -45,12 +46,41 @@ const params = new URLSearchParams(window.location.search);
       setCorrect("");
       setError(null);
       console.log("new question added!");
-      navigate(`/instructor/addquestion/${id}?examId=${examId}?courseId=${courseId}`);
+      navigate(`/instructor/addquestion/${id}?examId=${examId}`);
+    }
+  };
+  const handleSubmits = async (e) => {
+    
+    e.preventDefault();
+    const questionn = { question, choice1, choice2, choice3, choice4, correct };
+    const response = await fetch(`/instructor/addquestion/${id}?examId=${examId}`,{      method: "PATCH",
+      body: JSON.stringify(questionn),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const json = await response.json();
+    if (!response.ok) {
+      setError(json.error);
+    }
+    if (response.ok) {
+      setQuestion("");
+      setChoice1("");
+      setChoice2("");
+      setChoice3("");
+      setChoice4("");
+      setCorrect("");
+      setError(null);
+      console.log("new question added!");
+      //navigate(`/instructor/addquestion/${id}?examId=${examId}?courseId=${courseId}`);
     }
   };
 
   return (
     <div>
+      <div>
+    <Navbar/>
+    </div>
       <form className="create" onSubmit={handleSubmit}>
         <h3>Add another question</h3>
         <label>Question</label>
@@ -90,7 +120,7 @@ const params = new URLSearchParams(window.location.search);
           value={correct}
         />
         <button>Add Question</button>
-        <button onClick={onClick1}>Save</button>
+        <button form="exam" onClick={handleSubmits}>Save</button>
         {error && <div className="error">{error}</div>}
       </form>
     </div>

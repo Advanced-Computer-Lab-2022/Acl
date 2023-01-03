@@ -86,7 +86,22 @@ table tr td:first-child::before
   margin-left: 6%;
 }
 .araf{
-display: flex;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-end;
+  color: #fff;
+  margin-right: 10%;
+  margin-top: -1%;
+}
+.arafen{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: #fff;
+  margin-left: 10%;
+
 }
 .lala{
 font-size: 12px;
@@ -104,4 +119,27 @@ flex-direction: row-reverse
 color: #757575;
 margin: 10px;
 display: block;
+}
+.Chart{
+  margin-left: 12%;
+}
+.marc button{
+  width: 100%;
+  font-size: 16px;
+  color: #ffffff;
+  background-color: #9d9fa4;
+
+  display: flex;
+  padding: 5px;
+  justify-content: space-between;
+  align-items: center;
+  border: 5px solid  #9d9fa4;
+  cursor: pointer;
+  
+}
+.search {
+  width: 500px;
+  position: sticky;
+  margin-left: 90%;
+  margin-top: -4%;
 }

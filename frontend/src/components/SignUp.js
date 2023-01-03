@@ -4,6 +4,9 @@ import { useState } from "react";
 import{useParams} from 'react-router-dom';
 import {useNavigate } from 'react-router-dom';
 import "./styles.css";
+import { Link } from "react-router-dom";
+import Navbar from "../pages/Navbar";
+
 const SignUp = () => {
   const navigate=useNavigate();
   const [password, setPassword] = useState("");
@@ -12,6 +15,7 @@ const SignUp = () => {
   const [last_name, setLast_name] = useState("");
   const [first_name, setFirst_name] = useState("");
   const [gender, setGender] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   //const [resetPasswordExpires, setResetPasswordExpires] = useState("");
   const [error, setError] = useState(null);
 //   const onValueChange= async (e) =>{
@@ -55,7 +59,8 @@ const [accepted, setAccepted] = useState(false);
     
     <div>
 
-       
+      <Navbar/>
+      <div className="laziz">
     <div className="form">
     <span class="form__title">Sign up</span>
     <form className="create" onSubmit={handleSubmit}>
@@ -135,18 +140,19 @@ onChange={(e) => setGender(e.target.value)} required
 
 </div> </label>
 <div className="ol">
-<h1 className='lala'>Please read and accept the terms and conditions</h1>
+<h1 className='lala'>Please read and accept the <a href="/contract" target="_blank">Terms and Conditions</a></h1>
       <label>
         <input
           type="checkbox"
-          checked={accepted}
-          onChange={handleChange}
+          checked={acceptedTerms}
+          onChange={() => setAcceptedTerms(!acceptedTerms)}
           required
           
         />
         <a accept the terms and conditions />
       </label>
-      {accepted && <h1 className="lala">Thank you for accepting the terms and conditions!</h1>}
+      {accepted && <h1 className="lala">Thank you for accepting the Terms and Conditions </h1>}
+      
 </div>
 
 <button type="submit" class="form__button">Sign Up</button>
@@ -157,6 +163,7 @@ onChange={(e) => setGender(e.target.value)} required
     
     </form>
     </div>
+</div>
 </div>
   );
 };

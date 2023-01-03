@@ -109,6 +109,7 @@ import{useParams} from 'react-router-dom';
 import {useNavigate } from 'react-router-dom';
 import "./styles.css";
 import "./login1.css";
+import Navbar from "../pages/Navbar";
 const Login1 = () => {
   const navigate=useNavigate();
   const [password, setPassword] = useState("");
@@ -169,7 +170,8 @@ const Login1 = () => {
 //     </form>
 //     </div>
  <div>
-  
+  <Navbar/>
+  <div className="laziz">
   <div class="form">
 
   
@@ -217,7 +219,7 @@ const Login1 = () => {
 
  </div> 
  
- 
+ </div>
 
   );
 };

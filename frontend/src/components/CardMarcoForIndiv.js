@@ -8,19 +8,20 @@ import { useParams } from "react-router-dom";
 const CardMarcoForIndiv = ({ course }) => {
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(course.rating);
+  //console.log(course.rating.$numberDecimal);
   return (
     <CardGroup>
       <Card>
         <Col xs={12} md={6} lg={4} key={course._id}>
-          <button
+        <div className="marc">
+          <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off"
             onClick={() => {
               navigate(`./coursePage/${course._id}`);
             }}
           >
             <td>{course.title}</td>
           </button>
-
+          </div>
           <Card style={{ width: "18rem" }}>
             <Card.Img
               variant="top"

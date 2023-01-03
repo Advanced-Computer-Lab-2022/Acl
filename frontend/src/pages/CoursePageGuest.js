@@ -28,13 +28,13 @@ const CoursePage = () => {
     const fetchCourses =async () => {
       const data =await axios.get(`/corporatetrainee/viewallSubs/${id1}`);
       setCourses(data.data)
-      console.log(data.data)
+    
       
     };fetchCourses()
     const fetchCourse =async () => {
       const data =await axios.get(`/corporatetrainee/viewCourse/${id1}`);
       setCourses1(data.data)
-      console.log(data.data)
+      
       
     }; fetchCourse()
     
@@ -116,7 +116,7 @@ const CoursePage = () => {
       <Box />
     
      
-      <iframe width="520" height="315"
+          <iframe width="520" height="315"
     src={courses1.preview[0].Video[0].youtube_video_link+"?autoplay=1&controls=0"}  
     title="Youtube Player"
     frameborder="50"
@@ -128,7 +128,7 @@ const CoursePage = () => {
   <div>    {courses && courses.map(product => (
     
     <ViewSubtitles key={product._id} subtitle={product} />
-  ))}<div className="btn--outline">  <button onClick={onClick}>{courses1.price}</button> </div>
+  ))}<div>{courses1.price} </div>
    </div></div>
    </Box>
       

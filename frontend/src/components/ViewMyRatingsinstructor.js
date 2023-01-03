@@ -16,8 +16,6 @@ import { Avatar, Card,Row,Col } from 'antd';
 import { useEffect } from "react";
 import Navbar from "./Navbarri"; 
 const { Meta } = Card;
-const params = new URLSearchParams(window.location.search);
-  const courseId = params.get('courseId');
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -28,32 +26,49 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 const { useState, Component } = require("react");
-const ViewMyStudents = () => {
+
+const ViewMyRatingsinstructor = () => {
  const navigate=useNavigate();
   const {id} = useParams();
   
-  const [students, setStudents] = useState(0);
-
+  const [rating, setRating] = useState("");
+const [reviews,setReviews]=useState("");
   useEffect(() => {
-  const getStudents = async (req, res) => {
+  const getRating = async (req, res) => {
     
     await axios
-      .get(`http://localhost:7007/instructor/findMyStudents/${id}?courseId=${courseId}`)
+      .get(`http://localhost:7007/instructor/viewr/${id}`)
       .then((res) => {
-        const students = res.data;
-        console.log(students);
-        setStudents(students);
+        const rating = res.data;
+        console.log(rating);
+        setRating(rating);
       });
   };
-  getStudents()
+  getRating()
     
   }, [])
+  useEffect(() => {
+
+    const getReviews = async (req, res) => {
+      
+      await axios
+        .get(`http://localhost:7007/instructor/viewre/${id}`)
+        .then((res) => {
+          const reviews = res.data;
+          console.log(reviews);
+          setReviews(reviews);
+        });
+    };
+    getReviews()
+      
+    }, [])
   return (
     // visualize authors in a table map over authors
     <div>
       <Navbar/>
       <div className="inss1">
     <div className="site-card-wrapper">
+
 <Row gutter={16}>
               <Col span={8}>
               <Card 
@@ -72,7 +87,17 @@ const ViewMyStudents = () => {
              
               <Meta
 
-                title={"Number of Students: "+students}
+                title={"Rating: "+rating}
+                description={"Reviews : "+
+                <div>
+                {reviews &&
+                  reviews.map((i) => {
+                    return (
+                      i
+                    );
+                  })}
+               </div> }
+
                 
 
               
@@ -92,4 +117,4 @@ const ViewMyStudents = () => {
     </div>
   );
 };
-export default ViewMyStudents;
+export default ViewMyRatingsinstructor;

@@ -124,7 +124,7 @@ const filterCoursesBySubject = async (req, res) => {
 };
 
 //filter all courses by price
-const filterCoursebyPrice = async (req, res) => {
+const filterCoursebyPrice1 = async (req, res) => {
   const min = parseInt(req.body.min);
   const max = parseInt(req.body.max);
   try {
@@ -508,6 +508,8 @@ const findmyCourses = async (req, res) => {
 //sprint 2
 
 const createExam = async (req, res) => {
+  const courseId=req.query.courseId
+
   const mcq = [
     {
       question: req.body.question,
@@ -523,13 +525,22 @@ const createExam = async (req, res) => {
     description: req.body.description,
     mcq: mcq,
   });
-  data.save().then((result) => res.status(200).send(result));
+console.log(data)
+console.log(data._id)
+  const c=await courses.findByIdAndUpdate(courseId,{
+    $push:{
+      mcqExam:data._id
+    }
+  })
+  data.save().then((data) => res.status(200).send(data));
 };
 
 const addMcq = async (req, res) => {
-  const examId = req.params.examId;
-  await exam.updateOne(
-    { _id: examId },
+  const examId = req.query.examId;
+  try{
+  
+  const b=await exam.findById(examId)
+ const c= await exam.findByIdAndUpdate(examId ,
     {
       $push: {
         mcq: {
@@ -543,7 +554,12 @@ const addMcq = async (req, res) => {
       },
     }
   );
-  res.status(200).send("question added successfully!");
+  console.log(examId)
+  console.log(b)
+  return res.status(200).json("question added successfully!");}
+  catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 //my7taga tetzabat
 
@@ -1002,25 +1018,32 @@ const viewre=async(req,res)=>{
 }
 const viewrc=async(req,res)=>{
   const {id}=req.params
+  const courseId=req.query.courseId
+  var r=0;
   try{
-    const c=await courses.find({Instructor:id})
-    const p= parseFloat(r.rating.toString())
-    res.status(200).json(
-     c
+    const c=await courses.findById(courseId)
+    if(!c.rating){
+     r=0
+    }else{
+    r= parseFloat(c.rating.toString())
+    }
+    return res.status(200).json(
+     r
     );
   }
   catch(error){
-    res.status(400).json({error:error.me})
+   return res.status(400).json({error:error.me})
   }
 }
 const viewrec=async(req,res)=>{
   const {id}=req.params
+  const courseId=req.query.courseId
   try{
-    const r=await courses.find({Instructor:id})
+    const r=await courses.findById(courseId)
     const re=r.Review
    
     res.status(200).json(
-     r
+     re
     );
   }
   catch(error){
@@ -1167,6 +1190,41 @@ const FindMyStudents = async (req, res) => {
   } 
 };
 
+const filterCoursesBySubject1 = async (req, res) => {
+  try {
+    /*const Courses = await courses.find({Instructor:instructord,$or:[{price:pp},{Subject:sub}]})
+    res.status(200).json(Courses.map((courses)=>{
+        return courses.title+" :  "+courses.price+" :"+courses.Subject+"."
+    }))
+    console.log(Courses.toString())
+        */
+    const id = req.params.id;
+    const Courses = await courses.find({
+      $and: [{ Subject: req.query.subject }, { Instructor: id }],
+    });
+    // console.log(req.body.rating)
+    //console.log(Courses)
+    res.status(200).json(Courses);
+  } catch (error) {
+    res.status(400).json({ error: error.me });
+  }
+};
+
+const filterCoursebyPrice = async (req, res) => {
+  const id = req.params.id;
+  const min = parseInt(req.query.min);
+  const max = parseInt(req.query.max);
+  try {
+    const ranges = await courses.find({
+      $and: [{ price: { $lte: max, $gte: min } }, { Instructor: id }],
+    });
+    console.log(min + " " + max);
+    res.status(200).json(ranges);
+  } catch (error) {
+    res.status(400).json({ error: error.me });
+  }
+};
+
 module.exports = {
 FindMyStudents,
   findMyCoursesBasedOn,
@@ -1204,4 +1262,6 @@ viewTitleCourses,
   viewrec,
   viewrc,editBio,editEmail,editBioemail,FindMyStudents,
   ViewMyWallet,
+  filterCoursesBySubject1,
+  filterCoursebyPrice1
 };

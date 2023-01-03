@@ -56,6 +56,11 @@ export default function Navbar() {
           icon: "icons/folder.svg",
           href: `/individualtrainee/Followupsindv/${id}`
       },
+      {
+        text: "Wallet",
+        icon: "icons/folder.svg",
+        href: `/individualtrainee/wallet/${id}`,
+      },
       // {
       // 	text: "Orders",
       // 	icon: "icons/shopping-cart.svg",

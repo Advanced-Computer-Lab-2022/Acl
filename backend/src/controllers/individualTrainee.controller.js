@@ -227,8 +227,8 @@ const viewall = async (req, res) => {
 };
 
 const filterCoursebyPrice = async (req, res) => {
-  const min = parseInt(req.body.min);
-  const max = parseInt(req.body.max);
+  const min = parseInt(req.query.min);
+  const max = parseInt(req.query.max);
   try {
     const ranges = await courses.find({
       price: { $lte: max, $gte: min },

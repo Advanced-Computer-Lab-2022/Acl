@@ -11,10 +11,11 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import React from 'react';
-import { EditOutlined, QuestionCircleOutlined , PercentageOutlined ,PlusCircleOutlined,UserOutlined   } from '@ant-design/icons';
+import { EditOutlined, QuestionCircleOutlined,LikeOutlined , PercentageOutlined ,PlusCircleOutlined,UserOutlined   } from '@ant-design/icons';
 import { Avatar, Card,Row,Col } from 'antd';
 import { useEffect } from "react";
-import Navbar from "../components/Navbarri"; 
+import Navbar from "../components/Navbarri";
+import SearchForCourse from "./SearchForCoursesIns"; 
 const { Meta } = Card;
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,6 +33,11 @@ const CoursesInstructor = () => {
   const {id} = useParams();
   const [courses, setCourses] = useState([]);
   const [trainee, setTrainee] = useState([]);
+  const [subject, setSubject] = useState("Subject");
+  const [subjects, setSubjects] = useState([]);
+  const [subjectr, setSubjectr] = useState(null);
+  const [min, setMin] = useState(null);
+  const [max, setMax] = useState(null);
 
   // const getCourse = async (id) => {
   //   return async function () {
@@ -50,24 +56,56 @@ const CoursesInstructor = () => {
     //   navigate(`./MyCoursePage/${course._id}`)
     // }
 
-  useEffect(() => {
-  const getCourses = async (req, res) => {
+    useEffect(() => {
+        const getCourses = async (req, res) => {
+          if (subject == "Subject" || subject == "All") {
+            const data = await axios.get(
+              `http://localhost:7007/instructor/viewMyCourses/${id}`
+            );
+            setCourses(data.data);
+            const subjectss = [];
+            data.data.map((course) => {
+              subjectss.push(course.Subject);
+            });
+            setSubjects(subjectss);
+          } else {
+            const data = await axios.get(
+              `http://localhost:7007/instructor/filtermyCoursesSubject/${id}?subject=${subjectr}`
+            );
+            setCourses(data.data);
+          }
+        };
+        getCourses();
+      }, [subjectr]);
+      const onClick1 = (selected) => {
+        setSubject(selected);
+        setSubjectr(selected.toLowerCase());
+        console.log(selected);
+      };
     
-    await axios
-      .get(`http://localhost:7007/instructor/viewMyCourses/${id}`)
-      .then((res) => {
-        const courses = res.data;
-        console.log(courses);
-        setCourses(courses);
-      });
-  };
-  getCourses()
+      const onClick4 = (event) => {
+        setMin(event.target.value);
+      };
     
-  }, [])
+      const onClick5 = (event) => {
+        setMax(event.target.value);
+      };
+    
+      const submit = async (e) => {
+        e.preventDefault();
+    
+        const data = await axios.get(
+          `http://localhost:7007/instructor/filtermyCoursesPrice/${id}?min=${min}&max=${max}`
+        );
+        setCourses(data.data);
+        //console.log(data.data);
+      };
   return (
     // visualize authors in a table map over authors
     <div>
       <Navbar/>
+      <SearchForCourse/>
+      
       <div className="inss1">
     <div className="site-card-wrapper">
 
@@ -89,6 +127,7 @@ const CoursesInstructor = () => {
                 <a href={`/Discount/${id}?courseId=${course._id}`}><PercentageOutlined  key="promotion" title='Define Promotion' /></a>,
                 <a href={`/instructor/createExam/${id}?courseId=${course._id}`}><EditOutlined key="exam" title='Create Exam' /></a>,
                 <a href={`/ReportProbi/${id}?courseId=${course._id}`}><QuestionCircleOutlined  key="report" title='Report Course'/></a>,
+                <a href={`/viewMyCRatings/${id}?courseId=${course._id}`}><LikeOutlined    key="MyCoursesRatings" title='MyCoursesRatings'/></a>,
                 <a href={`/viewMyStudents/${id}?courseId=${course._id}`}><UserOutlined   key="MyStudends" title='MyStudents'/></a>,
                 // <DownloadOutlined key="download" onClick={onButtonClick}/>
               ]}
@@ -97,7 +136,7 @@ const CoursesInstructor = () => {
              
               <Meta
   //               title={"Rating: "+ course.rating.$numberDecimal}
-  //               avatar={"Name: "+course.title}
+          avatar={"Name: "+course.title}
   //               description={"Reviews: "+course.Review.map((i)=>{
   //                 return i+" , ";
   // })}

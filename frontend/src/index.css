@@ -91,7 +91,8 @@ input {
 form button {
   background: var(--primary);
   border: 0;
-  color: rgb(18, 17, 17);
+ 
+  color: rgb(255, 255, 255);
   padding: 10px;
   font-family: "Poppins";
   border-radius: 4px;

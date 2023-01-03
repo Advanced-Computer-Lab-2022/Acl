@@ -45,7 +45,7 @@ router.get("/invoice", (req, res, next) => {
     (chunk) => stream.write(chunk),
     () => stream.end()
   );
-});
+});router.get("/getTrainee/:id", corporateTraineeCtrl.getTrainee);
 router.post("/calculateavgrating", corporateTraineeCtrl.calculateAverageRating);
 router.patch("/rateinstructor/:id", corporateTraineeCtrl.rateInstructor);
 router.get("/getInst/:id", corporateTraineeCtrl.GetInst);

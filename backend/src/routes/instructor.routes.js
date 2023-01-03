@@ -16,8 +16,8 @@ router.get("/searchForCourse", instructorCtrl.searchForCourse);
 router.get("/viewtitlecourses/:id", instructorCtrl.viewTitleCourses);
 router.get("/findMyCourses/:id", instructorCtrl.findmyCourses);
 router.get("/findcourses", instructorCtrl.finddCourses);
-router.post("/createExam", instructorCtrl.createExam);
-router.post("/addQuestion/:examId", instructorCtrl.addMcq);
+router.post("/createExam/:id", instructorCtrl.createExam);
+router.patch("/addQuestion/:examId", instructorCtrl.addMcq);
 router.patch("/definepromotion/:id", instructorCtrl.definepromotion);
 router.get("/viewrating/:id", instructorCtrl.viewmyallrv);
 router.get("/viewratings/:id",instructorCtrl.viewRatings)
@@ -46,5 +46,11 @@ router.get("/viewrec/:id",instructorCtrl.viewrec)
 router.get("/viewr/:id",instructorCtrl.viewr)
 router.get("/viewmywallet/:id",instructorCtrl.ViewMyWallet)
 router.get("/findMyStudents/:id",instructorCtrl.FindMyStudents)
+router.get(
+    "/filtermyCoursesSubject/:id",
+    instructorCtrl.filterCoursesBySubject1
+  );
+  router.get("/filtermyCoursesPrice/:id", instructorCtrl.filterCoursebyPrice);
+  
 
 module.exports = router;

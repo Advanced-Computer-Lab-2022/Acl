@@ -1,97 +1,190 @@
 import React, { useState } from "react";
-
-
-
-import{useParams} from 'react-router-dom';  
+import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbarri";
-const Discount = () => {
-//const {courseId} = params.get("courseId");
-  const [discountamount, setDiscountAmount] = useState("");
-  const [startdate,setStartDate ] = useState("");
-  const [enddate,setEndDate ] = useState("");
-  const [error, setError] = useState(null);
+import{useParams} from 'react-router-dom'; 
+
+
+const CreateMcqi = () => {
   const {id} = useParams();
-  const [empty,setEmpty]=useState([]);
-  const[success,setSuccess]=useState(false)
-  const show = () => setSuccess(true);
+    const navigate = useNavigate();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [question, setQuestion] = useState("");
+  const [choice1, setChoice1] = useState("");
+  const [choice2, setChoice2] = useState("");
+  const [choice3, setChoice3] = useState("");
+  const [choice4, setChoice4] = useState("");
+  const [correct, setCorrect] = useState("");
+  const onClick1 = () => {
+    navigate(`/instructor/${id}`);
+  };
   const params = new URLSearchParams(window.location.search);
   const courseId = params.get('courseId');
-  // const {id1}=req.query.courseId
+  const [error, setError] = useState(null);
+   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const discount = {id,discountamount, startdate, enddate};
-    const response = await fetch(`/instructor/definepromotion/${id}?courseId=${courseId}`,{
-      method: "PATCH",
-      body: JSON.stringify(discount),
+    const exam = {
+      id,
+      title,
+      description,
+      question, 
+      choice1,
+      choice2,
+      choice3,
+      choice4,
+      correct,
+    };
+    const response = await fetch(`/instructor/createExam/${id}?courseId=${courseId}`, {
+      method: "POST",
+      body: JSON.stringify(exam),
       headers: {
         "Content-Type": "application/json",
       },
     });
-  
+    const json = await response.json();
    
-  
-    
-    const J = await response.json();
-     if (!response.ok) {
-      setError(J.error);
-      setEmpty(J.empty);
-      setSuccess=(false);
+    if (!response.ok) {
+      setError(json.error);
     }
-    
-    
     if (response.ok) {
-      setSuccess(true);
-      setEmpty([]); 
-      setDiscountAmount("");
-      setStartDate("");
-      setEndDate("");
+       
+    navigate(`/instructor/addquestion/${id}?examId=${json._id}`);
+
+      setQuestion("");
+     
+      setChoice1("");
+      setChoice2("");
+      setChoice3("");
+      setChoice4("");
+      setCorrect("");
+      setTitle("");
+      setDescription("");
       setError(null);
-      console.log("new Discount added!");
+      console.log("new question added!");
+      console.log(json);
+       
+      
     }
+
+    console.log(id)
+  };
+  const handleSubmits = async (e) => {
+    e.preventDefault();
+    const exam = {
+      id,
+      title,
+      description,
+      question, 
+      choice1,
+      choice2,
+      choice3,
+      choice4,
+      correct,
+    };
+    const response = await fetch(`/instructor/createExam/${id}?courseId=${courseId}`, {
+      method: "POST",
+      body: JSON.stringify(exam),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const json = await response.json();
+   
+    if (!response.ok) {
+      setError(json.error);
+    }
+    if (response.ok) {
+       
+   // navigate(`/instructor/addquestion/${id}?examId=${json._id}?courseId=${courseId}`);
+
+      setQuestion("");
+     
+      setChoice1("");
+      setChoice2("");
+      setChoice3("");
+      setChoice4("");
+      setCorrect("");
+      setTitle("");
+      setDescription("");
+      setError(null);
+      console.log("new question added!");
+      console.log(json);
+       
+      
+    }
+
+    console.log(id)
   };
 
   return (
     <div>
       <div>
-      <Navbar/>
-      </div>
-      <div>
-      <div className="inss1">
-    <form className="create" onSubmit={handleSubmit}>
-    <label className={success ? "success":"notsuccess"}>Discount Added Successfully</label>
-         <h3  className={empty.includes('discounthere')?'error':''}>Add Discount</h3>
-        
-<label  class="required-field">Discount Amount</label>
-<input
-  type="number"
-  className={empty.includes('discountamount')?'error':''}
-  onChange={(e) => setDiscountAmount(e.target.value)}
-  value={discountamount}
-/>
+    <Navbar/>
+    </div>
+    <form className="createmcq" id="exam" onSubmit={handleSubmit}>
+      
+      <h3>Add an exam</h3>
 
-<label  class="required-field">Start Date </label>
-<input
-  type="date"
-  className={empty.includes('startdate')?'error':''}
-  onChange={(e) => setStartDate(e.target.value)}
-  value={startdate}
-/>
-<label class="required-field">End Date </label>
-<input
-  type="date"
-  className={empty.includes('enddate')?'error':''}
-  onChange={(e) => setEndDate(e.target.value)}
-  value={enddate}
-/>
+      <label>Title</label>
+      <input
+        type="text"
+        onChange={(e) => setTitle(e.target.value)}
+        value={title}
+      />
 
-<button >Add Discount</button>
-{error && <div className="error">{error}</div>}
+      <label>Description</label>
+      <input
+        type="text"
+        onChange={(e) => setDescription(e.target.value)}
+        value={description}
+      />
 
+      <label>Question</label>
+      <input
+        type="text"
+        onChange={(e) => setQuestion(e.target.value)}
+        value={question}
+      />
+
+      <label>Choice1</label>
+      <input
+        type="text"
+        onChange={(e) => setChoice1(e.target.value)}
+        value={choice1}
+      />
+
+      <label>Choice2 </label>
+      <input
+        type="text"
+        onChange={(e) => setChoice2(e.target.value)}
+        value={choice2}
+      />
+      <label>Choice3</label>
+      <input
+        type="text"
+        onChange={(e) => setChoice3(e.target.value)}
+        value={choice3}
+      />
+      <label>Choice4</label>
+      <input
+        type="text"
+        onChange={(e) => setChoice4(e.target.value)}
+        value={choice4}
+      />
+      <label>Correct Answer</label>
+      <input
+        type="text"
+        onChange={(e) => setCorrect(e.target.value)}
+        value={correct}
+      />
+
+      <button className="cre">Add Question</button>
+      <button form="exam" classname="sae" onClick={handleSubmits}>Save</button>
+      {error && <div className="error">{error}</div>}
     </form>
-    </div>
-    </div>
+   
     </div>
   );
 };
-
-export default Discount;
+export default CreateMcqi;

@@ -131,18 +131,12 @@ const CoursePageCor = () => {
         <React.Fragment>
           <Box />
 
-          <iframe
-            width="520"
-            height="315"
-            src={
-              courses1 &&
-              courses1.preview.map((previews) => previews.youtube_video_link) +
-                "?autoplay=1&controls=0"
-            }
-            title="Youtube Player"
-            frameborder="50"
-            allowFullScreen
-          />
+          <iframe width="520" height="315"
+    src={courses1.preview[0].Video[0].youtube_video_link+"?autoplay=1&controls=0"}  
+    title="Youtube Player"
+    frameborder="50"
+    allowFullScreen
+  />
         </React.Fragment>
 
         <div>

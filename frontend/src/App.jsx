@@ -4,9 +4,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Instructor from "./pages/Instructor";
 import ChangePass from "./components/ChangePass";
 import Navbar from "./components/Navbar";
-
+import NHome from "./components/NHome";
 import Admin from "./pages/Admin";
 import Home from "./pages/Home";
+
 import ReportProbCor from "./components/ReportProblemCor";
 import DefinePromotion from "./components/definePromotion";
 import Guest from "./pages/Guest";
@@ -47,9 +48,9 @@ import Followupscorp from "./components/Followupscorp";
 import ViewMyCourses from "./pages/ViewMyCourses";
 import MyCoursePage from "./pages/MyCoursePage";
 import CoursePage from "./pages/CoursePage";
-
+import CoursePageGuest from "./pages/CoursePageGuest";
 import Footer from "./components/Footer";
-
+import TermsPopup from "./components/TermsPopup";
 import Download from "./components/Download";
 import Yarab from "./components/Yarab";
 import ChangePassIndiv from "./pages/ChangePassIndiv";
@@ -70,7 +71,7 @@ import YarabCor from "./components/YarabCor";
 //import ViewInsCourses from "./components/ViewInsCourses";
 import Viewinscourses from "./components/InstructorCourses";
 import EditProfile from "./components/EditInsProfile";
-import ViewMyRatingsi from "./components/ViewMyRatingsi";
+import ViewMyRatingsi from "./components/ViewMyRatingsinstructor";
 import Walleti from "./components/Walleti";
 import Students from "./components/FindMyStudentsi";
 import ViewmyCRatings from "./components/ViewMyCRatingsi";
@@ -87,7 +88,7 @@ function App() {
         <div className="pages">
           <Routes>
             <Route path="/reports/:id" element={<ViewReports />} />
-            <Route path="/" element={<Guest />} />
+            <Route path="/" element={<NHome />} />
             {/* <Route path="/" element={<Home />} /> */}
             <Route path="/login" element={<Login />} />
             <Route path="/sign-up" element={<SignUp />} />
@@ -95,6 +96,7 @@ function App() {
               path="corporatetrainee/viewCourseDetails/:id/:id1"
               element={<CoursePageCor />}
             />
+                
             <Route
               path="corporatetrainee/viewMyCourses/:id"
               element={<ViewMyCoursesCor />}
@@ -128,7 +130,7 @@ function App() {
               path="/admin/definepromotion/:id"
               element={<DefinePromotion />}
             />
-
+             <Route path="/contract" element={<TermsPopup/>}></Route>
             <Route path="/ViewReportscorp/:id" element={<ViewReportsCor />} />
             <Route path="/Followupscorp/:id" element={<Followupscorp />} />
 
@@ -148,7 +150,6 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signUp" element={<SignUp />} />
-            <Route path="/Instructor" element={<Instructor />} />
             <Route path="/Instructor/:id" element={<Instructor />} />
             <Route path="/individualtrainee" element={<IndividualTrainee />} />
             <Route
@@ -169,6 +170,14 @@ function App() {
               path="/individualtrainee/:id/coursePage/:id1"
               element={<CoursePage />}
             />
+            <Route
+              path="/home/coursePage/:id1"
+              element={<CoursePageGuest/>}
+            />
+            <Route
+              path="/Instructor/:id/coursePage/:id1"
+              element={<CoursePageGuest/>}
+            />
 
             <Route path="/admin" element={<Admin />} />
             <Route
@@ -187,7 +196,7 @@ function App() {
             <Route path="/CreateCourses/:id" element={<CreateC />} />
             <Route path="/ViewCourses" element={<Viewallco />} />
             <Route path="/rateCourse" element={<StarRating />} />
-            <Route path="/ViewMyRatings/:id" element={<Viewrate />} />
+            <Route path="/instructor/ViewMyRatings/:id" element={<Viewrate />} />
             <Route path="/viewmyreviews/:id" element={<Viewreviews />} />
             <Route path="/ViewPrices" element={<Viewprice />} />
             <Route

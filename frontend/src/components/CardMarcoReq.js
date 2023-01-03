@@ -13,13 +13,21 @@ const CardMarcoReg = ({ course }) => {
     <CardGroup>
       <Card>
         <Col xs={12} md={6} lg={4} key={course._id}>
-          <button
-            onClick={() => {
-              navigate(`/corporatetrainee/viewMyCourses/${id}/${course._id}`);
+        <div className="marc">
+        <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off"
+            onClick={async () => {
+              const data = await axios.get(
+                `http://localhost:7007/courses/viewCourse/${course._id}`
+              );
+              navigate(
+                `/corporatetrainee/viewCourseDetails/${id}/${course._id}`
+              );
             }}
           >
+            
             <td>{course.title}</td>
           </button>
+</div>
 
           <Card style={{ width: "18rem" }}>
             <Card.Img

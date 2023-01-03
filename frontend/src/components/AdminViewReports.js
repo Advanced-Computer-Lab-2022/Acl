@@ -20,6 +20,7 @@ function ViewReports() {
     const [instReports, setInstReports]= useState(null)//onstructor
     const [cReports, setCReports]= useState(null)//corporate
     const {id} = useParams();
+    const {id1} = useParams();
     const [status, setStatus] = useState('');
     const [value,setValue]=useState('');
     const handleSelect=(e)=>{
@@ -153,6 +154,14 @@ function ViewReports() {
               <td >{cReports.Description}</td>
               {/* <td >{cReports.followups}</td> */}
               <td >{cReports.status}</td>
+              <select style={{color:"black"}} id={id1} name="status" value={status} 
+              onClick={updateStatus(cReports._id)} onChange={handleChange}>
+             <option value="unseen">Unseen</option>
+        <option value="pending">Pending</option>
+        <option value="resolved">Resolved</option>
+        
+      </select>
+              <div id="log"></div>
              
             </tr>
           ))}
@@ -191,16 +200,13 @@ function ViewReports() {
 
              <td>{reports.status}</td>
             
-             <DropdownButton
-      alignRight
-      title="Dropdown right"
-      id="dropdown-menu-align-right"
-      onSelect={handleSelect}
-      onClick={updateStatus(reports._id)}
-        >
-              <Dropdown.Item  eventKey="resolved" >resolved</Dropdown.Item>
-              <Dropdown.Item eventKey="pending">pending</Dropdown.Item>
-      </DropdownButton>
+             <select style={{color:"black"}} id={reports._id} name="status" value={status} onClick={updateStatus(reports._id)} onChange={handleChange}>
+             <option value="unseen">Unseen</option>
+        <option value="pending">Pending</option>
+        <option value="resolved">Resolved</option>
+        
+      </select>
+              <div id="log"></div>
               <div id="log"></div>
             </tr>
           ))}
@@ -240,10 +246,11 @@ function ViewReports() {
               {/* <td>{instReports.followups}</td> */}
               <td >{instReports.status}</td>
 
-               <select id={instReports._id} name="status" value={instReports.status} onChange={handleChange}>
-             <option value="unseen">Unseen</option>
-        <option value="pending">Pending</option>
-        <option value="resolved">Resolved</option>
+               <select style={{color:"black"}} id={instReports._id} name="status" value={instReports.status} 
+                onChange={handleChange}>
+             <option value="unseen" onClick={updateStatus(instReports._id)}>Unseen</option>
+        <option value="pending" onClick={updateStatus(instReports._id)}>Pending</option>
+        <option value="resolved"onClick={updateStatus(instReports._id)}>Resolved</option>
         
       </select>
               <div id="log"></div>
