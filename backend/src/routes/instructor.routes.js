@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/filtersubject", instructorCtrl.filterCoursesBySubject);
 // router.get('filter_all_courses_price/"',instructorCtrl.filterAllPriceInstructor)
-router.get("/filter_all_courses_price", instructorCtrl.filterCoursebyPrice);
+
 router.get("/filtermycoursesprice/:id", instructorCtrl.filtermycoursesbyprice);
 router.get("/findcourses", instructorCtrl.findCourses);
 router.patch("/selectcountry/:id", instructorCtrl.selectcountry);
@@ -49,8 +49,8 @@ router.get("/findMyStudents/:id",instructorCtrl.FindMyStudents)
 router.get(
     "/filtermyCoursesSubject/:id",
     instructorCtrl.filterCoursesBySubject1
-  );
-  router.get("/filtermyCoursesPrice/:id", instructorCtrl.filterCoursebyPrice);
+  )
+router.get("/filtermyCoursePrice/:id",instructorCtrl.filterMYCoursebyPrice3)
   
 
 module.exports = router;

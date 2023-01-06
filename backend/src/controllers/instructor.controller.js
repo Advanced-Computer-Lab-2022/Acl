@@ -1210,19 +1210,26 @@ const filterCoursesBySubject1 = async (req, res) => {
   }
 };
 
-const filterCoursebyPrice = async (req, res) => {
-  const id = req.params.id;
+const filterMYCoursebyPrice3 = async (req, res) => {
+  try{console.log("hi")
+  const {id} = req.params;
   const min = parseInt(req.query.min);
   const max = parseInt(req.query.max);
+  console.log("hi")
+  console.log(id,min,max)
   try {
     const ranges = await courses.find({
       $and: [{ price: { $lte: max, $gte: min } }, { Instructor: id }],
     });
+    console.log(ranges)
     console.log(min + " " + max);
     res.status(200).json(ranges);
   } catch (error) {
     res.status(400).json({ error: error.me });
   }
+} catch (error) {
+  res.status(400).json({ error: error.me });
+}
 };
 
 module.exports = {
@@ -1239,7 +1246,7 @@ viewTitleCourses,
   searchMyCourses,
   viewall,
   viewprice,
-  filterCoursebyPrice,
+  filterMYCoursebyPrice3,
   searchForCourse,
   definepromotion,
   viewmyallrv,

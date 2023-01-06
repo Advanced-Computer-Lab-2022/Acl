@@ -70,13 +70,13 @@ const CoursesInstructor = () => {
             setSubjects(subjectss);
           } else {
             const data = await axios.get(
-              `http://localhost:7007/instructor/filtermyCoursesSubject/${id}?subject=${subjectr}`
+              `/instructor/filtermyCoursesSubject/${id}?subject=${subjectr}`
             );
             setCourses(data.data);
           }
         };
         getCourses();
-      }, [subjectr]);
+      }, [subjectr,min,max]);
       const onClick1 = (selected) => {
         setSubject(selected);
         setSubjectr(selected.toLowerCase());
@@ -85,17 +85,20 @@ const CoursesInstructor = () => {
     
       const onClick4 = (event) => {
         setMin(event.target.value);
+        
       };
-    
+      console.log(min)
       const onClick5 = (event) => {
         setMax(event.target.value);
+        
       };
+      console.log(max)
     
       const submit = async (e) => {
         e.preventDefault();
     
         const data = await axios.get(
-          `http://localhost:7007/instructor/filtermyCoursesPrice/${id}?min=${min}&max=${max}`
+          `/instructor/filtermyCoursePrice/${id}?min=${min}&max=${max}`
         );
         setCourses(data.data);
         //console.log(data.data);
@@ -105,7 +108,78 @@ const CoursesInstructor = () => {
     <div>
       <Navbar/>
       <SearchForCourse/>
-      
+      <div className="malak">
+      <div class="filterOut">
+        <div class="filter  container text-center">
+          <div class="row">
+            <div class=" col lower">
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control filterPrice"
+                  aria-label="Dollar amount (with dot and two decimal places)"
+                  placeholder="Min"
+                  onChange={onClick4}
+                />
+              </div>
+            </div>
+            <div class=" col lower">
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control filterPrice"
+                  aria-label="Dollar amount (with dot and two decimal places)"
+                  placeholder="Max"
+                  onChange={onClick5}
+                />
+              </div>
+            </div>
+            <div class=" col lower">
+              <div class="input-group mb-3">
+                <button class="filterBtnn" type="button" onClick={submit}>
+                  Filter
+                </button>
+              </div>
+            </div>
+            <div class="dropdown col">
+              <button
+                class="btn btn-outline-secondary dropdown-toggle filterBtn border-secondary"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {subject}
+              </button>
+
+              <ul class="dropdown-menu">
+                {subjects &&
+                  subjects.map((subject) => {
+                    return (
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          onClick={() => onClick1(subject)}
+                        >
+                          {subject}
+                        </a>
+                      </li>
+                    );
+                  })}
+
+                {
+                  <li>
+                    <a class="dropdown-item" onClick={() => onClick1("All")}>
+                      All
+                    </a>
+                  </li>
+                  
+                }
+              </ul>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="inss1">
     <div className="site-card-wrapper">
 
@@ -135,11 +209,11 @@ const CoursesInstructor = () => {
             >
              
               <Meta
-  //               title={"Rating: "+ course.rating.$numberDecimal}
+            //  title={"Rating: "+ course.rating}
           avatar={"Name: "+course.title}
-  //               description={"Reviews: "+course.Review.map((i)=>{
-  //                 return i+" , ";
-  // })}
+              description={"Reviews: "+course.Review.map((i)=>{
+                   return i+" , ";
+   })}
               
             
              

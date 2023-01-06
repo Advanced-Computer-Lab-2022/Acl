@@ -11,54 +11,17 @@ import{useParams} from 'react-router-dom';
 const InstructorHome = () => {
   const {id} = useParams();
     const navigate = useNavigate();
-    const onClick = () => {navigate("/instructor/createExam");}
-  
-      const onClick2=()=>{navigate('/ViewCourses')}
-      const onClick3=()=>{navigate('/ViewMyCourses')}
-      const onClick4=()=>{navigate('/ViewMyRatings/:id')}
-      const onClick5=()=>{navigate('/ViewPrices')}
-      const onClick7=()=>{navigate('/ContractForm')}
-      const onClick10=()=>{navigate(`/CreateCourses/${id}`)}
-    return (
+     return (
       <div className="instructor">
-        <h2>Instructor Profile</h2>
-        <SearchForCourse/>
-        <h4>SearchForHisCourse</h4>
-        <SearchForHisCourse/>
-        <Reset3/>
-        <ChangePass/>
+        <h2>Please read our terms and services</h2>
+       
+        
+        
+        
         <ContractForm/>
         
-        <CoursesList/>
-        {/* <CreateMCQ /> */}
-        <button style={{width:180,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}} 
-        onClick={onClick}>
-        Create Exam</button>
-        
-
-        <button style={{width:180,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}} 
-        onClick={onClick10}>
-        Create Course</button>
-        {/* <button style={{width:180,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}} 
-        onClick={() => window.location.href=`/CreateCourses?userId=${author._id}}`}> 
-        Create Course   
-        </button> */}
-        <button style={{width:180,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}}
-        onClick={onClick2}>
-        View Courses
-        </button>
-        <button style={{width:180,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}}
-        onClick={onClick3}>
-        View My Courses </button>
-        <button style={{width:180,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}}
-        onClick={onClick4}>
-        View My Ratings </button>
-      <button style={{width:180,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}}
-      onClick={onClick5}>
-      View Prices </button>
-      <button style={{width:180,height:40,backgroundColor:'#1aac83',color:'#FFF',marginTop:10}} 
-      onClick7={onClick7}>
-      Contract Form</button>
+      
+       
       
       </div>
     );

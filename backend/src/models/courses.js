@@ -70,6 +70,7 @@ const coursesSchema = new mongoose.Schema(
         type: Decimal128, 
         min:0, 
         max:5, 
+        default:0,
         required: false },
     ratingCounter:{
       type:Number,

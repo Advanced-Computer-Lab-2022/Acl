@@ -36,6 +36,8 @@ router.post(
   "/requestRefund/:id/:courseId",
   individualTraineeCtrl.requestRefund
 );
+router.patch("/watchvideo", individualTraineeCtrl.watchVideo);
+
 router.get("/wallet/:id", individualTraineeCtrl.viewWallet);
 router.get("/progress/:id/:courseId", individualTraineeCtrl.viewProgress);
 router.post("/reportcourse/:id", individualTraineeCtrl.report);

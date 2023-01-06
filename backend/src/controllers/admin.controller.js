@@ -22,6 +22,29 @@ const createToken = (name) => {
     expiresIn: maxAge,
   });
 };
+const editStat = async (req, res) => {
+  const status = req.body.status;
+  const id=req.params.id
+  try {
+    const rep= await Report.findByIdAndUpdate(id,
+      {
+        $set: {
+          status: status
+        },
+      })
+      //const all= await Report.find({})
+      //console.log(rep);
+      const val = await Report.save();
+
+        return res.status(200).json(val);
+      
+  } catch (error) {
+      return res.status(402).json({
+          error : error
+      });
+  }
+}
+
 const createAdmin = async (req, res) => {
   const { username, password, admin } = req.body;
   try {
@@ -379,5 +402,5 @@ module.exports = {
   getAllInstructorReports,
   markProblems1,
   viewAllCourses,
-  
+  editStat
 };

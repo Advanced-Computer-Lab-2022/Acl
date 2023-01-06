@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import * as FaIcons from "react-icons/fa"; //Now i get access to all the icons
 import * as AiIcons from "react-icons/ai";
 import { useParams } from "react-router-dom";
-
+import { useEffect } from "react";
+import axios from "axios";
 import { IconContext } from "react-icons";
 
 // ROUTING
@@ -20,11 +21,19 @@ import "./AdminSideBarMans.css";
 
 export default function Navbar() {
   const [sidebar, setSidebar] = useState(false);
-
+  const [wallet, setWallet] = useState("");
   const showSidebar = () => setSidebar(!sidebar);
   const{id}=useParams();
   console.log(id)
   const [isExpanded, setExpendState] = useState(false);
+  useEffect(() => {
+    const fetchWallet = async () => {
+      const data = await axios.get(`/indiviualtrainee/wallet/${id}`);
+      setWallet(data.data);
+      console.log(data.data);
+    };
+    fetchWallet();
+  }, []);
   const menuItems = [
     {
         text: "Home",
@@ -57,9 +66,8 @@ export default function Navbar() {
           href: `/individualtrainee/Followupsindv/${id}`
       },
       {
-        text: "Wallet",
+        text: `Wallet: ${wallet}`,
         icon: "icons/folder.svg",
-        href: `/individualtrainee/wallet/${id}`,
       },
       // {
       // 	text: "Orders",

@@ -13,7 +13,7 @@ function AdminRequests() {
     const {id1}= useParams();
   const fetchRequests = async () => {
         try {
-          const response = await fetch(`http://localhost:7007/admin/accessrequests/${id}`, {
+          const response = await fetch(`/admin/accessrequests/${id}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -31,7 +31,7 @@ function AdminRequests() {
       const fetchRefundRequests = async () => {
         try {
           const v = id
-          const response = await fetch(`http://localhost:7007/admin/refundrequests/${id}`, {
+          const response = await fetch(`/admin/refundrequests/${id}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -52,7 +52,7 @@ function AdminRequests() {
     
     const approveAccess = async (id2) => {
       try {
-        const response = await fetch(`http://localhost:7007/admin/approveaccess/${id2}`, {
+        const response = await fetch(`/admin/approveaccess/${id2}`, {
           method: 'PATCH',
           headers: {
             "Content-Type": "application/json",
@@ -68,7 +68,7 @@ function AdminRequests() {
     };
     const declineAccess = async (id6) => {
       try {
-        const response = await fetch(`http://localhost:7007/admin/declineaccess/${id6}`, {
+        const response = await fetch(`/admin/declineaccess/${id6}`, {
           method: 'PATCH',
           headers: {
             "Content-Type": "application/json",
@@ -84,7 +84,7 @@ function AdminRequests() {
     };
     const approveRefund = async (id4) => {
       try {
-        const response = await fetch(`http://localhost:7007/admin/approverefund/${id4}`, {
+        const response = await fetch(`/admin/approverefund/${id4}`, {
           method: 'PATCH',
           headers: {
             "Content-Type": "application/json",
@@ -100,7 +100,7 @@ function AdminRequests() {
     };
     const declineRefund = async (id5) => {
       try {
-        const response = await fetch(`http://localhost:7007/admin/declinerefund/${id5}`, {
+        const response = await fetch(`/admin/declinerefund/${id5}`, {
           method: 'PATCH',
           headers: {
             "Content-Type": "application/json",

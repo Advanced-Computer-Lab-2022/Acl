@@ -117,7 +117,7 @@ const CoursePage = () => {
     
      
       <iframe width="520" height="315"
-    src={courses1.preview[0].Video[0].youtube_video_link+"?autoplay=1&controls=0"}  
+    src={`https://www.youtube.com/watch?v=dLhpfCLz3is`}  
     title="Youtube Player"
     frameborder="50"
     allowFullScreen

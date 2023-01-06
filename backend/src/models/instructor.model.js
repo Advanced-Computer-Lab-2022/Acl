@@ -26,6 +26,9 @@ const InstructorSchema = new mongoose.Schema(
         type: String,
         required: false,
       },
+      FirstTime:{type: Boolean,
+        required: false,
+        default:true},
       resetPasswordToken:{type: String,
         required: false,},
   
@@ -56,9 +59,11 @@ const InstructorSchema = new mongoose.Schema(
         type: Decimal128, 
         min:0, 
         max:5, 
+        default:0,
         required: false },
     ratingCounter:{
       type:Number,
+      default:0,
       required: false},
         resetPasswordToken:{type: String,
           required: false,},

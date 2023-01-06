@@ -10,6 +10,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import axios from 'axios';
 
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { DataGrid } from '@mui/x-data-grid';
@@ -19,41 +20,68 @@ function ViewReports() {
     const [reports,   setReports  ]= useState(null)//individualtrainee
     const [instReports, setInstReports]= useState(null)//onstructor
     const [cReports, setCReports]= useState(null)//corporate
+    const [stat, setstat]= useState(["Unseen","Pending","Resolved"])//corporate
+
     const {id} = useParams();
-    const {id1} = useParams();
-    const [status, setStatus] = useState('');
-    const [value,setValue]=useState('');
-    const handleSelect=(e)=>{
-      console.log(e);
-      setValue(e)
-    }
+    //const {id1} = useParams();
+    const [id1, setid1] = useState('');
+
+    const [st, setSt] = useState('');
+
     const handleChange = (event) => {
-      setStatus(event.target.value);
+      setSt(event.target.value);
+      //updateStatus(id1);
 
     }
-    const reportBody={status}
     const updateStatus = async (id1) => {
-      try {
-        const response = await fetch(`http://localhost:7007/admin/${id1}`, {
-          method: 'PATCH',
-          body: JSON.stringify(reportBody),
-          headers: {
-            "Content-Type": "application/json",
-            'Accept': 'application/json'
-          },
+      
+        console.log(st)
+         await axios.post(`/admin/upS/${id1}`, {
+          status: st,
+
           
+        }).then((response) => {
+          console.log(response);
+
+        }, (error) => {
+          console.log(error);
         });
-        const result = await response.json();
-        console.log(result)
-      }catch (error) {
-        console.error(error);
-      }
+        
     };
+    const updateStatusCRep = async (id1) => {
+      
+      console.log(st)
+       await axios.post(`/admin/upS/${id1}`, {
+        status: st,
+
+        
+      }).then((response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
+      
+  };
+  const updateStatusIns = async (id1) => {
+      
+    console.log(st)
+     await axios.post(`/admin/upS/${id1}`, {
+      status: st,
+
+      
+    }).then((response) => {
+      console.log(response);
+
+    }, (error) => {
+      console.log(error);
+    });
+    
+};
   useEffect(() => {
     //individual trainee
     const fetchReports=async ()=> {
       const v=id
-      const response =await fetch(`http://localhost:7007/admin/getindividualreports/${id}`,{
+      const response =await fetch(`/admin/getindividualreports/${id}`,{
         method: "GET",
     
         headers: {
@@ -72,7 +100,7 @@ function ViewReports() {
   //corporate trainee
     const fetchCReports=async ()=> {
   const v=id
-      const response =await fetch(`http://localhost:7007/admin/getcorporatereports/${id}`,{
+      const response =await fetch(`/admin/getcorporatereports/${id}`,{
         method: "GET",
     
         headers: {
@@ -91,7 +119,7 @@ function ViewReports() {
     //instructor
     const fetchInstReports=async ()=> {
       const v=id
-          const response =await fetch(`http://localhost:7007/admin/getinstructorreports/${id}`,{
+          const response =await fetch(`/admin/getinstructorreports/${id}`,{
             method: "GET",
         
             headers: {
@@ -107,7 +135,6 @@ function ViewReports() {
          
         }
     fetchInstReports()
-    updateStatus()
   
   }, [])
 
@@ -143,19 +170,19 @@ function ViewReports() {
         </thead>
 
         <tbody>
-        {cReports && cReports.map((cReports) => (
+        {cReports && cReports.map((cReport) => (
             <tr>
               <td></td>
-              <td >{cReports._id}</td>
-              <td >{cReports.name}</td>
-              <td>{cReports.course}</td>
-              <td >{cReports.type}</td>
-              <td>{cReports.corporatetrainee}</td>
-              <td >{cReports.Description}</td>
+              <td >{cReport._id}</td>
+              <td >{cReport.name}</td>
+              <td>{cReport.course}</td>
+              <td >{cReport.type}</td>
+              <td>{cReport.corporatetrainee}</td>
+              <td >{cReport.Description}</td>
               {/* <td >{cReports.followups}</td> */}
-              <td >{cReports.status}</td>
-              <select style={{color:"black"}} id={id1} name="status" value={status} 
-              onClick={updateStatus(cReports._id)} onChange={handleChange}>
+              <td >{cReport.status}</td>
+              <select style={{color:"black"}} id={id1} name="status" value={stat} 
+              onClick={updateStatusCRep(cReport._id)} onChange={handleChange}>
              <option value="unseen">Unseen</option>
         <option value="pending">Pending</option>
         <option value="resolved">Resolved</option>
@@ -187,20 +214,20 @@ function ViewReports() {
         </tr>
         </thead>
         <tbody>
-        {reports && reports.map((reports) => (
+        {reports && reports.map((report) => (
             <tr>
             <td></td>
-            <td >{reports._id}</td>
-            <td >{reports.name}</td>
-            <td>{reports.course}</td>
-            <td >{reports.type}</td>
-            <td>{reports.individualtrainee}</td>
-            <td >{reports.Description}</td>
+            <td >{report._id}</td>
+            <td >{report.name}</td>
+            <td>{report.course}</td>
+            <td >{report.type}</td>
+            <td>{report.individualtrainee}</td>
+            <td >{report.Description}</td>
             {/* <td >{reports.followups}</td> */}
 
-             <td>{reports.status}</td>
+             <td>{report.status}</td>
             
-             <select style={{color:"black"}} id={reports._id} name="status" value={status} onClick={updateStatus(reports._id)} onChange={handleChange}>
+             <select style={{color:"black"}} id={report._id} name="status"  onClick={updateStatus(report._id)} onChange={handleChange}>
              <option value="unseen">Unseen</option>
         <option value="pending">Pending</option>
         <option value="resolved">Resolved</option>
@@ -248,9 +275,9 @@ function ViewReports() {
 
                <select style={{color:"black"}} id={instReports._id} name="status" value={instReports.status} 
                 onChange={handleChange}>
-             <option value="unseen" onClick={updateStatus(instReports._id)}>Unseen</option>
-        <option value="pending" onClick={updateStatus(instReports._id)}>Pending</option>
-        <option value="resolved"onClick={updateStatus(instReports._id)}>Resolved</option>
+             <option value="unseen" onClick={updateStatusIns(instReports._id)}>Unseen</option>
+        <option value="pending" onClick={updateStatusIns(instReports._id)}>Pending</option>
+        <option value="resolved"onClick={updateStatusIns(instReports._id)}>Resolved</option>
         
       </select>
               <div id="log"></div>

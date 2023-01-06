@@ -691,11 +691,9 @@ const viewProgress = async (req, res) => {
       //console.log(courses[i].progress);
     }
   }
-  if (neededCourse.progress == 100) {
-    res.redirect("/individualtrainee/sendingCertificate");
-  }
+ 
 
-  res.status(200).json(neededCourse.progress);
+  return res.status(200).json(neededCourse.progress);
 };
 
 const viewreports = async (req, res) => {
@@ -745,17 +743,22 @@ const followups = async (req, res) => {
 };
 
 const watchVideo = async (req, res) => {
-  const traineeId = req.params.traineeId;
-  const CourseId = req.params.courseId;
-  const videoId = req.params.video;
+  const traineeId = req.query.traineeId;
+  const CourseId = req.query.courseId;
+  const videoId = req.query.videoId;
   const Course = await courses.findOne({ _id: CourseId });
+  //console.log(CourseId);
   const totalVideos = Course.Subtitle.length;
-  const Trainee = await indTrainee.findOne({ _id: traineeId });
+  //console.log(Course.Subtitle.length);
+
+  const Trainee = await IndividualTrainee.findOne({ _id: traineeId });
+  //console.log(Trainee.courses);
+
   flagV = 0;
   let watchedVideos;
   Trainee.courses.map((course) => {
     if (course._id == CourseId) {
-      //watchedVideos = course.watchedVideos;
+      watchedVideos = course.watchedVideos;
       oldProgress = course.progress;
     }
   });
@@ -765,70 +768,90 @@ const watchVideo = async (req, res) => {
     }
   }
   if (flagV == 1) res.status(200).send("You have watched this video before");
-  if (flagV == 0) {
-    const updatedWatchedVideos = await indTrainee.updateOne(
+  else if (flagV == 0) {
+    const updatedWatchedVideos = await IndividualTrainee.updateOne(
       { _id: traineeId, "courses._id": CourseId },
-        { $push: { "courses.$.watchedVideos": { videoId } } }
-      // );
+      { $push: { "courses.$.watchedVideos": { videoId } } }
     );
-    const newProgress = ((watchedVideos.length + 1) / totalVideos) * 100;
 
-    const x = await indTrainee.updateOne(
+    const newProgress = (watchedVideos.length + 1 / totalVideos) * 100;
+
+     await IndividualTrainee.updateOne(
       { _id: traineeId, "courses._id": CourseId },
       { $set: { "courses.$.progress": newProgress } }
-
     );
-    let neededCourse;
-    for (i = 0; i < x.courses.length; i++) {
-      if (x.courses[i]._id == courseId) {
-        neededCourse = x.courses[i];
-      }
-    }
+    const x=IndividualTrainee.findById(traineeId)
+   
 
-    if (neededCourse.progress == 100) {
-      const corporateTraineeId = req.params;
+    if (newProgress == 100) {
+      
       //console.log(corporateTraineeId)
-      const corporateTrainee = await IndividualTrainee.findById(corporateTraineeId.id);
+      const corporateTrainee = await IndividualTrainee.findById(
+        traineeId
+      );
       //console.log(corporateTrainee)
-      const email = corporateTrainee.email;  
-    
-      await IndividualTrainee.find({email: email}).then(async (result)=>
-      {
-      await IndividualTrainee.findById(result._id).then((result)=>
-      {
-          const mail = {
-              from: process.env.AUTH_EMAIL,
-              to: email,
-              subject: "Certificate",
-              html: `<p>Congratulations you have completed your course. Here is your certificate</p>`,
-              attachments: [
-                {
-                  filename : "certificate.pdf" ,
-                 path : './controllers/certificate.pdf', 
-                 contentType: 'application/pdf'
-                }]
-          }
-      
-          let transporter = nodemailer.createTransport({
-              service: 'hotmail',
-              auth: {
+      const email = corporateTrainee.email;
+
+      await IndividualTrainee
+        .find({ email: email })
+        .then(async (result) => {
+          await IndividualTrainee
+            .findById(result._id)
+            .then((result) => {
+              const mail = {
+                from: process.env.AUTH_EMAIL,
+                to: email,
+                subject: "Certificate",
+                html: `<p>Congratulations you have completed your course. Here is your certificate</p>`,
+                attachments: [
+                  {
+                    filename: "certificate.pdf",
+                    path: "./controllers/certificate.pdf",
+                    contentType: "application/pdf",
+                  },
+                ],
+              };
+
+              let transporter = nodemailer.createTransport({
+                service: "hotmail",
+                auth: {
                   user: process.env.AUTH_EMAIL,
-                  pass: process.env.AUTH_PASS
-              }
-          })
-      
-          transporter.sendMail(mail).then(()=>{
-              return res.status(200).json({status:true,Message:"sent successfully"})
-          }).catch((error) => {
-              return res.status(400).json({status:false, error:error.message ,Message:"Error while sending an email"})
-          })
-      }).catch((error)=>{
-          return res.status(400).json({status:false, error:error.message,Message:"Error while updating the password"})
-      })
-      }).catch((error)=>{
-          return res.status(400).json({status:false, error:error .message,Message:"this Email is not found or undefined"})
-      });
-      }
+                  pass: process.env.AUTH_PASS,
+                },
+              });
+
+              transporter
+                .sendMail(mail)
+                .then(() => {
+                  return res
+                    .status(200)
+                    .json({ status: true, Message: "sent successfully" });
+                })
+                .catch((error) => {
+                  return res.status(400).json({
+                    status: false,
+                    error: error.message,
+                    Message: "Error while sending an email",
+                  });
+                });
+            })
+            .catch((error) => {
+              return res.status(400).json({
+                status: false,
+                error: error.message,
+                Message: "Error while updating the password",
+              });
+            });
+        })
+        .catch((error) => {
+          return res.status(400).json({
+            status: false,
+            error: error.message,
+            Message: "this Email is not found or undefined",
+          });
+        });
+    }
+    
   }
 };
 const ReceiveCertificate = async(req, res, next) => {

@@ -38,7 +38,7 @@ const CardMarco = ({ course }) => {
               <Card.Text>Total hours:{course.duration} hours</Card.Text>
               <Card.Text> subject:{course.Subject} </Card.Text>
               
-              {/* <Card.Text>Rating:{course.rating} stars</Card.Text> */}
+             {/* <Card.Text>Rating:{course.rating} stars</Card.Text> */}
             </Card.Body>
           </Card>
         </Col>

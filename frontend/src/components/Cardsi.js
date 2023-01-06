@@ -30,8 +30,8 @@ const Cardsi = ({course}) => {
           </small>
         </Card.Footer>
         <Card.Footer>
-          <small className="text-muted">{(course.rating.$numberDecimal)}
-          </small>
+          {/* <small className="text-muted">{(course.rating)}
+          </small> */}
         </Card.Footer>
         
       </Card>

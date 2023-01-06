@@ -50,7 +50,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
         try {
           //console.log("hiiiiiiiiiiiiiiiii");
           const response = await fetch(
-            `http://localhost:7007/corporatetrainee/watchvideo?traineeId=${id}&courseId=${id1}&videoId=${videoid}`,
+            `/indiviualtrainee/watchvideo?traineeId=${id}&courseId=${id1}&videoId=${videoid}`,
             {
               method: "PATCH",
               headers: {
@@ -77,7 +77,8 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
         <ReactPlayer
           width="640px"
           height="360px"
-          url={subtitle.Video[0].youtube_video_link}
+          url={"https://www.youtube.com/watch?v=0F_UQF2gC_g"}
+          // url={subtitle.Video[0].youtube_video_link}
           title="Youtube Player"
           controls="true"
           frameborder="0"

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Await, useNavigate } from "react-router-dom";
-
+import ReactPlayer from 'react-player'
 import Button from "../components/Button.css";
 import axios from "axios";
 import * as React from "react";
@@ -130,13 +130,16 @@ const CoursePageCor = () => {
         <div className="body">Preview:</div>
         <React.Fragment>
           <Box />
-
-          <iframe width="520" height="315"
-    src={courses1.preview[0].Video[0].youtube_video_link+"?autoplay=1&controls=0"}  
-    title="Youtube Player"
-    frameborder="50"
-    allowFullScreen
-  />
+          <ReactPlayer
+          width="640px"
+          height="360px"
+          url={"https://www.youtube.com/watch?v=0F_UQF2gC_g"}
+          // url={subtitle.Video[0].youtube_video_link}
+          title="Youtube Player"
+          controls="true"
+          frameborder="0"
+          allowFullScreen
+            />
         </React.Fragment>
 
         <div>

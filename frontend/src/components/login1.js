@@ -191,7 +191,7 @@ const Login1 = () => {
 
             <div class="form__input">
                 <i class="ri-lock-line"></i>
-                <input type="text" placeholder="Password"
+                <input type="password" placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
                  value={password}
                  style={{width:250}}/>

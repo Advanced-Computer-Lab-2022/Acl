@@ -10,6 +10,7 @@ import {
   formatExpirationDate,
 } from "./cardUtils";
 import axios from "axios";
+import Navbar from "./NavbarrIndiv";
 
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -60,8 +61,9 @@ function CreditCard() {
   };
 
   return (
+    
     <Styles>
-      <h1>🏁 React Stripe</h1>
+    
       <Form
         onSubmit={onSubmit}
         render={({
@@ -73,7 +75,9 @@ function CreditCard() {
           active,
         }) => {
           return (
+            
             <form onSubmit={handleSubmit}>
+              
               <Card
                 number={values.number || ""}
                 name={values.name || ""}
@@ -82,7 +86,7 @@ function CreditCard() {
                 focused={active}
               />
               <div>
-                
+              
                 <Field
                   name="email"
                   component="input"
@@ -138,9 +142,8 @@ function CreditCard() {
                   Reset
                 </button>
               </div>
-              <h2>Values</h2>
-              <pre>{JSON.stringify(values, 0, 2)}</pre>
-            </form>
+    
+             </form>
           );
         }}
       />

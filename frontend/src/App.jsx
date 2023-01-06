@@ -151,7 +151,6 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signUp" element={<SignUp />} />
             <Route path="/Instructor/:id" element={<Instructor />} />
-            <Route path="/individualtrainee" element={<IndividualTrainee />} />
             <Route
               path="/individualtrainee/:id"
               element={<IndividualTrainee />}
